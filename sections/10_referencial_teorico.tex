@@ -1,0 +1,150 @@
+% ==================================================================
+% 2 REFERENCIAL TEÓRICO
+% ==================================================================
+
+\chapter{REFERENCIAL TEÓRICO}
+
+\section{MODELO DE MARKOWITZ (MÉDIA-VARIÂNCIA)}
+
+O modelo de Média-Variância, desenvolvido por Markowitz (1952), representa um marco teórico na construção de carteiras eficientes, sendo uma das bases fundamentais da moderna teoria de investimentos. O objetivo central da metodologia é encontrar a combinação ótima de ativos que maximize o retorno esperado para um dado nível de risco ou, alternativamente, minimize o risco para um retorno esperado específico.
+
+O modelo assume que os retornos dos ativos seguem uma distribuição normal e que os investidores são avessos ao risco, preferindo carteiras com menor volatilidade para retornos equivalentes. A construção da ``fronteira eficiente'' baseia-se na análise da média e variância dos retornos dos ativos, bem como nas covariâncias entre eles. Apesar de sua elegância teórica, o modelo enfrenta críticas, especialmente em ambientes de alta volatilidade, pela dependência excessiva de estimativas de parâmetros que podem se mostrar instáveis no tempo \cite{michalak2024equal}.
+
+\section{ESTRATÉGIA EQUAL WEIGHT (PESOS IGUAIS)}
+
+A estratégia Equal Weight consiste na alocação igualitária do capital entre todos os ativos da carteira, atribuindo o mesmo peso percentual para cada ativo, independentemente de suas características individuais. Essa abordagem se destaca pela simplicidade operacional e pela robustez frente a erros de previsão de retorno e volatilidade \cite{demiguel2009optimal}.
+
+Estudos indicam que, em muitos casos, o desempenho de carteiras Equal Weight pode superar o de métodos mais sofisticados, especialmente fora da amostra. No entanto, a ausência de ajustes baseados em volatilidade ou correlação pode resultar em carteiras com concentração de riscos indesejados, especialmente em ativos mais voláteis.
+
+\section{ESTRATÉGIA RISK PARITY (PARIDADE DE RISCO)}
+
+A estratégia Risk Parity surgiu como uma alternativa para endereçar o problema da concentração de risco observado em abordagens tradicionais. Nessa metodologia, o objetivo é equilibrar a contribuição de risco de cada ativo no portfólio, atribuindo pesos inversamente proporcionais à volatilidade dos ativos \cite{maillard2010properties}.
+
+O cálculo dos pesos é realizado a partir da seguinte fórmula:
+
+\begin{equation}
+w_i = \frac{(1/\sigma_i)}{\sum_{j=1}^{n}(1/\sigma_j)}
+\end{equation}
+
+onde $w_i$ representa o peso do ativo $i$ e $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$. Essa abordagem tende a produzir carteiras mais estáveis e menos sensíveis a erros de estimativa, o que a torna atrativa em ambientes de alta incerteza \cite{palit2024study}.
+
+\section{MÉTRICAS DE AVALIAÇÃO: ÍNDICE DE SHARPE E SORTINO RATIO}
+
+A avaliação de desempenho das carteiras será baseada em duas métricas amplamente reconhecidas:
+
+\textbf{Índice de Sharpe:} mede o retorno excedente em relação à taxa livre de risco por unidade de volatilidade total dos retornos da carteira.
+
+\begin{equation}
+\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+onde $R_p$ é o retorno médio da carteira, $R_f$ é a taxa livre de risco e $\sigma_p$ é o desvio-padrão dos retornos da carteira.
+
+\textbf{Sortino Ratio:} similar ao Sharpe Ratio, mas considera apenas a volatilidade negativa (retornos abaixo de um objetivo ou taxa mínima desejada).
+
+\begin{equation}
+\text{Sortino} = \frac{R_p - T}{\sigma_-}
+\end{equation}
+
+onde $T$ é a taxa mínima de retorno e $\sigma_-$ é o desvio-padrão dos retornos abaixo dessa taxa.
+
+Essas métricas oferecem uma visão abrangente da relação risco-retorno, considerando tanto a variabilidade geral quanto o risco específico de perdas.
+
+\section{PERÍODO DO ESTUDO}
+
+A escolha do período de 2018 a 2019 para a análise comparativa entre as estratégias de alocação de carteiras --- Markowitz, Equal Weight e Risk Parity --- não foi aleatória, mas sim fundamentada em características peculiares do cenário econômico e político brasileiro. Esses dois anos representam um momento de elevada volatilidade no mercado de capitais, impulsionado principalmente pelas eleições presidenciais de 2018 e pelas subsequentes incertezas sobre a condução da política econômica do novo governo.
+
+Durante esse intervalo, o Índice Bovespa apresentou oscilações significativas, refletindo o humor dos investidores diante de um ambiente instável e frequentemente imprevisível. Segundo \cite{gregorio2020volatilidade}, o desvio-padrão anualizado dos retornos do Ibovespa chegou a ultrapassar 25\% em determinados momentos, reforçando a natureza volátil do período.
+
+Além do fator político, o cenário macroeconômico brasileiro ainda carregava resquícios da recessão econômica que atingiu o país entre 2014 e 2016. A lenta recuperação do Produto Interno Bruto (PIB), as reformas estruturais em discussão (como a reforma da Previdência) e as oscilações no câmbio e nas taxas de juros também contribuíram para um ambiente de incerteza que afeta diretamente as decisões de alocação de ativos.
+
+Em mercados emergentes como o Brasil, eventos políticos têm impacto amplificado sobre os ativos financeiros, como apontado por \cite{carnahan2020electoral}, que analisaram a influência de eleições sobre a volatilidade dos mercados latino-americanos. Esse contexto adverso justifica plenamente a aplicação de metodologias de alocação que busquem eficiência mesmo em cenários instáveis, como é o caso das abordagens comparadas neste trabalho.
+
+\section{ESTUDOS RELACIONADOS}
+
+Diversos estudos prévios abordaram comparações entre diferentes estratégias de alocação de ativos, tanto em mercados desenvolvidos quanto emergentes. Essa revisão tem como objetivo situar a presente pesquisa dentro da literatura existente, evidenciando a relevância e originalidade do estudo.
+
+A seguir, apresenta-se uma síntese dos principais trabalhos relacionados:
+
+\begin{table}[h]
+\centering
+\caption{Estudos Correlatos}
+\begin{tabular}{|p{3cm}|p{4cm}|p{3cm}|p{4cm}|}
+\hline
+\textbf{Autor/Ano} & \textbf{Objetivo} & \textbf{Metodologia} & \textbf{Principais Resultados} \\
+\hline
+\cite{demiguel2009optimal} & Comparar estratégias de otimização vs. diversificação ingênua & Análise empírica com dados de mercados desenvolvidos & Equal weight supera estratégias otimizadas fora da amostra \\
+\hline
+\cite{maillard2010properties} & Analisar propriedades de carteiras Risk Parity & Modelagem matemática e testes empíricos & Risk Parity oferece melhor relação risco-retorno \\
+\hline
+\cite{michalak2024equal} & Comparar Equal Weight vs. Hierarchical Risk Parity & Estudo comparativo com dados europeus & HRP supera EW em períodos de alta volatilidade \\
+\hline
+\end{tabular}
+\label{tab:estudos_correlatos}
+\end{table}
+
+\section{FERRAMENTAS COMPUTACIONAIS}
+
+A implementação das estratégias de alocação de carteiras neste trabalho será realizada com auxílio da linguagem de programação Python, amplamente reconhecida por sua flexibilidade e pelo vasto ecossistema de bibliotecas aplicadas à ciência de dados e finanças.
+
+Entre as bibliotecas previstas, destacam-se:
+
+\textbf{Pandas:} será utilizada para manipulação e análise de dados tabulares, como séries históricas de preços e retornos. Essa biblioteca é amplamente adotada em estudos empíricos por sua eficiência na estruturação de dados financeiros.
+
+\textbf{NumPy:} será empregada para cálculos vetoriais e matriciais, como a média dos retornos, o desvio-padrão e, principalmente, o cálculo da matriz de covariância entre os ativos. O NumPy é a base para operações matemáticas eficientes em Python.
+
+\textbf{cvxpy:} biblioteca voltada para otimização convexa, será utilizada para implementar a carteira de Markowitz. A ferramenta permite a formulação de problemas de programação quadrática, muito utilizada em finanças quantitativas.
+
+\textbf{matplotlib e seaborn:} serão usadas para gerar gráficos e visualizações como a evolução das carteiras, boxplots de retorno e heatmaps de correlação, contribuindo para a análise visual dos resultados.
+
+\textbf{yfinance:} será utilizada para a extração automática dos preços históricos ajustados dos ativos diretamente do Yahoo Finance, permitindo uma coleta de dados prática e atualizada. A biblioteca é utilizada por diversos estudos empíricos recentes.
+
+Essas ferramentas foram escolhidas por serem de código aberto, amplamente documentadas e reconhecidas em estudos da área de finanças computacionais. A opção pelo uso de programação, em vez de planilhas, visa garantir maior precisão, replicabilidade e flexibilidade na análise. Além disso, o domínio dessas ferramentas reflete competências valorizadas no mercado financeiro, alinhando-se às demandas contemporâneas por análise quantitativa de investimentos.
+
+\section{ANÁLISE DOS ELEMENTOS DAS FÓRMULAS}
+
+A seguir estão descritos em detalhe todos os componentes de cada fórmula utilizada na avaliação de desempenho e construção de carteiras neste estudo:
+
+\subsection{Fórmula 1 -- Peso na Estratégia Risk Parity}
+
+\begin{equation}
+w_i = \frac{1/\sigma_i}{\sum_{j=1}^{n}(1/\sigma_j)}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $w_i$: peso do ativo $i$ na carteira;
+    \item $\sigma_i$: desvio-padrão dos retornos do ativo $i$.
+\end{itemize}
+
+\textbf{Comentário:} ao atribuir ao peso o inverso da volatilidade, ativos mais voláteis recebem menor participação, equilibrando a contribuição de risco de cada ativo.
+
+\subsection{Fórmula 2 -- Índice de Sharpe}
+
+\begin{equation}
+\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $R_p$: retorno médio da carteira;
+    \item $R_f$: taxa livre de risco;
+    \item $\sigma_p$: desvio-padrão dos retornos da carteira.
+\end{itemize}
+
+\textbf{Comentário:} o Sharpe Ratio mede quanto retorno excedente cada unidade de risco total consegue gerar.
+
+\subsection{Fórmula 3 -- Sortino Ratio}
+
+\begin{equation}
+\text{Sortino} = \frac{R_p - T}{\sigma_-}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $R_p$: retorno médio da carteira;
+    \item $T$: retorno mínimo aceitável (threshold);
+    \item $\sigma_-$: desvio-padrão dos retornos abaixo de $T$.
+\end{itemize}
+
+\textbf{Comentário:} diferente do Sharpe, o Sortino considera apenas a volatilidade negativa, focando no risco de perdas.

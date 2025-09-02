@@ -1,0 +1,175 @@
+% ==================================================================
+% TEMPLATE TCC MACKENZIE - BRUNO GASPARONI BALLERINI
+% Baseado nas normas do Guia do TCC 2022 - Universidade Presbiteriana Mackenzie
+% ==================================================================
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% ==================================================================
+% PACOTES NECESSÁRIOS
+% ==================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+
+% ==================================================================
+% CONFIGURAÇÕES GERAIS MACKENZIE
+% ==================================================================
+
+% Margens: 3cm (superior e esquerda), 2cm (inferior e direita)
+\geometry{
+    a4paper,
+    top=3cm,
+    left=3cm,
+    bottom=2cm,
+    right=2cm
+}
+
+% Espaçamento 1.5
+\onehalfspacing
+
+% Recuo de parágrafo 1,25cm
+\setlength{\parindent}{1.25cm}
+
+% Espaçamento entre parágrafos (1.5 conforme norma)
+\setlength{\parskip}{0.75\baselineskip}
+
+% ==================================================================
+% CONFIGURAÇÃO DE TÍTULOS (NORMAS MACKENZIE)
+% ==================================================================
+
+% Seção primária: 1 LETRAS MAIÚSCULAS EM NEGRITO  
+\titleformat{\chapter}[hang]
+{\normalfont\fontsize{12}{14.4}\bfseries}
+{\thechapter}{1em}{\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{12pt}
+
+% Títulos de capítulos não numerados (centralizados)
+\titleformat{name=\chapter,numberless}[block]
+{\normalfont\fontsize{12}{14.4}\bfseries\centering}
+{}{0pt}{\MakeUppercase}
+\titlespacing*{name=\chapter,numberless}{0pt}{0pt}{12pt}
+
+% Seção secundária: 1.1 LETRAS MAIÚSCULAS SEM NEGRITO
+\titleformat{\section}[hang]
+{\normalfont\fontsize{12}{14.4}}
+{\thesection}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
+
+% Seção terciária: 1.1.1 Letras minúsculas em negrito
+\titleformat{\subsection}[hang]
+{\normalfont\fontsize{12}{14.4}\bfseries}
+{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{12pt}
+
+% Seção quaternária: 1.1.1.1 Letras minúsculas sem negrito
+\titleformat{\subsubsection}[hang]
+{\normalfont\fontsize{12}{14.4}}
+{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{12pt}{12pt}
+
+% Seção quinária: 1.1.1.1.1 Letras minúsculas em itálico
+\titleformat{\paragraph}[hang]
+{\normalfont\fontsize{12}{14.4}\itshape}
+{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}{0pt}{12pt}{12pt}
+
+% ==================================================================
+% NUMERAÇÃO DE PÁGINAS
+% ==================================================================
+\setlength{\headheight}{13.19998pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\fontsize{11}{13.2}\selectfont\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ==================================================================
+% CONFIGURAÇÃO DO SUMÁRIO
+% ==================================================================
+\renewcommand{\contentsname}{SUMÁRIO}
+\renewcommand{\cftchapfont}{\fontsize{12}{14.4}\selectfont\bfseries}
+\renewcommand{\cftsecfont}{\fontsize{12}{14.4}\selectfont}
+\renewcommand{\cftsubsecfont}{\fontsize{12}{14.4}\selectfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforechapskip}{6pt}
+
+% ==================================================================
+% INÍCIO DO DOCUMENTO
+% ==================================================================
+\begin{document}
+
+% CAPA - sem numeração
+\pagenumbering{gobble}
+\input{sections/01_capa}
+\newpage
+
+% FOLHA DE ROSTO - inicia contagem (página 1, mas não aparece)
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\thispagestyle{empty}
+\input{sections/02_folha_rosto}
+\newpage
+
+% Pré-textuais - páginas numeradas mas não aparecem até a introdução
+\pagestyle{empty}
+
+% LISTA DE FIGURAS
+\input{sections/03_lista_figuras}
+\newpage
+
+% LISTA DE TABELAS
+\input{sections/04_lista_tabelas}
+\newpage
+
+% LISTA DE ABREVIATURAS E SIGLAS
+\input{sections/05_lista_abreviaturas}
+\newpage
+
+% LISTA DE FÓRMULAS
+\input{sections/06_lista_formulas}
+\newpage
+
+% RESUMO
+\input{sections/07_resumo}
+\newpage
+
+% ABSTRACT
+\input{sections/08_abstract}
+\newpage
+
+% SUMÁRIO
+\tableofcontents
+\newpage
+
+% A partir da introdução, mostra a numeração (continua a contagem)
+\pagestyle{fancy}
+
+% ELEMENTOS TEXTUAIS
+\input{sections/09_introducao}
+\input{sections/10_referencial_teorico}
+\input{sections/11_metodologia}
+
+% REFERÊNCIAS
+\input{sections/12_referencias}
+
+\end{document}

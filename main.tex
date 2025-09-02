@@ -52,7 +52,7 @@
 \setlength{\parindent}{1.25cm}
 
 % Espaçamento entre parágrafos (1.5 conforme norma)
-\setlength{\parskip}{0pt}
+\setlength{\parskip}{0.75\baselineskip}
 
 % ==================================================================
 % CONFIGURAÇÃO DE TÍTULOS (NORMAS MACKENZIE)
@@ -74,7 +74,7 @@
 \titleformat{\section}[hang]
 {\normalfont\fontsize{12}{14.4}}
 {\thesection}{1em}{\MakeUppercase}
-\titlespacing*{\section}{0pt}{12pt}{12pt}
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
 
 % Seção terciária: 1.1.1 Letras minúsculas em negrito
 \titleformat{\subsection}[hang]
@@ -118,20 +118,20 @@
 % ==================================================================
 \begin{document}
 
-% Páginas iniciais não numeradas
+% CAPA - sem numeração
 \pagenumbering{gobble}
-
-% CAPA
 \input{sections/01_capa}
 \newpage
 
-% FOLHA DE ROSTO
+% FOLHA DE ROSTO - inicia contagem (página 1, mas não aparece)
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\thispagestyle{empty}
 \input{sections/02_folha_rosto}
 \newpage
 
-% Inicia numeração romana para pré-textuais (a partir da 3ª página física)
-\pagenumbering{roman}
-\setcounter{page}{1}
+% Pré-textuais - páginas numeradas mas não aparecem até a introdução
+\pagestyle{empty}
 
 % LISTA DE FIGURAS
 \input{sections/03_lista_figuras}
@@ -161,9 +161,8 @@
 \tableofcontents
 \newpage
 
-% Inicia numeração arábica para textuais
-\pagenumbering{arabic}
-\setcounter{page}{1}
+% A partir da introdução, mostra a numeração (continua a contagem)
+\pagestyle{fancy}
 
 % ELEMENTOS TEXTUAIS
 \input{sections/09_introducao}

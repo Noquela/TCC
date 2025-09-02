@@ -58,11 +58,17 @@
 % CONFIGURAÇÃO DE TÍTULOS (NORMAS MACKENZIE)
 % ==================================================================
 
-% Seção primária: 1 LETRAS MAIÚSCULAS EM NEGRITO
+% Seção primária: 1 LETRAS MAIÚSCULAS EM NEGRITO  
 \titleformat{\chapter}[hang]
 {\normalfont\fontsize{12}{14.4}\bfseries}
 {\thechapter}{1em}{\MakeUppercase}
 \titlespacing*{\chapter}{0pt}{0pt}{12pt}
+
+% Títulos de capítulos não numerados (centralizados)
+\titleformat{name=\chapter,numberless}[block]
+{\normalfont\fontsize{12}{14.4}\bfseries\centering}
+{}{0pt}{\MakeUppercase}
+\titlespacing*{name=\chapter,numberless}{0pt}{0pt}{12pt}
 
 % Seção secundária: 1.1 LETRAS MAIÚSCULAS SEM NEGRITO
 \titleformat{\section}[hang]
@@ -91,6 +97,7 @@
 % ==================================================================
 % NUMERAÇÃO DE PÁGINAS
 % ==================================================================
+\setlength{\headheight}{13.19998pt}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[R]{\fontsize{11}{13.2}\selectfont\thepage}
@@ -100,16 +107,18 @@
 % CONFIGURAÇÃO DO SUMÁRIO
 % ==================================================================
 \renewcommand{\contentsname}{SUMÁRIO}
-\renewcommand{\cftchapfont}{\bfseries}
-\renewcommand{\cftsecfont}{\normalfont}
-\renewcommand{\cftsubsecfont}{\normalfont}
+\renewcommand{\cftchapfont}{\fontsize{12}{14.4}\selectfont\bfseries}
+\renewcommand{\cftsecfont}{\fontsize{12}{14.4}\selectfont}
+\renewcommand{\cftsubsecfont}{\fontsize{12}{14.4}\selectfont}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftbeforechapskip}{6pt}
 
 % ==================================================================
 % INÍCIO DO DOCUMENTO
 % ==================================================================
 \begin{document}
 
-% Página de rosto não numerada
+% Páginas iniciais não numeradas
 \pagenumbering{gobble}
 
 % CAPA
@@ -120,7 +129,7 @@
 \input{sections/02_folha_rosto}
 \newpage
 
-% Inicia numeração romana para pré-textuais
+% Inicia numeração romana para pré-textuais (a partir da 3ª página física)
 \pagenumbering{roman}
 \setcounter{page}{1}
 

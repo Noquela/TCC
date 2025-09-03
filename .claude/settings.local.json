@@ -24,7 +24,9 @@
       "Bash(git pull:*)",
       "Bash(pdflatex:*)",
       "Bash(rm:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(gh repo edit:*)",
+      "Bash(git fetch:*)"
     ],
     "deny": [],
     "ask": []

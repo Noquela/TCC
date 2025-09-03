@@ -266,13 +266,36 @@ class FinalMethodologyAnalyzer:
         weights = np.clip(weights, 0.02, 0.20)  # Bounds finais da metodologia
         weights = weights / np.sum(weights)
         
-        if iteration >= max_iter - 1:
-            # Não mostrar aviso se convergiu relativamente bem
-            final_contrib, _ = self.calculate_risk_contributions(weights, cov_matrix)
-            final_target = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) / n_assets
-            final_std = np.std(final_contrib)
-            if final_std > 0.01:  # Só avisar se realmente não convergiu bem
-                print(f"AVISO: ERC convergência parcial em {max_iter} iterações (std: {final_std:.6f})")
+        # Re-equalizar contribuições após clipping (max 3 iterações extras)
+        for extra_iter in range(3):
+            portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
+            if portfolio_vol < 1e-10:
+                break
+                
+            marginal_contrib = np.dot(cov_matrix, weights) / portfolio_vol
+            risk_contrib = weights * marginal_contrib
+            target_contrib = portfolio_vol / n_assets
+            
+            # Verificar se já está bem equalizado
+            relative_diff = risk_contrib / target_contrib
+            max_diff = np.max(np.abs(relative_diff - 1.0))
+            if max_diff < 0.01:  # 1% tolerância
+                break
+                
+            # Uma iteração rápida de re-equalização
+            ratio = target_contrib / (risk_contrib + 1e-10)
+            weights = weights * np.power(ratio, 0.3)  # Step menor
+            weights = np.clip(weights, 0.02, 0.20)  # Manter bounds
+            weights = weights / np.sum(weights)
+        
+        # Verificação final da qualidade da paridade
+        final_contrib, final_vol = self.calculate_risk_contributions(weights, cov_matrix)
+        final_target = final_vol / n_assets
+        final_std = np.std(final_contrib)
+        max_deviation = np.max(np.abs(final_contrib / final_target - 1.0))
+        
+        if max_deviation > 0.05:  # 5% tolerância para aviso
+            print(f"AVISO: ERC convergência parcial - máx desvio: {max_deviation:.1%}")
         
         return pd.Series(weights, index=parameters['cov_matrix'].index)
     

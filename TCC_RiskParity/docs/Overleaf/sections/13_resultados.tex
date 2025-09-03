@@ -113,7 +113,7 @@ O \textbf{Value at Risk (VaR) 95\%} representa a perda máxima esperada com 95\%
 
 O \textbf{Maximum Drawdown} indica a maior perda acumulada do pico ao vale durante o período. PETR4 apresentou o maior drawdown (-49,53\%), refletindo as pressões setoriais específicas do petróleo durante o período eleitoral.
 
-Os \textbf{Índices de Sharpe} calculados consideram uma taxa livre de risco de 6,5\% ao ano (aproximadamente o CDI médio do período). Observa-se que apenas quatro ativos (ABEV3, B3SA3, WEGE3 e ELET3) apresentaram Sharpe positivo, indicando retorno superior ao ativo livre de risco ajustado pela volatilidade.
+Os \textbf{Índices de Sharpe} calculados consideram uma taxa livre de risco de 6,195\% ao ano (CDI médio real do período 2018-2019, fonte: Investidor10). Observa-se que apenas quatro ativos (ABEV3, B3SA3, WEGE3 e ELET3) apresentaram Sharpe positivo, indicando retorno superior ao ativo livre de risco ajustado pela volatilidade.
 
 O \textbf{teste de Jarque-Bera} avalia a hipótese de normalidade dos retornos. Surpreendentemente, todos os ativos apresentaram distribuições estatisticamente normais (p-valor > 0,05), sugerindo que, apesar da alta volatilidade, os retornos não apresentaram assimetrias ou curtoses extremas que invalidassem as premissas dos modelos de otimização.
 
@@ -266,7 +266,7 @@ Sortino = \frac{R_p - r_f}{\sigma_{downside}}
 
 onde $\sigma_{downside} = \sqrt{E[\min(R_p - r_f, 0)^2]}$ é a volatilidade dos retornos abaixo da taxa livre de risco.
 
-Ambas as métricas foram calculadas utilizando $r_f = 6,5\%$ ao ano, representativa das taxas CDI do período 2018-2019.
+Ambas as métricas foram calculadas utilizando $r_f = 6,195\%$ ao ano, correspondente ao CDI médio efetivo do período 2018-2019 (fonte: Investidor10).
 
 \section{IMPLEMENTAÇÃO DAS CARTEIRAS}
 

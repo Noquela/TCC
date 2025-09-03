@@ -20,16 +20,18 @@ Estudos indicam que, em muitos casos, o desempenho de carteiras Equal Weight pod
 
 A estratégia Risk Parity surgiu como uma alternativa para endereçar o problema da concentração de risco observado em abordagens tradicionais. Na sua implementação mais rigorosa (Equal Risk Contribution - ERC), o objetivo é equalizar as contribuições marginais de risco de cada ativo, considerando não apenas as volatilidades individuais, mas também as correlações entre os ativos por meio da matriz de covariância (MAILLARD; RONCALLI; TEILETCHE, 2010).
 
-Este trabalho implementa o verdadeiro Risk Parity (ERC), que equaliza as contribuições marginais de risco considerando a matriz de covariância completa. Para referência, a fórmula básica do Inverse Volatility Portfolio (IVP) é apresentada abaixo:
+No Equal Risk Contribution (ERC), o objetivo é igualar as contribuições de risco dos ativos:
 
 \begin{equation}
 \label{eq:risk_parity}
-w_i = \frac{(1/\sigma_i)}{\sum_{j=1}^{n}(1/\sigma_j)}
+RC_i = w_i \cdot \frac{(\Sigma w)_i}{\sigma_p} \text{ e } RC_i = \frac{\sigma_p}{n}
 \end{equation}
 
-onde $w_i$ representa o peso do ativo $i$ e $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$.
+onde $RC_i$ é a contribuição de risco do ativo $i$, $(\Sigma w)_i$ é o $i$-ésimo elemento do vetor $\Sigma w$, $\sigma_p = \sqrt{w^T \Sigma w}$ é a volatilidade do portfólio, e todas as contribuições devem ser iguais a $\sigma_p/n$.
 
-A implementação ERC utilizada neste trabalho resolve o seguinte problema de otimização para equalizar as contribuições marginais de risco:
+A solução é obtida numericamente através do algoritmo iterativo de Spinu/Roncalli sob as restrições $\sum_i w_i = 1$ e limites $w_i \in [\underline{w}, \overline{w}]$. Para comparação, o Inverse Volatility Portfolio (IVP) usa a heurística simples $w_i \propto 1/\sigma_i$, mas não garante contribuições de risco iguais.
+
+A implementação ERC utilizada neste trabalho resolve o seguinte problema de otimização:
 
 \begin{equation}
 \label{eq:erc_optimization}
@@ -232,19 +234,22 @@ Essas ferramentas foram escolhidas por serem de código aberto, amplamente docum
 
 A seguir estão descritos em detalhe todos os componentes de cada fórmula utilizada na avaliação de desempenho e construção de carteiras neste estudo:
 
-\subsection{Fórmula 1 -- Peso na Estratégia Risk Parity}
+\subsection{Fórmula 1 -- Condição ERC na Estratégia Risk Parity}
 
 \begin{equation}
-w_i = \frac{1/\sigma_i}{\sum_{j=1}^{n}(1/\sigma_j)}
+RC_i = w_i \cdot \frac{(\Sigma w)_i}{\sigma_p} = \frac{\sigma_p}{n} \quad \forall i
 \end{equation}
 
 Em que:
 \begin{itemize}
+    \item $RC_i$: contribuição de risco do ativo $i$;
     \item $w_i$: peso do ativo $i$ na carteira;
-    \item $\sigma_i$: desvio-padrão dos retornos do ativo $i$.
+    \item $(\Sigma w)_i$: $i$-ésimo elemento do vetor $\Sigma w$;
+    \item $\sigma_p$: volatilidade do portfólio;
+    \item $n$: número de ativos.
 \end{itemize}
 
-\textbf{Interpretação:} ao atribuir ao peso o inverso da volatilidade, ativos mais voláteis recebem menor participação, equilibrando a contribuição de risco de cada ativo.
+\textbf{Interpretação:} no ERC, todos os ativos contribuem igualmente para o risco total ($\sigma_p/n$ cada), obtido via algoritmo numérico. Como comparação, o IVP usa a heurística $w_i \propto 1/\sigma_i$.
 
 \subsection{Fórmula 2 -- Índice de Sharpe}
 

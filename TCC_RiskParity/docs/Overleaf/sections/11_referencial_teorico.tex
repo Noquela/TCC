@@ -1,0 +1,277 @@
+% ==================================================================
+% 2 REFERENCIAL TEÓRICO
+% ==================================================================
+
+\chapter{REFERENCIAL TEÓRICO}
+
+\section{MODELO DE MARKOWITZ (MÉDIA-VARIÂNCIA)}
+
+O modelo de Média-Variância, desenvolvido por Markowitz (1952), representa um marco teórico na construção de carteiras eficientes, sendo uma das bases fundamentais da moderna teoria de investimentos. O objetivo central da metodologia é encontrar a combinação ótima de ativos que maximize o retorno esperado para um dado nível de risco ou, alternativamente, minimize o risco para um retorno esperado específico.
+
+O modelo assume que os retornos dos ativos seguem uma distribuição normal e que os investidores são avessos ao risco, preferindo carteiras com menor volatilidade para retornos equivalentes. A construção da "fronteira eficiente" baseia-se na análise da média e variância dos retornos dos ativos, bem como nas covariâncias entre eles. Apesar de sua elegância teórica, o modelo enfrenta críticas, especialmente em ambientes de alta volatilidade, pela dependência excessiva de estimativas de parâmetros que podem se mostrar instáveis no tempo.
+
+\section{ESTRATÉGIA EQUAL WEIGHT (PESOS IGUAIS)}
+
+A estratégia Equal Weight consiste na alocação igualitária do capital entre todos os ativos da carteira, atribuindo o mesmo peso percentual para cada ativo, independentemente de suas características individuais. Essa abordagem se destaca pela simplicidade operacional e pela robustez frente a erros de previsão de retorno e volatilidade (DE MIGUEL; GARLAPPI; UPPAL, 2009).
+
+Estudos indicam que, em muitos casos, o desempenho de carteiras Equal Weight pode superar o de métodos mais sofisticados, especialmente fora da amostra. No entanto, a ausência de ajustes baseados em volatilidade ou correlação pode resultar em carteiras com concentração de riscos indesejados, especialmente em ativos mais voláteis.
+
+\section{ESTRATÉGIA RISK PARITY (PARIDADE DE RISCO)}
+
+A estratégia Risk Parity surgiu como uma alternativa para endereçar o problema da concentração de risco observado em abordagens tradicionais. Na sua implementação mais rigorosa (Equal Risk Contribution - ERC), o objetivo é equalizar as contribuições marginais de risco de cada ativo, considerando não apenas as volatilidades individuais, mas também as correlações entre os ativos por meio da matriz de covariância (MAILLARD; RONCALLI; TEILETCHE, 2010).
+
+Este trabalho implementa o verdadeiro Risk Parity (ERC), que equaliza as contribuições marginais de risco considerando a matriz de covariância completa. Para referência, a fórmula básica do Inverse Volatility Portfolio (IVP) é apresentada abaixo:
+
+\begin{equation}
+\label{eq:risk_parity}
+w_i = \frac{(1/\sigma_i)}{\sum_{j=1}^{n}(1/\sigma_j)}
+\end{equation}
+
+onde $w_i$ representa o peso do ativo $i$ e $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$.
+
+A implementação ERC utilizada neste trabalho resolve o seguinte problema de otimização para equalizar as contribuições marginais de risco:
+
+\begin{equation}
+\label{eq:erc_optimization}
+\min_{w} \sum_{i=1}^{n} \left( RC_i - \frac{\sigma_p}{n} \right)^2
+\end{equation}
+
+onde $RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p}$ é a contribuição marginal de risco do ativo $i$, $\Sigma$ é a matriz de covariância, e $\sigma_p$ é a volatilidade do portfólio. Essa abordagem ERC considera explicitamente as correlações entre os ativos, produzindo carteiras mais equilibradas em termos de contribuição de risco.
+
+\section{MÉTRICAS DE AVALIAÇÃO: ÍNDICE DE SHARPE E SORTINO RATIO}
+
+A avaliação de desempenho das carteiras será baseada em duas métricas amplamente reconhecidas:
+
+\textbf{Índice de Sharpe:} mede o retorno excedente em relação à taxa livre de risco por unidade de volatilidade total dos retornos da carteira.
+
+\begin{equation}
+\label{eq:sharpe_ratio}
+\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+onde $R_p$ é o retorno médio da carteira, $R_f$ é a taxa livre de risco e $\sigma_p$ é o desvio-padrão dos retornos da carteira.
+
+\textbf{Sortino Ratio:} similar ao Sharpe Ratio, mas considera apenas a volatilidade negativa (retornos abaixo de um objetivo ou taxa mínima desejada).
+
+\begin{equation}
+\label{eq:sortino_ratio}
+\text{Sortino} = \frac{R_p - T}{\sigma_-}
+\end{equation>
+
+onde $T$ é a taxa mínima de retorno e $\sigma_-$ é o desvio-padrão dos retornos abaixo dessa taxa.
+
+Essas métricas oferecem uma visão abrangente da relação risco-retorno, considerando tanto a variabilidade geral quanto o risco específico de perdas.
+
+\section{ANÁLISE COMPARATIVA DOS MODELOS DE ALOCAÇÃO}
+
+A eficácia das estratégias de alocação de carteiras varia significativamente em função das condições de mercado, características dos ativos e precisão das estimativas dos parâmetros. Esta seção apresenta uma análise crítica das condições ótimas de aplicação de cada metodologia, bem como suas limitações práticas.
+
+\subsection{Condições Ótimas para o Modelo de Markowitz}
+
+O modelo de Média-Variância apresenta desempenho superior quando suas premissas fundamentais são satisfeitas. Harvey et al. (2022) demonstram que a estratégia de Markowitz é ótima em mercados onde os retornos seguem distribuição normal multivariada e as correlações entre ativos permanecem estáveis ao longo do tempo. Nessas condições, a fronteira eficiente representa genuinamente o conjunto de carteiras com melhor relação risco-retorno disponível.
+
+Contudo, Kolm, Tutuncu e Fabozzi (2024) alertam que o modelo é particularmente sensível a erros de estimativa dos retornos esperados. Os autores demonstram que pequenas variações nas estimativas de retorno podem resultar em alocações drasticamente diferentes, fenômeno conhecido como "instabilidade de otimização". Esta sensibilidade é especialmente problemática em períodos de alta volatilidade, quando as estimativas históricas se tornam menos confiáveis.
+
+Adicionalmente, Fabozzi, Huang e Zhou (2023) evidenciam que o modelo assume implicitamente que os investidores conseguem implementar as alocações ótimas sem custos de transação significativos. Na prática, carteiras altamente otimizadas frequentemente requerem rebalanceamentos frequentes, gerando custos que podem erodir os benefícios teóricos da otimização.
+
+\subsection{Robustez da Estratégia Equal Weight}
+
+A estratégia Equal Weight demonstra particular robustez em ambientes caracterizados por alta incerteza paramétrica. De Miguel, Garlappi e Uppal (2009), em estudo seminal, comprovaram que carteiras equiponderadas frequentemente superam estratégias otimizadas em análises fora da amostra, especialmente quando o número de ativos é relativamente pequeno em comparação ao histórico de dados disponível.
+
+Kirby e Ostdiek (2022) explicam este fenômeno através da perspectiva de trade-off entre viés e variância. Enquanto o modelo de Markowitz possui viés zero quando suas premissas são satisfeitas, apresenta alta variância devido à sensibilidade a erros de estimativa. A estratégia Equal Weight, por outro lado, pode apresentar viés (por ignorar informações sobre risco e retorno), mas possui variância muito baixa por não depender de estimativas paramétricas.
+
+Entretanto, Bessler, Opfer e Wolff (2023) identificam limitações significativas da abordagem equiponderada em carteiras com ativos de volatilidades muito heterogêneas. Os autores demonstram que, nessas situações, a estratégia Equal Weight pode inadvertidamente concentrar risco em ativos mais voláteis, resultando em carteiras subótimas do ponto de vista de diversificação de risco.
+
+\subsection{Eficácia do Risk Parity em Ambientes Voláteis}
+
+A metodologia Risk Parity foi desenvolvida especificamente para endereçar as limitações das abordagens tradicionais em ambientes de alta incerteza. A literatura teórica sugere que a estratégia é particularmente adequada quando as volatilidades dos ativos apresentam persistência temporal, mas suas correlações são instáveis - características frequentemente observadas em mercados emergentes.
+
+A literatura teórica sugere que o Risk Parity oferece um equilíbrio entre a sofisticação do modelo de Markowitz e a simplicidade do Equal Weight. Ao focar na equalização da contribuição de risco, a estratégia utiliza informação sobre volatilidade (teoricamente mais estável que retornos) sem depender excessivamente de estimativas de retorno esperado.
+
+Contudo, a eficácia do Risk Parity pode diminuir quando as volatilidades dos ativos tornam-se instáveis ou quando existem mudanças estruturais nos regimes de volatilidade. Nessas circunstâncias, pesos baseados em volatilidades históricas podem não refletir adequadamente o risco prospectivo dos ativos.
+
+\subsection{Limitações Potenciais do Risk Parity}
+
+A literatura acadêmica identifica potenciais limitações da estratégia Risk Parity em determinados contextos de mercado. Em ambientes caracterizados por mudanças estruturais significativas, como períodos de transição econômica ou recuperação pós-recessão, estratégias baseadas exclusivamente em volatilidade histórica podem apresentar desafios específicos.
+
+Teoricamente, três limitações principais podem afetar a eficácia do Risk Parity em mercados emergentes:
+
+\paragraph{Interpretação de Volatilidade}
+Em contextos de mudança econômica, baixa volatilidade histórica pode refletir períodos de estagnação ao invés de menor risco prospectivo. Conversamente, alta volatilidade pode sinalizar oportunidades em setores em recuperação.
+
+\paragraph{Dinâmica Setorial}  
+Durante períodos de recuperação econômica, setores tradicionalmente mais voláteis (como commodities e industriais) podem liderar o crescimento, criando potencial trade-off entre controle de risco e captura de oportunidades.
+
+\paragraph{Concentração Defensiva}
+A tendência natural de concentrar-se em ativos de menor volatilidade pode resultar em subexposição a setores em crescimento durante períodos específicos de ciclo econômico.
+
+\subsection{Trade-offs entre Complexidade e Performance}
+
+A literatura recente tem enfatizado a importância de considerar o trade-off entre complexidade do modelo e ganhos de performance efetivos. Bessler, Opfer e Wolff (2023) propõem uma hierarquia de complexidade onde estratégias mais sofisticadas só se justificam quando proporcionam melhorias substanciais e estatisticamente significativas em relação a abordagens mais simples.
+
+Nesta hierarquia, o Equal Weight serve como benchmark devido à sua simplicidade e robustez. O Risk Parity representa um nível intermediário de complexidade, utilizando apenas informações sobre volatilidade. O modelo de Markowitz ocupa o nível mais alto de complexidade, requerendo estimativas precisas de retornos esperados e matriz de covariância completa.
+
+Zhang e Wang (2024) complementam esta análise demonstrando que a escolha ótima entre estratégias depende fundamentalmente da qualidade e quantidade de dados históricos disponíveis, bem como da estabilidade do ambiente de mercado durante o período de investimento.
+
+\section{PERÍODO DO ESTUDO}
+
+A escolha do período de 2018 a 2019 para a análise comparativa entre as estratégias de alocação de carteiras --- Markowitz, Equal Weight e Risk Parity --- não foi aleatória, mas sim fundamentada em características peculiares do cenário econômico e político brasileiro. Esses dois anos representam um momento de elevada volatilidade no mercado de capitais, impulsionado principalmente pelas eleições presidenciais de 2018 e pelas subsequentes incertezas sobre a condução da política econômica do novo governo.
+
+Durante esse intervalo, o Índice Bovespa apresentou oscilações significativas, refletindo o humor dos investidores diante de um ambiente instável e frequentemente imprevisível. Segundo \cite{gregorio2020volatilidade}, o desvio-padrão anualizado dos retornos do Ibovespa chegou a ultrapassar 25\% em determinados momentos, reforçando a natureza volátil do período.
+
+Além do fator político, o cenário macroeconômico brasileiro ainda carregava resquícios da recessão econômica que atingiu o país entre 2014 e 2016. A lenta recuperação do Produto Interno Bruto (PIB), as reformas estruturais em discussão (como a reforma da Previdência) e as oscilações no câmbio e nas taxas de juros também contribuíram para um ambiente de incerteza que afeta diretamente as decisões de alocação de ativos.
+
+Em mercados emergentes como o Brasil, eventos políticos têm impacto amplificado sobre os ativos financeiros, como apontado por \cite{carnahan2020electoral}, que analisaram a influência de eleições sobre a volatilidade dos mercados latino-americanos. Esse contexto adverso justifica plenamente a aplicação de metodologias de alocação que busquem eficiência mesmo em cenários instáveis, como é o caso das abordagens comparadas neste trabalho.
+
+\section{ESTUDOS RELACIONADOS}
+
+Diversos estudos prévios abordaram comparações entre diferentes estratégias de alocação de ativos, tanto em mercados desenvolvidos quanto emergentes. Essa revisão tem como objetivo situar a presente pesquisa dentro da literatura existente, evidenciando a relevância e originalidade do estudo.
+
+\subsection{Gap de Conhecimento Identificado}
+
+Embora a literatura internacional seja abundante em comparações entre estratégias de alocação, observa-se uma \textbf{lacuna específica no contexto brasileiro} durante períodos de alta volatilidade política e econômica. Os estudos existentes concentram-se predominantemente em mercados desenvolvidos (Estados Unidos e Europa) ou analisam períodos de relativa estabilidade. 
+
+Especificamente, identifica-se a ausência de pesquisas que comparem simultaneamente as três metodologias (Markowitz, Equal Weight e Risk Parity) no mercado brasileiro durante o conturbado período eleitoral de 2018-2019, quando a volatilidade do Ibovespa superou 25\% ao ano. Esta lacuna é particularmente relevante, pois mercados emergentes apresentam características distintas de correlação, liquidez e sensibilidade a eventos políticos que podem alterar significativamente a eficácia relativa das estratégias de alocação.
+
+A seguir, apresenta-se uma síntese dos principais trabalhos relacionados:
+
+\begin{table}[H]
+\centering
+\caption{Estudos Correlatos (Parte 1)}
+\begin{tabular}{|p{2.3cm}|p{3.2cm}|p{2.6cm}|p{3.2cm}|}
+\hline
+\textbf{Autor/Ano} & \textbf{Objetivo} & \textbf{Metodologia} & \textbf{Principais Resultados} \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos Fundamentais}} \\
+\hline
+De Miguel, Garlappi e Uppal (2009) & Comparação entre Equal Weight e modelos otimizados & Simulação com dados históricos & Equal Weight teve desempenho competitivo com carteiras otimizadas, especialmente fora da amostra \\
+\hline
+Maillard, Roncalli e Teiletche (2010) & Fundamentos da estratégia Risk Parity & Teórico e empírico & Mostrou como distribuir o risco de forma equitativa reduz sensibilidade a erros de estimação \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos Recentes de Otimização}} \\
+\hline
+Harvey et al. (2022) & Portfolio selection com momentos superiores & Análise quantitativa & Estratégias que consideram momentos superiores superam Markowitz clássico \\
+\hline
+Kirby e Ostdiek (2022) & Estratégias ativas simples vs. diversificação naïve & Análise empírica & Timing simples pode melhorar Equal Weight significativamente \\
+\hline
+Fabozzi, Huang e Zhou (2023) & Revisão de seleção robusta de portfólios & Survey metodológico & Métodos robustos são essenciais para implementação prática de otimização \\
+\hline
+\end{tabular}
+\label{tab:estudos_correlatos_1}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Estudos Correlatos (Parte 2)}
+\begin{tabular}{|p{2.3cm}|p{3.2cm}|p{2.6cm}|p{3.2cm}|}
+\hline
+\textbf{Autor/Ano} & \textbf{Objetivo} & \textbf{Metodologia} & \textbf{Principais Resultados} \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos Recentes de Otimização (cont.)}} \\
+\hline
+Kolm, Tutuncu e Fabozzi (2024) & 60 anos de otimização de portfólios & Revisão histórica & Desafios práticos persistem; simplicidade frequentemente supera sofisticação \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos Específicos de Risk Parity}} \\
+\hline
+Roncalli (2023) & Introdução ao Risk Parity e orçamento de risco & Teórico e prático & Risk Parity é robusto em mercados com volatilidades heterogêneas \\
+\hline
+Lopez de Prado (2023) & Machine Learning aplicado a finanças & Metodológico & Técnicas ML podem melhorar estratégias tradicionais de alocação \\
+\hline
+Raffinot (2024) & Hierarchical Equal Risk Contribution & Estudo comparativo & HRC oferece melhor diversificação que Risk Parity tradicional \\
+\hline
+\end{tabular}
+\label{tab:estudos_correlatos_2}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Estudos Correlatos (Parte 3)}
+\begin{tabular}{|p{2.3cm}|p{3.2cm}|p{2.6cm}|p{3.2cm}|}
+\hline
+\textbf{Autor/Ano} & \textbf{Objetivo} & \textbf{Metodologia} & \textbf{Principais Resultados} \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos de Mercados Emergentes}} \\
+\hline
+Palit e Prybutok (2024) & Risk Parity em mercados emergentes & Backtest com dados reais & Risk Parity apresentou menor drawdown e maior consistência em mercados voláteis \\
+\hline
+Pereira, Colombo e Figueiredo (2021) & Impacto de choques políticos sobre ações no Brasil & Análise de eventos & Ações ligadas ao governo foram mais sensíveis a choques políticos \\
+\hline
+Gregorio (2020) & Volatilidade do Ibovespa durante crises & Análise estatística & Ibovespa apresentou alta volatilidade nos anos de crise, superando 25\% em alguns momentos \\
+\hline
+\multicolumn{4}{|c|}{\textbf{Estudos Críticos e Limitações}} \\
+\hline
+Michalak, Pakuła e Płońska (2024) & Equal Weight vs. Hierarchical Risk Parity & Estudo empírico & Hierarchical Risk Parity superou Equal Weight em estabilidade e controle de risco \\
+\hline
+Bessler, Opfer e Wolff (2023) & Avaliação multi-asset de otimização & Análise out-of-sample & Modelos sofisticados nem sempre superam diversificação naïve \\
+\hline
+Zhang e Wang (2024) & Machine Learning em otimização de portfólios & Survey abrangente & Qualidade dos dados é mais importante que sofisticação do algoritmo \\
+\hline
+\end{tabular}
+\label{tab:estudos_correlatos_3}
+\end{table}
+
+\section{FERRAMENTAS COMPUTACIONAIS}
+
+A implementação das estratégias de alocação de carteiras neste trabalho será realizada com auxílio da linguagem de programação Python, amplamente reconhecida por sua flexibilidade e pelo vasto ecossistema de bibliotecas aplicadas à ciência de dados e finanças.
+
+Entre as bibliotecas previstas, destacam-se:
+
+\textbf{Pandas:} será utilizada para manipulação e análise de dados tabulares, como séries históricas de preços e retornos. Essa biblioteca é amplamente adotada em estudos empíricos por sua eficiência na estruturação de dados financeiros.
+
+\textbf{NumPy:} será empregada para cálculos vetoriais e matriciais, como a média dos retornos, o desvio-padrão e, principalmente, o cálculo da matriz de covariância entre os ativos. O NumPy é a base para operações matemáticas eficientes em Python.
+
+\textbf{cvxpy:} biblioteca voltada para otimização convexa, será utilizada para implementar a carteira de Markowitz. A ferramenta permite a formulação de problemas de programação quadrática, muito utilizada em finanças quantitativas.
+
+\textbf{matplotlib e seaborn:} serão usadas para gerar gráficos e visualizações como a evolução das carteiras, boxplots de retorno e heatmaps de correlação, contribuindo para a análise visual dos resultados.
+
+A extração dos dados será realizada a partir da base Economática, que contém informações históricas detalhadas de 508 empresas listadas na B3, garantindo maior precisão e confiabilidade dos dados utilizados na pesquisa.
+
+Essas ferramentas foram escolhidas por serem de código aberto, amplamente documentadas e reconhecidas em estudos da área de finanças computacionais. A opção pelo uso de programação, em vez de planilhas, visa garantir maior precisão, replicabilidade e flexibilidade na análise. Além disso, o domínio dessas ferramentas reflete competências valorizadas no mercado financeiro, alinhando-se às demandas contemporâneas por análise quantitativa de investimentos.
+
+\section{ANÁLISE DOS ELEMENTOS DAS FÓRMULAS}
+
+A seguir estão descritos em detalhe todos os componentes de cada fórmula utilizada na avaliação de desempenho e construção de carteiras neste estudo:
+
+\subsection{Fórmula 1 -- Peso na Estratégia Risk Parity}
+
+\begin{equation}
+w_i = \frac{1/\sigma_i}{\sum_{j=1}^{n}(1/\sigma_j)}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $w_i$: peso do ativo $i$ na carteira;
+    \item $\sigma_i$: desvio-padrão dos retornos do ativo $i$.
+\end{itemize}
+
+\textbf{Interpretação:} ao atribuir ao peso o inverso da volatilidade, ativos mais voláteis recebem menor participação, equilibrando a contribuição de risco de cada ativo.
+
+\subsection{Fórmula 2 -- Índice de Sharpe}
+
+\begin{equation}
+\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $R_p$: retorno médio da carteira;
+    \item $R_f$: taxa livre de risco;
+    \item $\sigma_p$: desvio-padrão dos retornos da carteira.
+\end{itemize}
+
+\textbf{Interpretação:} o Sharpe Ratio mede quanto retorno excedente cada unidade de risco total consegue gerar.
+
+\subsection{Fórmula 3 -- Sortino Ratio}
+
+\begin{equation}
+\text{Sortino} = \frac{R_p - T}{\sigma_-}
+\end{equation}
+
+Em que:
+\begin{itemize}
+    \item $R_p$: retorno médio da carteira;
+    \item $T$: retorno mínimo aceitável (threshold);
+    \item $\sigma_-$: desvio-padrão dos retornos abaixo de $T$.
+\end{itemize}
+
+\textbf{Interpretação:} diferente do Sharpe, o Sortino considera apenas a volatilidade negativa, focando no risco de perdas.

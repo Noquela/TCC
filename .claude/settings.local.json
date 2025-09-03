@@ -19,7 +19,12 @@
       "Bash(find:*)",
       "WebSearch",
       "WebFetch(domain:investidor10.com.br)",
-      "WebFetch(domain:brasilindicadores.com.br)"
+      "WebFetch(domain:brasilindicadores.com.br)",
+      "Bash(git remote remove:*)",
+      "Bash(git pull:*)",
+      "Bash(pdflatex:*)",
+      "Bash(rm:*)",
+      "Bash(git reset:*)"
     ],
     "deny": [],
     "ask": []

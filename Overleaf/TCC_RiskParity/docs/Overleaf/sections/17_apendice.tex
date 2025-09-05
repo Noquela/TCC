@@ -1,0 +1,181 @@
+% ==================================================================
+% APÊNDICE A - PESOS DAS ESTRATÉGIAS E REPRODUTIBILIDADE
+% ==================================================================
+
+\chapter{APÊNDICE A - DETALHES TÉCNICOS DAS ESTRATÉGIAS}
+
+\section{ALOCAÇÃO DE PESOS POR ESTRATÉGIA}
+
+\subsection{Pesos Iniciais das Carteiras (Janeiro 2018)}
+
+A Tabela \ref{tab:pesos_estrategias} apresenta os pesos iniciais de cada ativo nas três estratégias implementadas, calculados com base nos dados históricos de 2016-2017.
+
+\begin{table}[H]
+\centering
+\caption{Alocação de Pesos por Estratégia - Janeiro 2018}
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Ativo} & \textbf{Equal Weight} & \textbf{Markowitz} & \textbf{Risk Parity} \\
+& \textbf{(\%)} & \textbf{(\%)} & \textbf{(\%)} \\
+\hline
+PETR4 & 10,0 & 12,1 & 8,5 \\
+\hline
+VALE3 & 10,0 & 15,8 & 9,2 \\
+\hline
+ITUB4 & 10,0 & 18,3 & 14,7 \\
+\hline
+BBDC4 & 10,0 & 14,2 & 13,1 \\
+\hline
+ABEV3 & 10,0 & 11,6 & 15,8 \\
+\hline
+B3SA3 & 10,0 & 8,4 & 9,3 \\
+\hline
+WEGE3 & 10,0 & 7,9 & 12,4 \\
+\hline
+RENT3 & 10,0 & 5,2 & 8,7 \\
+\hline
+LREN3 & 10,0 & 3,8 & 4,9 \\
+\hline
+ELET3 & 10,0 & 2,7 & 3,4 \\
+\hline
+\textbf{Total} & \textbf{100,0} & \textbf{100,0} & \textbf{100,0} \\
+\hline
+\end{tabular}
+
+\textit{Fonte: Elaborado pelo autor com base em dados da Economática (2016-2017).}
+\label{tab:pesos_estrategias}
+\end{table}
+
+\subsection{Rebalanceamento e Turnover}
+
+As carteiras foram rebalanceadas semestralmente, gerando os seguintes níveis de turnover:
+
+\begin{table}[H]
+\centering
+\caption{Turnover por Rebalanceamento Semestral}
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Rebalanceamento} & \textbf{Equal Weight} & \textbf{Markowitz} & \textbf{Risk Parity} \\
+& \textbf{(\%)} & \textbf{(\%)} & \textbf{(\%)} \\
+\hline
+Julho 2018 & 15,2 & 42,8 & 28,7 \\
+\hline
+Janeiro 2019 & 18,1 & 38,9 & 31,2 \\
+\hline
+Julho 2019 & 16,8 & 45,1 & 29,8 \\
+\hline
+\textbf{Médio} & \textbf{16,7} & \textbf{42,3} & \textbf{29,9} \\
+\hline
+\end{tabular}
+
+\textit{Nota: Turnover calculado como soma dos valores absolutos das mudanças de peso, dividido por 2.}
+\label{tab:turnover_rebalanceamento}
+\end{table}
+
+\section{LIMITES PRÁTICOS IMPLEMENTADOS}
+
+As seguintes restrições foram aplicadas durante a otimização:
+
+\begin{itemize}
+    \item \textbf{Sem vendas a descoberto:} $w_i \geq 0$ para todos os ativos
+    \item \textbf{Peso mínimo:} $w_i \geq 0,1\%$ para garantir diversificação mínima
+    \item \textbf{Soma dos pesos:} $\sum_{i=1}^{n} w_i = 1$
+    \item \textbf{Limite setorial:} Máximo 3 ativos por setor econômico (aplicado na seleção ex-ante)
+    \item \textbf{Sem limite individual de teto:} Permitindo concentração natural conforme otimização
+\end{itemize}
+
+\section{CUSTOS DE TRANSAÇÃO E SLIPPAGE}
+
+\subsection{Cenário Base: Custos de Transação}
+
+Aplicação de custos de transação de 15 basis points (0,15\%) por operação:
+
+\begin{table}[H]
+\centering
+\caption{Performance Líquida com Custos de Transação (15 bps)}
+\begin{tabular}{|l|r|r|r|r|}
+\hline
+\textbf{Estratégia} & \textbf{Ret. Bruto} & \textbf{Custos} & \textbf{Ret. Líquido} & \textbf{Impacto} \\
+& \textbf{(\%)} & \textbf{(\%)} & \textbf{(\%)} & \textbf{(bps)} \\
+\hline
+Equal Weight & 16,2 & 0,5 & 15,7 & 50 \\
+\hline
+Markowitz & 29,3 & 1,3 & 28,0 & 130 \\
+\hline
+Risk Parity & 18,7 & 0,9 & 17,8 & 90 \\
+\hline
+\end{tabular}
+
+\textit{Nota: Custos calculados com base no turnover médio e frequência semestral.}
+\label{tab:custos_transacao}
+\end{table}
+
+\subsection{Análise de Sensibilidade ao Slippage}
+
+\begin{table}[H]
+\centering
+\caption{Sensibilidade a Diferentes Níveis de Custos}
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Cenário} & \textbf{Equal Weight} & \textbf{Markowitz} & \textbf{Risk Parity} \\
+& \textbf{Ret. Líquido (\%)} & \textbf{Ret. Líquido (\%)} & \textbf{Ret. Líquido (\%)} \\
+\hline
+10 bps & 15,9 & 28,5 & 18,1 \\
+\hline
+15 bps (base) & 15,7 & 28,0 & 17,8 \\
+\hline
+30 bps & 15,2 & 26,7 & 17,1 \\
+\hline
+\end{tabular}
+
+\textit{Conclusão: Markowitz mantém superioridade mesmo com custos elevados.}
+\label{tab:sensibilidade_custos}
+\end{table}
+
+\section{REPRODUTIBILIDADE E VERSIONAMENTO}
+
+\subsection{Ambiente Computacional}
+
+\textbf{Versões das principais bibliotecas:}
+\begin{itemize}
+    \item Python 3.9.7
+    \item pandas 1.3.4  
+    \item numpy 1.21.2
+    \item scipy 1.7.3
+    \item cvxpy 1.2.0
+    \item matplotlib 3.4.3
+\end{itemize}
+
+\subsection{Ordem de Execução}
+
+Para reproduzir os resultados:
+
+\begin{enumerate}
+    \item \texttt{python src/economatica\_loader.py} - Seleção ex-ante de ativos
+    \item \texttt{python src/ibovespa\_real\_loader.py} - Carregamento benchmark B3
+    \item \texttt{python src/portfolio\_analysis\_real.py} - Análise das estratégias
+    \item \texttt{python src/calculate\_real\_stats.py} - Estatísticas individuais
+    \item \texttt{python src/generate\_real\_charts\_fixed.py} - Geração dos gráficos
+\end{enumerate}
+
+\subsection{Dados e Paths}
+
+\textbf{Estrutura de diretórios requerida:}
+\begin{verbatim}
+TCC_RiskParity/
+|-- data/DataBase/
+|   |-- Evolucao_Diaria.csv     # Ibovespa 2019
+|   |-- Evolucao_Diaria (1).csv # Ibovespa 2018  
+|   +-- [arquivos Economática]
+|-- src/                        # Scripts Python
+|-- results/                    # Outputs
++-- docs/Overleaf/              # Documento LaTeX
+\end{verbatim}
+
+\textbf{Arquivos de output gerados:}
+\begin{itemize}
+    \item \texttt{results/selected\_assets\_2017.json} - Lista de ativos selecionados
+    \item \texttt{results/real\_returns\_data.csv} - Retornos mensais
+    \item \texttt{results/detailed\_portfolio\_results.json} - Métricas das estratégias
+    \item \texttt{docs/Overleaf/images/} - Figuras geradas automaticamente
+\end{itemize}

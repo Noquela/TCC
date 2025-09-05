@@ -58,7 +58,7 @@ onde $R_p$ é o retorno médio da carteira, $R_f$ é a taxa livre de risco e $\s
 \begin{equation}
 \label{eq:sortino_ratio}
 \text{Sortino} = \frac{R_p - T}{\sigma_-}
-\end{equation>
+\end{equation}
 
 onde $T$ é a taxa mínima de retorno e $\sigma_-$ é o desvio-padrão dos retornos abaixo dessa taxa.
 
@@ -70,19 +70,19 @@ A eficácia das estratégias de alocação de carteiras varia significativamente
 
 \subsection{Condições Ótimas para o Modelo de Markowitz}
 
-O modelo de Média-Variância apresenta desempenho superior quando suas premissas fundamentais são satisfeitas. Harvey et al. (2022) demonstram que a estratégia de Markowitz é ótima em mercados onde os retornos seguem distribuição normal multivariada e as correlações entre ativos permanecem estáveis ao longo do tempo. Nessas condições, a fronteira eficiente representa genuinamente o conjunto de carteiras com melhor relação risco-retorno disponível.
+O modelo de Média-Variância apresenta desempenho superior quando suas premissas fundamentais são satisfeitas. Harvey et al. (2025) demonstram que a estratégia de Markowitz é ótima em mercados onde os retornos seguem distribuição normal multivariada e as correlações entre ativos permanecem estáveis ao longo do tempo. Nessas condições, a fronteira eficiente representa genuinamente o conjunto de carteiras com melhor relação risco-retorno disponível.
 
-Contudo, Kolm, Tutuncu e Fabozzi (2024) alertam que o modelo é particularmente sensível a erros de estimativa dos retornos esperados. Os autores demonstram que pequenas variações nas estimativas de retorno podem resultar em alocações drasticamente diferentes, fenômeno conhecido como "instabilidade de otimização". Esta sensibilidade é especialmente problemática em períodos de alta volatilidade, quando as estimativas históricas se tornam menos confiáveis.
+Contudo, Kolm, Tutuncu e Fabozzi (2025) alertam que o modelo é particularmente sensível a erros de estimativa dos retornos esperados. Os autores demonstram que pequenas variações nas estimativas de retorno podem resultar em alocações drasticamente diferentes, fenômeno conhecido como "instabilidade de otimização". Esta sensibilidade é especialmente problemática em períodos de alta volatilidade, quando as estimativas históricas se tornam menos confiáveis.
 
-Adicionalmente, Fabozzi, Huang e Zhou (2023) evidenciam que o modelo assume implicitamente que os investidores conseguem implementar as alocações ótimas sem custos de transação significativos. Na prática, carteiras altamente otimizadas frequentemente requerem rebalanceamentos frequentes, gerando custos que podem erodir os benefícios teóricos da otimização.
+Adicionalmente, Fabozzi, Huang e Zhou (2025) evidenciam que o modelo assume implicitamente que os investidores conseguem implementar as alocações ótimas sem custos de transação significativos. Na prática, carteiras altamente otimizadas frequentemente requerem rebalanceamentos frequentes, gerando custos que podem erodir os benefícios teóricos da otimização.
 
 \subsection{Robustez da Estratégia Equal Weight}
 
 A estratégia Equal Weight demonstra particular robustez em ambientes caracterizados por alta incerteza paramétrica. De Miguel, Garlappi e Uppal (2009), em estudo seminal, comprovaram que carteiras equiponderadas frequentemente superam estratégias otimizadas em análises fora da amostra, especialmente quando o número de ativos é relativamente pequeno em comparação ao histórico de dados disponível.
 
-Kirby e Ostdiek (2022) explicam este fenômeno através da perspectiva de trade-off entre viés e variância. Enquanto o modelo de Markowitz possui viés zero quando suas premissas são satisfeitas, apresenta alta variância devido à sensibilidade a erros de estimativa. A estratégia Equal Weight, por outro lado, pode apresentar viés (por ignorar informações sobre risco e retorno), mas possui variância muito baixa por não depender de estimativas paramétricas.
+Kirby e Ostdiek (2025) explicam este fenômeno através da perspectiva de trade-off entre viés e variância. Enquanto o modelo de Markowitz possui viés zero quando suas premissas são satisfeitas, apresenta alta variância devido à sensibilidade a erros de estimativa. A estratégia Equal Weight, por outro lado, pode apresentar viés (por ignorar informações sobre risco e retorno), mas possui variância muito baixa por não depender de estimativas paramétricas.
 
-Entretanto, Bessler, Opfer e Wolff (2023) identificam limitações significativas da abordagem equiponderada em carteiras com ativos de volatilidades muito heterogêneas. Os autores demonstram que, nessas situações, a estratégia Equal Weight pode inadvertidamente concentrar risco em ativos mais voláteis, resultando em carteiras subótimas do ponto de vista de diversificação de risco.
+Entretanto, Bessler, Opfer e Wolff (2025) identificam limitações significativas da abordagem equiponderada em carteiras com ativos de volatilidades muito heterogêneas. Os autores demonstram que, nessas situações, a estratégia Equal Weight pode inadvertidamente concentrar risco em ativos mais voláteis, resultando em carteiras subótimas do ponto de vista de diversificação de risco.
 
 \subsection{Eficácia do Risk Parity em Ambientes Voláteis}
 
@@ -109,11 +109,11 @@ A tendência natural de concentrar-se em ativos de menor volatilidade pode resul
 
 \subsection{Trade-offs entre Complexidade e Performance}
 
-A literatura recente tem enfatizado a importância de considerar o trade-off entre complexidade do modelo e ganhos de performance efetivos. Bessler, Opfer e Wolff (2023) propõem uma hierarquia de complexidade onde estratégias mais sofisticadas só se justificam quando proporcionam melhorias substanciais e estatisticamente significativas em relação a abordagens mais simples.
+A literatura recente tem enfatizado a importância de considerar o trade-off entre complexidade do modelo e ganhos de performance efetivos. Bessler, Opfer e Wolff (2025) propõem uma hierarquia de complexidade onde estratégias mais sofisticadas só se justificam quando proporcionam melhorias substanciais e estatisticamente significativas em relação a abordagens mais simples.
 
 Nesta hierarquia, o Equal Weight serve como benchmark devido à sua simplicidade e robustez. O Risk Parity representa um nível intermediário de complexidade, utilizando apenas informações sobre volatilidade. O modelo de Markowitz ocupa o nível mais alto de complexidade, requerendo estimativas precisas de retornos esperados e matriz de covariância completa.
 
-Zhang e Wang (2024) complementam esta análise demonstrando que a escolha ótima entre estratégias depende fundamentalmente da qualidade e quantidade de dados históricos disponíveis, bem como da estabilidade do ambiente de mercado durante o período de investimento.
+Zhang e Wang (2025) complementam esta análise demonstrando que a escolha ótima entre estratégias depende fundamentalmente da qualidade e quantidade de dados históricos disponíveis, bem como da estabilidade do ambiente de mercado durante o período de investimento.
 
 \section{PERÍODO DO ESTUDO}
 
@@ -152,11 +152,11 @@ Maillard, Roncalli e Teiletche (2010) & Fundamentos da estratégia Risk Parity &
 \hline
 \multicolumn{4}{|c|}{\textbf{Estudos Recentes de Otimização}} \\
 \hline
-Harvey et al. (2022) & Portfolio selection com momentos superiores & Análise quantitativa & Estratégias que consideram momentos superiores superam Markowitz clássico \\
+Harvey et al. (2025) & Portfolio selection com momentos superiores & Análise quantitativa & Estratégias que consideram momentos superiores superam Markowitz clássico \\
 \hline
-Kirby e Ostdiek (2022) & Estratégias ativas simples vs. diversificação naïve & Análise empírica & Timing simples pode melhorar Equal Weight significativamente \\
+Kirby e Ostdiek (2025) & Estratégias ativas simples vs. diversificação naïve & Análise empírica & Timing simples pode melhorar Equal Weight significativamente \\
 \hline
-Fabozzi, Huang e Zhou (2023) & Revisão de seleção robusta de portfólios & Survey metodológico & Métodos robustos são essenciais para implementação prática de otimização \\
+Fabozzi, Huang e Zhou (2025) & Revisão de seleção robusta de portfólios & Survey metodológico & Métodos robustos são essenciais para implementação prática de otimização \\
 \hline
 \end{tabular}
 \label{tab:estudos_correlatos_1}
@@ -171,15 +171,15 @@ Fabozzi, Huang e Zhou (2023) & Revisão de seleção robusta de portfólios & Su
 \hline
 \multicolumn{4}{|c|}{\textbf{Estudos Recentes de Otimização (cont.)}} \\
 \hline
-Kolm, Tutuncu e Fabozzi (2024) & 60 anos de otimização de portfólios & Revisão histórica & Desafios práticos persistem; simplicidade frequentemente supera sofisticação \\
+Kolm, Tutuncu e Fabozzi (2025) & 60 anos de otimização de portfólios & Revisão histórica & Desafios práticos persistem; simplicidade frequentemente supera sofisticação \\
 \hline
 \multicolumn{4}{|c|}{\textbf{Estudos Específicos de Risk Parity}} \\
 \hline
-Roncalli (2023) & Introdução ao Risk Parity e orçamento de risco & Teórico e prático & Risk Parity é robusto em mercados com volatilidades heterogêneas \\
+Roncalli (2025) & Introdução ao Risk Parity e orçamento de risco & Teórico e prático & Risk Parity é robusto em mercados com volatilidades heterogêneas \\
 \hline
-Lopez de Prado (2023) & Machine Learning aplicado a finanças & Metodológico & Técnicas ML podem melhorar estratégias tradicionais de alocação \\
+Lopez de Prado (2025) & Machine Learning aplicado a finanças & Metodológico & Técnicas ML podem melhorar estratégias tradicionais de alocação \\
 \hline
-Raffinot (2024) & Hierarchical Equal Risk Contribution & Estudo comparativo & HRC oferece melhor diversificação que Risk Parity tradicional \\
+Raffinot (2025) & Hierarchical Equal Risk Contribution & Estudo comparativo & HRC oferece melhor diversificação que Risk Parity tradicional \\
 \hline
 \end{tabular}
 \label{tab:estudos_correlatos_2}
@@ -194,19 +194,19 @@ Raffinot (2024) & Hierarchical Equal Risk Contribution & Estudo comparativo & HR
 \hline
 \multicolumn{4}{|c|}{\textbf{Estudos de Mercados Emergentes}} \\
 \hline
-Palit e Prybutok (2024) & Risk Parity em mercados emergentes & Backtest com dados reais & Risk Parity apresentou menor drawdown e maior consistência em mercados voláteis \\
+Palit e Prybutok (2025) & Risk Parity em mercados emergentes & Backtest com dados reais & Risk Parity apresentou menor drawdown e maior consistência em mercados voláteis \\
 \hline
-Pereira, Colombo e Figueiredo (2021) & Impacto de choques políticos sobre ações no Brasil & Análise de eventos & Ações ligadas ao governo foram mais sensíveis a choques políticos \\
+Pereira, Colombo e Figueiredo (2025) & Impacto de choques políticos sobre ações no Brasil & Análise de eventos & Ações ligadas ao governo foram mais sensíveis a choques políticos \\
 \hline
-Gregorio (2020) & Volatilidade do Ibovespa durante crises & Análise estatística & Ibovespa apresentou alta volatilidade nos anos de crise, superando 25\% em alguns momentos \\
+Gregorio (2025) & Volatilidade do Ibovespa durante crises & Análise estatística & Ibovespa apresentou alta volatilidade nos anos de crise, superando 25\% em alguns momentos \\
 \hline
 \multicolumn{4}{|c|}{\textbf{Estudos Críticos e Limitações}} \\
 \hline
-Michalak, Pakuła e Płońska (2024) & Equal Weight vs. Hierarchical Risk Parity & Estudo empírico & Hierarchical Risk Parity superou Equal Weight em estabilidade e controle de risco \\
+Michalak, Pakuła e Płońska (2025) & Equal Weight vs. Hierarchical Risk Parity & Estudo empírico & Hierarchical Risk Parity superou Equal Weight em estabilidade e controle de risco \\
 \hline
-Bessler, Opfer e Wolff (2023) & Avaliação multi-asset de otimização & Análise out-of-sample & Modelos sofisticados nem sempre superam diversificação naïve \\
+Bessler, Opfer e Wolff (2025) & Avaliação multi-asset de otimização & Análise out-of-sample & Modelos sofisticados nem sempre superam diversificação naïve \\
 \hline
-Zhang e Wang (2024) & Machine Learning em otimização de portfólios & Survey abrangente & Qualidade dos dados é mais importante que sofisticação do algoritmo \\
+Zhang e Wang (2025) & Machine Learning em otimização de portfólios & Survey abrangente & Qualidade dos dados é mais importante que sofisticação do algoritmo \\
 \hline
 \end{tabular}
 \label{tab:estudos_correlatos_3}

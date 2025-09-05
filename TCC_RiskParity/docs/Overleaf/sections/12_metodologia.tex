@@ -110,7 +110,7 @@ O tratamento dos dados inclui:
     \item Remoção de ativos com dados faltantes ou séries históricas incompletas no período de análise;
     \item Cálculo dos retornos mensais e anualizados com base nos preços de fechamento ajustados;
     \item Estimativa das volatilidades individuais e matriz de covariância entre os retornos dos ativos;
-    \item Definição da taxa livre de risco como o CDI médio anualizado do período.
+    \item Definição da taxa livre de risco como o CDI médio anualizado do período: $(6,43\% + 5,96\%)/2 = 6,195\%$ a.a., com base em dados oficiais do Investidor10 (fonte: B3/BCB).
 \end{itemize}
 
 \section{CONSTRUÇÃO DAS CARTEIRAS}
@@ -123,8 +123,30 @@ Otimização para maximizar o Índice de Sharpe, com restrições de soma dos pe
 \subsection{Equal Weight}
 Alocação igualitária do capital entre os ativos.
 
-\subsection{Risk Parity}
-Alocação baseada na contribuição igual de risco de cada ativo, conforme definido na Equação \ref{eq:risk_parity} (seção de referencial teórico). Este trabalho implementa o modelo ERC (Equal Risk Contribution) que considera a matriz de covariância completa para equalizar as contribuições marginais de risco.
+\subsection{Risk Parity (Equal Risk Contribution)}
+Este trabalho implementa a metodologia ERC (Equal Risk Contribution), que representa a versão mais rigorosa do Risk Parity. O objetivo é equalizar as contribuições marginais de risco de cada ativo ao risco total da carteira, utilizando a matriz de covariância completa.
+
+A contribuição de risco do ativo $i$ é definida como:
+\begin{equation}
+RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
+\label{eq:risk_contribution}
+\end{equation}
+
+onde $(\Sigma w)_i$ é o $i$-ésimo elemento do vetor $\Sigma w$ (contribuição marginal) e $\sigma_p = \sqrt{w^T \Sigma w}$ é a volatilidade da carteira.
+
+O objetivo ERC é atingir:
+\begin{equation}
+RC_i = \frac{\sigma_p}{n} \quad \forall i \in \{1, 2, ..., n\}
+\label{eq:erc_target}
+\end{equation}
+
+A solução é obtida através do algoritmo iterativo de Roncalli (2013):
+\begin{equation}
+w_i^{(k+1)} = w_i^{(k)} \times \left(\frac{RC_{target}}{RC_i^{(k)}}\right)^{\tau}
+\label{eq:erc_algorithm}
+\end{equation}
+
+onde $\tau$ é o parâmetro de ajuste (step size) e $RC_{target} = \sigma_p/n$ é a contribuição alvo.
 
 As carteiras serão construídas usando a linguagem Python, com bibliotecas como pandas, NumPy e cvxpy.
 
@@ -242,9 +264,10 @@ A execução deste trabalho seguirá um cronograma estruturado em 6 meses, confo
 \begin{table}[h]
 \centering
 \caption{Cronograma de Atividades do TCC I (6 meses)}
-\begin{tabular}{|p{5cm}|c|c|c|c|c|c|}
+\scriptsize
+\begin{tabular}{|p{4.5cm}|*{6}{c|}}
 \hline
-\textbf{Atividades} & \textbf{Mês 1} & \textbf{Mês 2} & \textbf{Mês 3} & \textbf{Mês 4} & \textbf{Mês 5} & \textbf{Mês 6} \\
+\textbf{Atividades} & \textbf{M1} & \textbf{M2} & \textbf{M3} & \textbf{M4} & \textbf{M5} & \textbf{M6} \\
 \hline
 1. Revisão Bibliográfica e Referencial Teórico & X & X & & & & \\
 \hline
@@ -273,6 +296,7 @@ A execução deste trabalho seguirá um cronograma estruturado em 6 meses, confo
 7. Conclusão, Revisão Final e Entrega & & & & & & X \\
 \hline
 \end{tabular}
+\normalsize
 \label{tab:cronograma}
 \end{table}
 

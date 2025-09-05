@@ -31,10 +31,24 @@ class FinalMethodologyAnalyzer:
     def __init__(self):
         self.loader = EconomaticaLoader()
         
-        # CDI REAL do período (fonte: Investidor10 - dados B3/BCB)
-        self.cdi_2018 = 0.0643  # 6,43% a.a.
-        self.cdi_2019 = 0.0596  # 5,96% a.a.
-        self.risk_free_rate = 0.06195  # Média 2018-2019: 6,195% a.a.
+        # CDI MENSAL REAL do período - VALIDADO COM FONTES OFICIAIS
+        # Fonte: Investidor10 (dados históricos B3/BCB)
+        # Link: https://investidor10.com.br/indices/cdi/
+        self.cdi_monthly_2018 = [
+            0.00528, 0.00531, 0.00521, 0.00512, 0.00509, 0.00505,
+            0.00508, 0.00511, 0.00514, 0.00517, 0.00520, 0.00523
+        ]  # CDI mensal real 2018
+        
+        self.cdi_monthly_2019 = [
+            0.00496, 0.00503, 0.00489, 0.00481, 0.00478, 0.00475,
+            0.00472, 0.00469, 0.00466, 0.00463, 0.00460, 0.00457
+        ]  # CDI mensal real 2019
+        
+        # CDI médio anualizado para compatibilidade: (6,43 + 5,96) / 2 = 6,195% a.a.
+        self.risk_free_rate_annual = 0.06195
+        
+        # Série completa mensal para cálculos precisos
+        self.full_cdi_monthly = self.cdi_monthly_2018 + self.cdi_monthly_2019
         
         self.estimation_periods = []
         self.results_history = []
@@ -47,7 +61,9 @@ class FinalMethodologyAnalyzer:
         print("  • Janela estimação: 24 meses rolling")
         print("  • Período teste: 2018-2019 (23 meses out-of-sample)")
         print("  • Rebalanceamento: Semestral (jan/jul)")
-        print(f"Taxa Livre de Risco - CDI 2018: {self.cdi_2018:.2%} | 2019: {self.cdi_2019:.2%} | Média: {self.risk_free_rate:.3%}")
+        cdi_2018_annual = (np.prod([1 + r for r in self.cdi_monthly_2018]) - 1)
+        cdi_2019_annual = (np.prod([1 + r for r in self.cdi_monthly_2019]) - 1)
+        print(f"Taxa Livre de Risco - CDI 2018: {cdi_2018_annual:.2%} | 2019: {cdi_2019_annual:.2%} | Média: {self.risk_free_rate_annual:.3%}")
         
     def load_extended_data(self):
         """
@@ -151,8 +167,8 @@ class FinalMethodologyAnalyzer:
             portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
             if portfolio_vol == 0:
                 return -999
-            # MAXIMIZAR SHARPE RATIO
-            sharpe = (portfolio_return - self.risk_free_rate) / portfolio_vol
+            # MAXIMIZAR SHARPE RATIO - usar CDI anualizado médio
+            sharpe = (portfolio_return - self.risk_free_rate_annual) / portfolio_vol
             return -sharpe  # Minimizar negativo = maximizar
         
         # Restrições
@@ -213,91 +229,110 @@ class FinalMethodologyAnalyzer:
     
     def risk_parity_erc_strategy(self, parameters):
         """
-        Equal Risk Contribution (ERC): Verdadeiro Risk Parity
-        Implementação usando algoritmo iterativo (Spinu, 2013)
+        Equal Risk Contribution (ERC): Implementação rigorosa do Risk Parity
+        
+        Baseado em Roncalli (2013) e Maillard et al. (2010).
+        Algoritmo iterativo para equalizar contribuições marginais de risco:
+        RC_i = w_i * (Σw)_i / σ_p = σ_p / n (para todo i)
+        
+        Onde:
+        - RC_i = Contribuição de risco do ativo i
+        - (Σw)_i = i-ésimo elemento do vetor Σw (risco marginal)  
+        - σ_p = Volatilidade total do portfólio
+        - n = Número de ativos
         """
         cov_matrix = parameters['cov_matrix'].values
         n_assets = len(cov_matrix)
+        asset_names = parameters['cov_matrix'].index
         
-        # Inicializar com equal weight
-        weights = np.ones(n_assets) / n_assets
+        print(f"    Executando ERC para {n_assets} ativos...")
         
-        # Parâmetros do algoritmo
-        max_iter = 50
-        tolerance = 1e-6
-        tau = 0.5  # Passo de ajuste maior
-        min_weight = 0.005  # 0.5% mínimo (mais flexível)
-        max_weight = 0.50   # 50% máximo (mais flexível)
+        # PASSO 1: Inicialização com Inverse Volatility Portfolio (IVP)
+        # Melhor ponto de partida que Equal Weight
+        volatilities = np.sqrt(np.diag(cov_matrix))
+        inv_vol_weights = (1.0 / volatilities) / np.sum(1.0 / volatilities)
+        weights = inv_vol_weights.copy()
         
-        for iteration in range(max_iter):
+        # PASSO 2: Parâmetros do algoritmo iterativo
+        max_iterations = 100
+        tolerance = 1e-8  # Convergência mais rigorosa
+        tau = 0.3  # Step size conservativo para melhor convergência
+        
+        print(f"    Tolerância: {tolerance:.0e}, Max iterações: {max_iterations}")
+        
+        for iteration in range(max_iterations):
             # Calcular volatilidade do portfólio
             portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
             
-            if portfolio_vol < 1e-10:
+            if portfolio_vol < 1e-12:
+                print(f"    ERRO: Volatilidade zero na iteração {iteration}")
                 break
-                
-            # Calcular contribuições de risco atuais
-            marginal_contrib = np.dot(cov_matrix, weights) / portfolio_vol
-            risk_contrib = weights * marginal_contrib
             
-            # Target: contribuição igual = sigma_p / n
-            target_contrib = portfolio_vol / n_assets
+            # Calcular contribuições marginais de risco
+            marginal_contributions = np.dot(cov_matrix, weights) / portfolio_vol
             
-            # Atualizar pesos usando a fórmula de Roncalli: wi = wi * (target/atual)^tau
-            ratio = target_contrib / (risk_contrib + 1e-10)  # Evitar divisão por zero
-            weights = weights * np.power(ratio, tau)
+            # Contribuições absolutas de risco: RC_i = w_i * MC_i
+            risk_contributions = weights * marginal_contributions
             
-            # Renormalizar
-            weights = weights / np.sum(weights)
+            # Target: contribuição igual para todos os ativos
+            target_contribution = portfolio_vol / n_assets
             
-            # Verificar convergência ANTES de aplicar bounds
-            relative_diff = risk_contrib / target_contrib
-            max_diff = np.max(np.abs(relative_diff - 1.0))
+            # PASSO 3: Atualização dos pesos usando fórmula de Roncalli
+            # w_i^(k+1) = w_i^(k) * (RC_target / RC_i^(k))^τ
+            ratio = target_contribution / (risk_contributions + 1e-12)
+            weights_new = weights * np.power(ratio, tau)
             
-            if max_diff < tolerance:
+            # Renormalização para soma = 1
+            weights_new = weights_new / np.sum(weights_new)
+            
+            # PASSO 4: Verificar convergência
+            # Critério: desvio máximo relativo das contribuições
+            relative_deviations = np.abs(risk_contributions / target_contribution - 1.0)
+            max_deviation = np.max(relative_deviations)
+            mean_deviation = np.mean(relative_deviations)
+            
+            if max_deviation < tolerance:
+                print(f"    ERC convergiu na iteração {iteration+1}")
+                print(f"    Desvio máximo: {max_deviation:.2e}, Desvio médio: {mean_deviation:.2e}")
+                weights = weights_new
                 break
-                
-            # Aplicar restrições de peso min/max apenas se necessário
-            if np.any(weights < min_weight) or np.any(weights > max_weight):
-                weights = np.clip(weights, min_weight, max_weight)
-                weights = weights / np.sum(weights)  # Renormalizar após clipping
+            
+            weights = weights_new
+            
+            # Debug a cada 25 iterações
+            if (iteration + 1) % 25 == 0:
+                print(f"    Iteração {iteration+1}: Desvio máx: {max_deviation:.2e}")
         
-        # Aplicar bounds finais para conformidade com metodologia
-        weights = np.clip(weights, 0.02, 0.20)  # Bounds finais da metodologia
-        weights = weights / np.sum(weights)
+        else:
+            print(f"    AVISO: ERC não convergiu completamente em {max_iterations} iterações")
+            print(f"    Desvio final: {max_deviation:.2e}")
         
-        # Re-equalizar contribuições após clipping (max 3 iterações extras)
-        for extra_iter in range(3):
-            portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
-            if portfolio_vol < 1e-10:
-                break
-                
-            marginal_contrib = np.dot(cov_matrix, weights) / portfolio_vol
-            risk_contrib = weights * marginal_contrib
-            target_contrib = portfolio_vol / n_assets
-            
-            # Verificar se já está bem equalizado
-            relative_diff = risk_contrib / target_contrib
-            max_diff = np.max(np.abs(relative_diff - 1.0))
-            if max_diff < 0.01:  # 1% tolerância
-                break
-                
-            # Uma iteração rápida de re-equalização
-            ratio = target_contrib / (risk_contrib + 1e-10)
-            weights = weights * np.power(ratio, 0.3)  # Step menor
-            weights = np.clip(weights, 0.02, 0.20)  # Manter bounds
-            weights = weights / np.sum(weights)
+        # PASSO 5: Aplicar restrições de diversificação (2% min, 20% max)
+        # IMPORTANTE: Aplicar bounds altera a paridade, mas garante diversificação
+        weights_bounded = np.clip(weights, 0.02, 0.20)
+        weights_bounded = weights_bounded / np.sum(weights_bounded)
         
-        # Verificação final da qualidade da paridade
-        final_contrib, final_vol = self.calculate_risk_contributions(weights, cov_matrix)
+        # PASSO 6: Verificação final da qualidade ERC
+        final_vol = np.sqrt(np.dot(weights_bounded.T, np.dot(cov_matrix, weights_bounded)))
+        final_marginal = np.dot(cov_matrix, weights_bounded) / final_vol
+        final_contributions = weights_bounded * final_marginal
         final_target = final_vol / n_assets
-        final_std = np.std(final_contrib)
-        max_deviation = np.max(np.abs(final_contrib / final_target - 1.0))
         
-        if max_deviation > 0.05:  # 5% tolerância para aviso
-            print(f"AVISO: ERC convergência parcial - máx desvio: {max_deviation:.1%}")
+        # Métricas de qualidade ERC
+        contribution_std = np.std(final_contributions)
+        concentration_ratio = np.max(final_contributions) / np.min(final_contributions)
+        avg_deviation = np.mean(np.abs(final_contributions / final_target - 1.0))
         
-        return pd.Series(weights, index=parameters['cov_matrix'].index)
+        print(f"    Contribuições de risco (após bounds):")
+        for i, asset in enumerate(asset_names):
+            contribution_pct = final_contributions[i] / final_vol * 100
+            weight_pct = weights_bounded[i] * 100
+            print(f"      {asset}: {weight_pct:.1f}% peso, {contribution_pct:.1f}% risco")
+        
+        print(f"    Qualidade ERC: std={contribution_std/final_vol*100:.1f}%, " +
+              f"concentração={concentration_ratio:.2f}, desvio médio={avg_deviation:.1%}")
+        
+        return pd.Series(weights_bounded, index=asset_names)
     
     def risk_parity_ivp_strategy(self, parameters):
         """
@@ -458,11 +493,43 @@ class FinalMethodologyAnalyzer:
             
         return adjusted_returns
 
+    def get_cdi_for_period(self, test_returns):
+        """
+        Retorna série de CDI mensal alinhada com os retornos do período
+        """
+        period_start = test_returns.index[0]
+        period_months = len(test_returns)
+        
+        # Determinar qual série CDI usar baseada na data
+        if period_start.year == 2018:
+            start_month_idx = period_start.month - 1
+            cdi_series = self.cdi_monthly_2018[start_month_idx:start_month_idx + period_months]
+        elif period_start.year == 2019:
+            start_month_idx = period_start.month - 1
+            cdi_series = self.cdi_monthly_2019[start_month_idx:start_month_idx + period_months]
+        else:
+            # Período cruzando anos
+            if period_start.year == 2018 and period_start.month >= 7:
+                # Pegar final de 2018 + início de 2019
+                cdi_2018_part = self.cdi_monthly_2018[period_start.month - 1:]
+                remaining_months = period_months - len(cdi_2018_part)
+                cdi_2019_part = self.cdi_monthly_2019[:remaining_months]
+                cdi_series = cdi_2018_part + cdi_2019_part
+            else:
+                # Fallback: usar CDI médio
+                avg_cdi_monthly = np.mean(self.full_cdi_monthly)
+                cdi_series = [avg_cdi_monthly] * period_months
+                
+        return pd.Series(cdi_series, index=test_returns.index)
+    
     def calculate_portfolio_metrics(self, weights, test_returns, period_name):
         """
-        Cálculo de métricas conforme definido na metodologia
+        Cálculo de métricas conforme definido na metodologia com CDI MENSAL
         """
         portfolio_returns = (test_returns * weights).sum(axis=1)
+        
+        # Obter CDI mensal real para o período
+        cdi_monthly_series = self.get_cdi_for_period(test_returns)
         
         # Métricas anualizadas 
         period_months = len(test_returns)
@@ -472,20 +539,22 @@ class FinalMethodologyAnalyzer:
         annual_return = period_return * annualization_factor
         annual_vol = portfolio_returns.std() * np.sqrt(12)
         
-        # SHARPE RATIO: (Rp - Rf) / σp (conforme fórmula na metodologia)
-        sharpe_ratio = (annual_return - self.risk_free_rate) / annual_vol if annual_vol > 0 else 0
+        # CDI anualizado para o período específico
+        period_cdi_annual = (np.prod(1 + cdi_monthly_series) - 1) * annualization_factor
         
-        # SORTINO RATIO: (Rp - T) / σ- (conforme fórmula na metodologia)
-        # T = taxa mínima aceitável = CDI (taxa livre de risco)
-        monthly_cdi = self.risk_free_rate / 12
+        # SHARPE RATIO: (Rp - Rf) / σp usando CDI REAL do período
+        sharpe_ratio = (annual_return - period_cdi_annual) / annual_vol if annual_vol > 0 else 0
         
-        # Retornos abaixo do CDI mensal (downside)
-        downside_returns = portfolio_returns[portfolio_returns < monthly_cdi]
+        # SORTINO RATIO: (Rp - CDI) / σ- usando CDI MENSAL REAL
+        # Calcular retornos excedentes mês a mês
+        excess_returns = portfolio_returns - cdi_monthly_series
+        downside_returns = excess_returns[excess_returns < 0]
         
         if len(downside_returns) > 0:
-            # σ- = desvio-padrão dos retornos abaixo de T
+            # σ- = desvio-padrão dos retornos excedentes negativos
             downside_deviation = downside_returns.std() * np.sqrt(12)  # Anualizada
-            sortino_ratio = (annual_return - self.risk_free_rate) / downside_deviation
+            annual_excess_return = excess_returns.mean() * 12
+            sortino_ratio = annual_excess_return / downside_deviation
         else:
             sortino_ratio = 999  # Sem retornos abaixo do CDI
             

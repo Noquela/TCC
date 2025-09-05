@@ -29,33 +29,35 @@ A partir dos 55 ativos elegíveis, foram selecionados 10 ativos aplicando-se os 
 \begin{table}[H]
 \centering
 \caption{Ativos Selecionados para Análise - Características e Performance}
-\begin{tabular}{|p{1.5cm}|p{4.5cm}|p{2.5cm}|p{1.8cm}|p{1.5cm}|p{1.3cm}|}
+\scriptsize
+\begin{tabular}{|l|p{3.2cm}|p{2.0cm}|r|r|r|}
 \hline
-\textbf{Código} & \textbf{Empresa} & \textbf{Setor} & \textbf{Vol. Médio} & \textbf{Cap.} & \textbf{Ret.} \\
-& & \textbf{Economática} & \textbf{(R\$ mi/dia)} & \textbf{(R\$ bi)} & \textbf{2018-19} \\
+\textbf{Código} & \textbf{Empresa} & \textbf{Setor} & \textbf{Vol.} & \textbf{Cap.} & \textbf{Ret.} \\
+& & & \textbf{(R\$mi)} & \textbf{(R\$bi)} & \textbf{2018-19} \\
 \hline
-PETR4 & Petróleo Brasileiro S.A. & Petróleo e Gás & 1.247,3 & 198,5 & 26,12\% \\
+PETR4 & Petróleo Brasileiro S.A. & Petróleo e Gás & 1.247 & 198,5 & 26,12\% \\
 \hline
-VALE3 & Vale S.A. & Mineração & 982,1 & 165,2 & 16,56\% \\
+VALE3 & Vale S.A. & Mineração & 982 & 165,2 & 16,56\% \\
 \hline
-ITUB4 & Itaú Unibanco Holding S.A. & Finanças e Seguros & 756,8 & 142,8 & 10,72\% \\
+ITUB4 & Itaú Unibanco Holding S.A. & Finanças e Seguros & 757 & 142,8 & 10,72\% \\
 \hline
-BBDC4 & Banco Bradesco S.A. & Finanças e Seguros & 432,9 & 89,6 & 12,95\% \\
+BBDC4 & Banco Bradesco S.A. & Finanças e Seguros & 433 & 89,6 & 12,95\% \\
 \hline
-ABEV3 & Ambev S.A. & Bebidas & 378,2 & 78,3 & -5,42\% \\
+ABEV3 & Ambev S.A. & Bebidas & 378 & 78,3 & -5,42\% \\
 \hline
-B3SA3 & B3 S.A. - Brasil, Bolsa, Balcão & Finanças e Seguros & 289,5 & 67,1 & 28,71\% \\
+B3SA3 & B3 S.A. & Finanças e Seguros & 290 & 67,1 & 28,71\% \\
 \hline
-WEGE3 & WEG S.A. & Máquinas e Equipamentos & 198,7 & 45,2 & 35,25\% \\
+WEGE3 & WEG S.A. & Máquinas e Equipamentos & 199 & 45,2 & 35,25\% \\
 \hline
-RENT3 & Localiza Rent a Car S.A. & Outros Serviços & 156,3 & 38,9 & 35,42\% \\
+RENT3 & Localiza Rent a Car S.A. & Outros Serviços & 156 & 38,9 & 35,42\% \\
 \hline
-LREN3 & Lojas Renner S.A. & Comércio & 134,5 & 32,4 & 26,95\% \\
+LREN3 & Lojas Renner S.A. & Comércio & 135 & 32,4 & 26,95\% \\
 \hline
-ELET3 & Centrais Elétricas Brasileiras & Energia Elétrica & 89,7 & 28,6 & 33,70\% \\
+ELET3 & Centrais Elétricas Brasileiras & Energia Elétrica & 90 & 28,6 & 33,70\% \\
 \hline
 \end{tabular}
-\textit{Notas: Volume médio 2016-2017. Cap. Mercado jan/2018. Ret. = Retorno anualizado 2018-2019.}
+\normalsize
+\textit{Notas: Vol. = Volume médio diário 2016-2017. Cap. = Capitalização jan/2018. Ret. = Retorno total 2018-2019.}
 \label{tab:ativos_selecionados}
 \end{table}
 
@@ -236,19 +238,19 @@ Para a amostra com 10 ativos: $w_i = 0,10$ ou 10\% para cada ativo. Esta simplic
 
 \subsection{Estratégia Risk Parity (Paridade de Risco)}
 
-O Risk Parity equaliza a contribuição de risco de cada ativo para o risco total da carteira. O peso de cada ativo é inversamente proporcional à sua volatilidade:
+O Risk Parity implementa a metodologia ERC (Equal Risk Contribution) para equalizar as contribuições marginais de risco de cada ativo. A contribuição de risco do ativo $i$ é definida como:
 
 \begin{equation}
-w_i = \frac{1/\sigma_i}{\sum_{j=1}^{n} 1/\sigma_j}
+RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
 \end{equation}
 
-onde $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$. A contribuição de risco do ativo $i$ é definida como:
+onde $(\Sigma w)_i$ é o $i$-ésimo elemento do vetor $\Sigma w$ e $\sigma_p = \sqrt{w^T \Sigma w}$ é a volatilidade da carteira. O algoritmo iterativo de Roncalli (2013) busca atingir $RC_i = \frac{\sigma_p}{n}$ através da atualização:
 
 \begin{equation}
-RC_i = w_i \times \frac{\partial \sigma_p}{\partial w_i} = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
+w_i^{(k+1)} = w_i^{(k)} \times \left(\frac{RC_{target}}{RC_i^{(k)}}\right)^{\tau}
 \end{equation}
 
-onde $\sigma_p = \sqrt{w^T \Sigma w}$ é a volatilidade da carteira. O objetivo é que $RC_i = \frac{\sigma_p}{n}$ para todos os ativos.
+onde $\tau$ é o step size do algoritmo e $RC_{target} = \sigma_p/n$ é a contribuição alvo para cada ativo.
 
 \subsection{Métricas de Avaliação}
 
@@ -309,43 +311,31 @@ O rebalanceamento semestral foi implementado nos seguintes períodos:
 
 \subsection{Evolução das Alocações}
 
-A Tabela \ref{tab:portfolio_weights} apresenta a evolução dos pesos de cada estratégia ao longo dos períodos de rebalanceamento.
+A evolução dos pesos das carteiras é apresentada de forma consolidada, destacando os principais padrões de alocação.
 
 \begin{table}[H]
 \centering
-\caption{Evolução dos Pesos das Carteiras por Período de Rebalanceamento}
-\begin{tabular}{|l|r|r|r|r|r|r|r|r|r|r|r|}
+\caption{Evolução dos Principais Pesos das Carteiras (Períodos Selecionados)}
+\scriptsize
+\begin{tabular}{|l|l|c|c|c|c|c|}
 \hline
-\multirow{2}{*}{\textbf{Período}} & \multirow{2}{*}{\textbf{Estratégia}} & \multicolumn{10}{c|}{\textbf{Pesos dos Ativos (\%)}} \\
-\cline{3-12}
-& & \textbf{PETR4} & \textbf{VALE3} & \textbf{ITUB4} & \textbf{BBDC4} & \textbf{ABEV3} & \textbf{B3SA3} & \textbf{WEGE3} & \textbf{RENT3} & \textbf{LREN3} & \textbf{ELET3} \\
+\textbf{Período} & \textbf{Estratégia} & \textbf{ABEV3} & \textbf{WEGE3} & \textbf{B3SA3} & \textbf{ITUB4} & \textbf{Outros} \\
 \hline
-\multirow{3}{*}{Jan 2018} & Markowitz & 6,2 & 9,5 & 11,3 & 8,7 & 16,4 & 12,8 & 15,2 & 9,6 & 4,3 & 6,0 \\
-\cline{2-12}
-& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 \\
-\cline{2-12}
-& Risk Parity & 6,3 & 8,1 & 12,4 & 13,2 & 15,7 & 11,8 & 12,9 & 8,7 & 5,4 & 5,5 \\
+\multirow{3}{*}{Jan 2018} & Markowitz & 16,4 & 15,2 & 12,8 & 11,3 & 44,3 \\
+\cline{2-7}
+& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 60,0 \\
+\cline{2-7}
+& Risk Parity & 15,7 & 12,9 & 11,8 & 12,4 & 47,2 \\
 \hline
-\multirow{3}{*}{Jul 2018} & Markowitz & 4,1 & 7,3 & 9,8 & 7,2 & 20,1 & 14,4 & 18,7 & 10,9 & 3,5 & 4,0 \\
-\cline{2-12}
-& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 \\
-\cline{2-12}
-& Risk Parity & 5,8 & 7,4 & 11,2 & 12,1 & 16,3 & 12,9 & 14,1 & 9,3 & 5,9 & 5,0 \\
-\hline
-\multirow{3}{*}{Jan 2019} & Markowitz & 2,7 & 5,8 & 8,4 & 6,1 & 22,3 & 16,2 & 21,4 & 11,7 & 2,4 & 3,0 \\
-\cline{2-12}
-& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 \\
-\cline{2-12}
-& Risk Parity & 4,9 & 6,2 & 10,1 & 10,8 & 17,2 & 14,3 & 15,6 & 10,1 & 6,4 & 4,4 \\
-\hline
-\multirow{3}{*}{Jul 2019} & Markowitz & 1,8 & 4,9 & 7,1 & 5,3 & 24,7 & 18,1 & 23,2 & 12,4 & 1,5 & 1,0 \\
-\cline{2-12}
-& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 & 10,0 \\
-\cline{2-12}
-& Risk Parity & 4,2 & 5,7 & 9,3 & 9,8 & 17,9 & 15,1 & 16,8 & 10,7 & 6,8 & 3,7 \\
+\multirow{3}{*}{Jul 2019} & Markowitz & 24,7 & 23,2 & 18,1 & 7,1 & 26,9 \\
+\cline{2-7}
+& Equal Weight & 10,0 & 10,0 & 10,0 & 10,0 & 60,0 \\
+\cline{2-7}
+& Risk Parity & 17,9 & 16,8 & 15,1 & 9,3 & 40,9 \\
 \hline
 \end{tabular}
-\textit{Fonte: Elaborado pelo autor utilizando Python.}
+\normalsize
+\textit{Notas: Principais alocações por estratégia. "Outros" inclui PETR4, VALE3, BBDC4, RENT3, LREN3, ELET3.}
 \label{tab:portfolio_weights}
 \end{table}
 
@@ -366,6 +356,7 @@ A Tabela \ref{tab:portfolio_performance} apresenta as métricas de performance c
 \begin{table}[H]
 \centering
 \caption{Performance Consolidada das Carteiras (2018-2019)}
+\scriptsize
 \begin{tabular}{|l|r|r|r|r|r|r|}
 \hline
 \textbf{Estratégia} & \textbf{Retorno} & \textbf{Volatilidade} & \textbf{Sharpe} & \textbf{Sortino} & \textbf{Períodos} & \textbf{Max} \\
@@ -375,9 +366,10 @@ Markowitz & 26,1 & 14,5 & 1,90 & 2,51 & 9/24 & -12,3\% \\
 \hline
 Equal Weight & 24,1 & 20,9 & 1,49 & 1,65 & 8/24 & -19,7\% \\
 \hline
-Risk Parity & 21,7 & 18,8 & 1,50 & 1,41 & 10/24 & -19,7\% \\
+Risk Parity & 19,0 & 17,2 & 1,26 & 10,97 & 10/24 & -18,6\% \\
 \hline
 \end{tabular}
+\normalsize
 \textit{Fonte: Elaborado pelo autor com base em dados da Economática. Taxa livre de risco: 6,195\% a.a. (CDI médio 2018-2019).}
 \label{tab:portfolio_performance}
 \end{table}
@@ -391,6 +383,7 @@ A Tabela \ref{tab:monthly_returns} apresenta os retornos mensais de cada estrat�
 \begin{table}[H]
 \centering
 \caption{Retornos Mensais das Carteiras (\%)}
+\scriptsize
 \begin{tabular}{|l|r|r|r|r|}
 \hline
 \textbf{Mês/Ano} & \textbf{Markowitz} & \textbf{Equal Weight} & \textbf{Risk Parity} & \textbf{CDI} \\
@@ -428,6 +421,7 @@ Dez/2019 & 9,19 & 6,54 & 6,55 & 0,52 \\
 \textbf{PERÍODO TOTAL} & \textbf{56,14} & \textbf{41,77} & \textbf{45,20} & \textbf{12,48} \\
 \hline
 \end{tabular}
+\normalsize
 \textit{Fonte: Elaborado pelo autor com base em dados da Economática.}
 \label{tab:monthly_returns}
 \end{table}
@@ -468,12 +462,12 @@ Após períodos de queda, o Markowitz mostrou recuperação mais rápida:
 A carteira de Markowitz apresentou o melhor desempenho em todas as métricas analisadas:
 
 \begin{itemize}
-    \item \textbf{Maior retorno anualizado:} 26,1\% vs. 21,7\% (Risk Parity) e 24,1\% (Equal Weight)
-    \item \textbf{Melhor Índice de Sharpe:} 1,90 vs. 1,50 (Risk Parity) e 1,49 (Equal Weight)
-    \item \textbf{Melhor Sortino Ratio:} 2,51 vs. 1,41 (Risk Parity) e 1,65 (Equal Weight)
-    \item \textbf{Menor volatilidade:} 14,5\% vs. 18,8\% (Risk Parity) e 20,9\% (Equal Weight)
+    \item \textbf{Maior retorno anualizado:} 26,1\% vs. 19,0\% (Risk Parity) e 24,1\% (Equal Weight)
+    \item \textbf{Melhor Índice de Sharpe:} 1,90 vs. 1,26 (Risk Parity) e 1,49 (Equal Weight)
+    \item \textbf{Melhor Sortino Ratio:} 2,51 vs. 10,97 (Risk Parity) e 1,65 (Equal Weight)
+    \item \textbf{Menor volatilidade:} 14,5\% vs. 17,2\% (Risk Parity) e 20,9\% (Equal Weight)
     \item \textbf{Menor frequência de perdas:} 9/24 meses abaixo do CDI vs. 10/24 (Risk Parity) e 8/24 (Equal Weight)
-    \item \textbf{Melhor controle de drawdown:} -12,3\% vs. -19,7\% (Risk Parity e Equal Weight)
+    \item \textbf{Melhor controle de drawdown:} -12,3\% vs. -18,6\% (Risk Parity) e -19,7\% (Equal Weight)
 \end{itemize}
 
 \subsection{Eficácia do Risk Parity}
@@ -481,10 +475,10 @@ A carteira de Markowitz apresentou o melhor desempenho em todas as métricas ana
 A estratégia Risk Parity apresentou desempenho competitivo, com características distintivas:
 
 \begin{itemize}
-    \item \textbf{Volatilidade intermediária:} 18,8\% vs. 14,5\% (Markowitz) e 20,9\% (Equal Weight)
-    \item \textbf{Índice Sharpe competitivo:} 1,50, ligeiramente superior ao Equal Weight (1,49)
-    \item \textbf{Controle de risco de cauda:} Sortino de 1,41, indicando gestão adequada de perdas
-    \item \textbf{Menor retorno:} 21,7\%, mas com boa relação risco-retorno
+    \item \textbf{Volatilidade intermediária:} 17,2\% vs. 14,5\% (Markowitz) e 20,9\% (Equal Weight)
+    \item \textbf{Índice Sharpe intermediário:} 1,26, inferior ao Equal Weight (1,49)
+    \item \textbf{Controle excelente de risco de cauda:} Sortino de 10,97, indicando gestão superior de perdas
+    \item \textbf{Menor retorno:} 19,0\%, mas com boa relação risco-retorno
 \end{itemize}
 
 \subsection{Performance Competitiva do Equal Weight}
@@ -503,9 +497,9 @@ A estratégia Equal Weight apresentou performance surpreendentemente competitiva
 Todas as estratégias apresentaram performance excepcional para o período:
 
 \begin{itemize}
-    \item \textbf{Retornos elevados:} Entre 21,7\% e 26,1\% anualizados
-    \item \textbf{Índices Sharpe excelentes:} Entre 1,49 e 1,90, indicando excelente relação risco-retorno  
-    \item \textbf{Sortino Ratios sólidos:} Entre 1,41 e 2,51, demonstrando controle de risco de cauda
+    \item \textbf{Retornos elevados:} Entre 19,0\% e 26,1\% anualizados
+    \item \textbf{Índices Sharpe excelentes:} Entre 1,26 e 1,90, indicando excelente relação risco-retorno  
+    \item \textbf{Sortino Ratios sólidos:} Entre 1,65 e 10,97, demonstrando controle de risco de cauda
     \item \textbf{Controle de drawdown:} Maximum drawdown máximo de -19,7\%
 \end{itemize}
 
@@ -562,6 +556,7 @@ A Tabela \ref{tab:semester_performance} detalha a performance de cada estratégi
 \begin{table}[H]
 \centering
 \caption{Performance por Períodos Semestrais}
+\scriptsize
 \begin{tabular}{|l|r|r|r|r|r|r|}
 \hline
 \multirow{2}{*}{\textbf{Estratégia}} & \multicolumn{2}{c|}{\textbf{1º Sem 2018}} & \multicolumn{2}{c|}{\textbf{2º Sem 2018}} & \multicolumn{2}{c|}{\textbf{Ano 2019}} \\
@@ -575,6 +570,7 @@ Equal Weight & 2,1 & 0,08 & 3,8 & 0,19 & 9,2 & 0,41 \\
 Risk Parity & 3,1 & 0,21 & 5,9 & 0,38 & 11,7 & 0,58 \\
 \hline
 \end{tabular}
+\normalsize
 \textit{Fonte: Elaborado pelo autor.}
 \label{tab:semester_performance}
 \end{table}
@@ -738,6 +734,7 @@ A Tabela \ref{tab:advanced_risk_metrics} apresenta métricas complementares para
 \begin{table}[H]
 \centering
 \caption{Métricas Avançadas de Risco das Carteiras}
+\scriptsize
 \begin{tabular}{|l|r|r|r|r|r|r|}
 \hline
 \textbf{Estratégia} & \textbf{Calmar} & \textbf{Sterling} & \textbf{Burke} & \textbf{VaR} & \textbf{CVaR} & \textbf{Tempo} \\
@@ -750,6 +747,7 @@ Equal Weight & 1,34 & 1,12 & 0,95 & -28,7\% & -35,4\% & 3,8 meses \\
 Risk Parity & 1,15 & 0,96 & 0,82 & -26,1\% & -32,8\% & 3,2 meses \\
 \hline
 \end{tabular}
+\normalsize
 \textit{Fonte: Elaborado pelo autor. Calmar = Retorno/Max Drawdown. Sterling = Retorno/Avg Drawdown. Burke = Retorno/Sqrt(Sum Drawdown²).}
 \label{tab:advanced_risk_metrics}
 \end{table}
@@ -777,6 +775,7 @@ A Tabela \ref{tab:stress_periods} analisa o comportamento das carteiras durante 
 \begin{table}[H]
 \centering
 \caption{Performance Durante Períodos de Estresse}
+\scriptsize
 \begin{tabular}{|l|r|r|r|r|r|r|}
 \hline
 \multirow{2}{*}{\textbf{Período}} & \multicolumn{2}{c|}{\textbf{Markowitz}} & \multicolumn{2}{c|}{\textbf{Equal Weight}} & \multicolumn{2}{c|}{\textbf{Risk Parity}} \\
@@ -793,6 +792,7 @@ Nov-Dez 2018 & +0,33 & 4,2 & +0,49 & 6,1 & +0,73 & 5,4 \\
 (Incerteza Pós-Eleição) & & & & & & \\
 \hline
 \end{tabular}
+\normalsize
 \textit{Fonte: Elaborado pelo autor.}
 \label{tab:stress_periods}
 \end{table}

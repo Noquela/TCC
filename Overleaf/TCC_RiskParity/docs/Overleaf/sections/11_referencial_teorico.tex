@@ -286,11 +286,11 @@ Em que:
 
 Este estudo utiliza **EXCLUSIVAMENTE o Ibovespa (B3 Oficial)** obtido dos arquivos de evolução diária histórica. O uso restrito aos dados oficiais garante rigor metodológico e consistência com benchmarks reconhecidos pelo mercado financeiro brasileiro.
 
-A série oficial do Ibovespa utiliza retornos mensais calculados por diferença logarítmica de preços de fechamento dos dados diários da B3, representando fielmente o comportamento do mercado brasileiro durante o período 2018-2019. Para garantir comparabilidade temporal, janeiro de 2018 foi estabelecido como mês base (retorno 0%) tanto para o benchmark quanto para as carteiras analisadas.
+A série oficial do Ibovespa utiliza retornos mensais calculados por diferença logarítmica de preços de fechamento dos dados diários da B3, representando fielmente o comportamento do mercado brasileiro durante o período 2018-2019. Janeiro de 2018 representa o primeiro mês de operação, com retornos calculados versus preços de dezembro de 2017 tanto para o benchmark quanto para as carteiras analisadas, produzindo retornos reais (não-zero) para este período inicial.
 
 \subsection{Taxa Livre de Risco e Cálculo do Sortino}
 
-Em todas as métricas de avaliação utilizadas neste trabalho, emprega-se a taxa livre de risco de \textbf{6{,}5\% ao ano}, com base na média do CDI no biênio 2018–2019, aplicada na forma mensal ($r_f/12$) para o cômputo do Índice de Sharpe e do Sortino Ratio. 
+Em todas as métricas de avaliação utilizadas neste trabalho, emprega-se a taxa livre de risco de \textbf{6{,}24\% ao ano} (CDI médio mensal de 0,52\%), com base na média do CDI no biênio 2018–2019, aplicada na forma mensal ($r_f/12$) para o cômputo do Índice de Sharpe e do Sortino Ratio. 
 
 O Sortino Ratio considera apenas os retornos abaixo de $r_f$ (taxa livre de risco) para o cálculo da volatilidade negativa ($\sigma_{\text{down}}$), em consonância com a definição apresentada na equação anterior. Esta escolha metodológica assegura consistência entre todas as métricas de risco-retorno, utilizando o mesmo patamar de referência (taxa livre de risco) tanto para o cálculo do excesso de retorno quanto para a definição de retornos "indesejáveis" no Sortino.
 

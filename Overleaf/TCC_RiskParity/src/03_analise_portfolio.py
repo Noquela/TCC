@@ -11,6 +11,7 @@ import numpy as np
 import json
 import os
 from datetime import datetime
+from scipy.optimize import minimize
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -101,39 +102,60 @@ class AnalisadorPortfolio:
     
     def calcular_estrategia_markowitz(self, returns_df):
         """
-        Estratégia 2: Mean-Variance Optimization (Markowitz)
+        Estratégia 2: Mean-Variance Optimization (Markowitz) com restrições
         """
-        print("3. Calculando Mean-Variance Optimization...")
+        print("3. Calculando Mean-Variance Optimization com restricoes...")
         
         # Calcular inputs
         mu = returns_df.mean() * 12  # Expected returns
         Sigma = returns_df.cov() * 12  # Covariance matrix
-        
-        # Otimização - Maximizar Sharpe Ratio
         n = len(returns_df.columns)
         
-        # Método analítico para Maximum Sharpe Ratio
+        # Otimização com scipy - Maximizar Sharpe Ratio com restrições
+        def objective_function(weights):
+            """Função objetivo: minimizar -Sharpe Ratio"""
+            portfolio_return = np.sum(mu.values * weights)
+            portfolio_vol = np.sqrt(weights.T @ Sigma.values @ weights)
+            if portfolio_vol == 0:
+                return 1e6  # Penalidade alta
+            sharpe_ratio = (portfolio_return - self.rf_rate) / portfolio_vol
+            return -sharpe_ratio  # Minimizar negativo = maximizar
+        
+        # Restrições
+        constraints = [
+            # Pesos somam 1
+            {'type': 'eq', 'fun': lambda w: np.sum(w) - 1.0},
+        ]
+        
+        # Limites por ativo: entre 0% e 40% (evitar concentração)
+        bounds = [(0.0, 0.4) for _ in range(n)]
+        
+        # Chute inicial: equal weight
+        initial_guess = np.ones(n) / n
+        
         try:
-            # Inversa da matriz de covariância
-            inv_Sigma = np.linalg.inv(Sigma.values)
-            ones = np.ones((n, 1))
+            # Executar otimização
+            result = minimize(
+                objective_function,
+                initial_guess,
+                method='SLSQP',
+                bounds=bounds,
+                constraints=constraints,
+                options={'maxiter': 1000, 'ftol': 1e-9}
+            )
             
-            # Excess returns
-            excess_returns = (mu.values - self.rf_rate).reshape(-1, 1)
-            
-            # Pesos ótimos (Maximum Sharpe Ratio)
-            numerator = inv_Sigma @ excess_returns
-            denominator = ones.T @ inv_Sigma @ excess_returns
-            weights = (numerator / denominator).flatten()
-            
-            # Garantir que pesos somem 1 e são positivos
-            weights = np.maximum(weights, 0)
-            weights = weights / weights.sum()
-            
-        except np.linalg.LinAlgError:
-            # Se matriz singular, usar equal weight
-            print("   AVISO: Matriz singular, usando Equal Weight")
-            weights = np.ones(n) / n
+            if result.success:
+                weights = result.x
+                # Normalizar por segurança
+                weights = weights / weights.sum()
+                print("   Otimizacao convergiu com restricoes")
+            else:
+                print("   AVISO: Otimizacao nao convergiu, usando metodo analitico")
+                weights = self._markowitz_analitico(mu, Sigma, n)
+                
+        except Exception as e:
+            print(f"   ERRO na otimizacao: {e}, usando metodo analitico")
+            weights = self._markowitz_analitico(mu, Sigma, n)
         
         # Performance do portfolio
         portfolio_returns = (returns_df * weights).sum(axis=1)
@@ -170,6 +192,36 @@ class AnalisadorPortfolio:
         print(f"   Sharpe Ratio: {sharpe_ratio:.2f}")
         
         return mvo_results
+    
+    def _markowitz_analitico(self, mu, Sigma, n):
+        """
+        Método analítico de fallback para Markowitz
+        """
+        try:
+            # Inversa da matriz de covariância
+            inv_Sigma = np.linalg.inv(Sigma.values)
+            ones = np.ones((n, 1))
+            
+            # Excess returns
+            excess_returns = (mu.values - self.rf_rate).reshape(-1, 1)
+            
+            # Pesos ótimos (Maximum Sharpe Ratio)
+            numerator = inv_Sigma @ excess_returns
+            denominator = ones.T @ inv_Sigma @ excess_returns
+            weights = (numerator / denominator).flatten()
+            
+            # Garantir que pesos são positivos e somam 1
+            weights = np.maximum(weights, 0)
+            if weights.sum() > 0:
+                weights = weights / weights.sum()
+            else:
+                weights = np.ones(n) / n
+                
+            return weights
+            
+        except np.linalg.LinAlgError:
+            # Se matriz singular, usar equal weight
+            return np.ones(n) / n
     
     def calcular_estrategia_risk_parity(self, returns_df):
         """

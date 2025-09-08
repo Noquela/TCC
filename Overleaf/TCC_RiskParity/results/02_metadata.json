@@ -1,5 +1,5 @@
 {
-  "data_processamento": "2025-09-08T19:42:19.000150",
+  "data_processamento": "2025-09-08T20:01:02.101286",
   "periodo": "2018-01-01 a 2019-12-31",
   "total_ativos": 10,
   "total_observacoes": 24,
@@ -13,8 +13,8 @@
     "AZZA3",
     "ALPA4",
     "BEES3",
-    "BAZA3",
-    "B3SA3"
+    "B3SA3",
+    "ALPA3"
   ],
   "fonte": "Econom\u00e1tica (dados reais)"
 }

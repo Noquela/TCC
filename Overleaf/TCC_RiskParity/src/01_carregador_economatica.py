@@ -22,6 +22,7 @@ class CarregadorEconomatica:
     def __init__(self, data_dir="../data/DataBase"):
         self.data_dir = data_dir
         self.excel_path = os.path.join(data_dir, "Economatica-8900701390-20250812230945 (1).xlsx")
+        self.setores_path = os.path.join(data_dir, "economatica (1).xlsx")
         
         print("="*60)
         print("SISTEMA REFATORADO - CARREGADOR ECONOMÁTICA")
@@ -29,11 +30,45 @@ class CarregadorEconomatica:
         print("OK Metodologia científica objetiva")
         print("OK Sem seleção hardcoded")
         print("OK Critérios quantitativos rigorosos")
+        print("OK Diversificação setorial")
         print()
         
-        # Verificar se arquivo existe
+        # Verificar se arquivos existem
         if not os.path.exists(self.excel_path):
             raise FileNotFoundError(f"Arquivo não encontrado: {self.excel_path}")
+        if not os.path.exists(self.setores_path):
+            raise FileNotFoundError(f"Arquivo de setores não encontrado: {self.setores_path}")
+        
+        # Carregar mapeamento ativo-setor
+        self.asset_sector_map = self.carregar_mapeamento_setores()
+    
+    def carregar_mapeamento_setores(self):
+        """
+        Carrega mapeamento de ativos para setores do arquivo Economática
+        """
+        try:
+            df_setores = pd.read_excel(self.setores_path, sheet_name='Sheet1')
+            asset_sector_map = {}
+            
+            # Extrair mapeamento ativo-setor
+            for i, row in df_setores.iterrows():
+                for col in df_setores.columns[:-1]:  # Excluir coluna 'Economatica'
+                    val = str(row[col]).strip() if pd.notna(row[col]) else ''
+                    # Verificar se é código de ativo (4-6 chars, termina com dígito)
+                    if (len(val) >= 4 and len(val) <= 6 and 
+                        val[-1].isdigit() and val[:-1].isalpha()):
+                        if pd.notna(row['Economatica']):
+                            sector = str(row['Economatica']).strip()
+                            if sector and sector != 'nan':
+                                asset_sector_map[val] = sector
+                                break
+            
+            print(f"   Mapeamento setores: {len(asset_sector_map)} ativos")
+            return asset_sector_map
+            
+        except Exception as e:
+            print(f"   AVISO: Erro ao carregar setores: {e}")
+            return {}
             
     def obter_lista_ativos_disponiveis(self):
         """
@@ -203,7 +238,7 @@ class CarregadorEconomatica:
         df = df[df['test_period_months'] >= 20]  # Pelo menos 20 meses de teste
         print(f"   Após critério período teste: {len(df)} ativos")
         
-        # SELEÇÃO FINAL: Top 15 por score composto
+        # SELEÇÃO FINAL: Top 15 por score composto + diversificação setorial
         # Score = combinação de liquidez + cap market + estabilidade
         df['selection_score'] = (
             0.4 * (df['liquidity_proxy'] / df['liquidity_proxy'].max()) +
@@ -211,8 +246,8 @@ class CarregadorEconomatica:
             0.3 * (df['completeness'] / df['completeness'].max())
         )
         
-        # Ordenar por score e selecionar top 15
-        df_selected = df.nlargest(15, 'selection_score')
+        # Aplicar diversificação setorial
+        df_selected = self.aplicar_diversificacao_setorial(df)
         
         print(f"   SELEÇÃO FINAL: {len(df_selected)} ativos")
         print("\n   Top 10 ativos selecionados:")
@@ -220,6 +255,51 @@ class CarregadorEconomatica:
             print(f"   {i+1:2d}. {row['asset']} - Score: {row['selection_score']:.3f} - Vol: {row['volatility_2014_2017']:.1%}")
         
         return df_selected.to_dict('records')
+    
+    def aplicar_diversificacao_setorial(self, df):
+        """
+        Aplica critério de diversificação setorial para evitar concentração
+        """
+        print("   Aplicando diversificação setorial...")
+        
+        # Adicionar informação de setor para cada ativo
+        df = df.copy()
+        df['setor'] = df['asset'].map(self.asset_sector_map)
+        
+        # Contar ativos por setor
+        setores_disponiveis = df['setor'].value_counts()
+        print(f"   Setores disponíveis: {len(setores_disponiveis)}")
+        
+        # Seleção diversificada: máximo 2 ativos por setor
+        selected_assets = []
+        assets_por_setor = {}
+        
+        # Ordenar por score para pegar os melhores primeiro
+        df_sorted = df.sort_values('selection_score', ascending=False)
+        
+        for _, row in df_sorted.iterrows():
+            asset = row['asset']
+            setor = row.get('setor', 'Desconhecido')
+            
+            # Limitar a 2 ativos por setor
+            if assets_por_setor.get(setor, 0) < 2:
+                selected_assets.append(row)
+                assets_por_setor[setor] = assets_por_setor.get(setor, 0) + 1
+                
+                # Parar quando atingir 15 ativos
+                if len(selected_assets) >= 15:
+                    break
+        
+        # Criar DataFrame final
+        df_final = pd.DataFrame(selected_assets)
+        
+        # Mostrar diversificação alcançada
+        setores_selecionados = df_final['setor'].value_counts()
+        print(f"   Diversificação setorial alcançada:")
+        for setor, count in setores_selecionados.head(10).items():
+            print(f"     {setor}: {count} ativo(s)")
+        
+        return df_final
     
     def processar_selecao_completa(self):
         """
@@ -293,7 +373,7 @@ def main():
         carregador = CarregadorEconomatica()
         selected_assets = carregador.processar_selecao_completa()
         
-        print(f"\n🎯 RESULTADO FINAL: {len(selected_assets)} ativos selecionados cientificamente")
+        print(f"\nOK RESULTADO FINAL: {len(selected_assets)} ativos selecionados cientificamente")
         for i, asset_data in enumerate(selected_assets, 1):
             print(f"{i:2d}. {asset_data['asset']}")
         

@@ -7,25 +7,25 @@ Equal Weight,ABCB4,10.0
 Equal Weight,AZZA3,10.0
 Equal Weight,ALPA4,10.0
 Equal Weight,BEES3,10.0
-Equal Weight,BAZA3,10.0
 Equal Weight,B3SA3,10.0
+Equal Weight,ALPA3,10.0
 Mean-Variance Optimization,ABEV3,0.0
 Mean-Variance Optimization,ALUP11,0.0
-Mean-Variance Optimization,AMER3,19.03472010818482
-Mean-Variance Optimization,ALOS3,19.912668957647654
+Mean-Variance Optimization,AMER3,31.549060292598547
+Mean-Variance Optimization,ALOS3,11.88292375130475
 Mean-Variance Optimization,ABCB4,0.0
-Mean-Variance Optimization,AZZA3,0.0
-Mean-Variance Optimization,ALPA4,0.0
-Mean-Variance Optimization,BEES3,49.182724118390915
-Mean-Variance Optimization,BAZA3,0.0
-Mean-Variance Optimization,B3SA3,11.86988681577661
-Equal Risk Contribution,ABEV3,12.3874014565709
-Equal Risk Contribution,ALUP11,10.967121892580355
-Equal Risk Contribution,AMER3,7.1554598874078765
-Equal Risk Contribution,ALOS3,8.623691892814769
-Equal Risk Contribution,ABCB4,8.119251000629877
-Equal Risk Contribution,AZZA3,12.0407010015932
-Equal Risk Contribution,ALPA4,7.57636969988177
-Equal Risk Contribution,BEES3,12.091862691878507
-Equal Risk Contribution,BAZA3,12.605237377147818
-Equal Risk Contribution,B3SA3,8.432903099494911
+Mean-Variance Optimization,AZZA3,1.1611444407858551e-14
+Mean-Variance Optimization,ALPA4,9.342090173688531
+Mean-Variance Optimization,BEES3,39.99999999999999
+Mean-Variance Optimization,B3SA3,7.2259257824081535
+Mean-Variance Optimization,ALPA3,2.1196963822543298e-14
+Equal Risk Contribution,ABEV3,13.180792511235587
+Equal Risk Contribution,ALUP11,11.356013888699174
+Equal Risk Contribution,AMER3,7.752815257578903
+Equal Risk Contribution,ALOS3,9.899290946907966
+Equal Risk Contribution,ABCB4,8.802091009315633
+Equal Risk Contribution,AZZA3,12.830421784704113
+Equal Risk Contribution,ALPA4,7.863231368926741
+Equal Risk Contribution,BEES3,13.176064443613864
+Equal Risk Contribution,B3SA3,8.779339353238232
+Equal Risk Contribution,ALPA3,6.359939435779798

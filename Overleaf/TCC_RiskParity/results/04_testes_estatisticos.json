@@ -1,0 +1,20 @@
+{
+  "MVO_vs_EW": {
+    "diferenca_sharpe": 0.16740556227004016,
+    "t_estatistica": 2.181087937480573,
+    "p_value": 0.03965716835578248,
+    "significante_5pct": true
+  },
+  "MVO_vs_ERC": {
+    "diferenca_sharpe": 0.18689801433457354,
+    "t_estatistica": 2.183824099864503,
+    "p_value": 0.03943149562152559,
+    "significante_5pct": true
+  },
+  "EW_vs_ERC": {
+    "diferenca_sharpe": 0.019492452064533372,
+    "t_estatistica": 0.9275565687033475,
+    "p_value": 0.3632698407474715,
+    "significante_5pct": false
+  }
+}

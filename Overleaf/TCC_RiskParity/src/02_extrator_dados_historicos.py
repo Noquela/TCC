@@ -173,16 +173,61 @@ class ExtratorDadosHistoricos:
         if len(returns_2018_2019) < 20:
             raise ValueError("Poucos períodos de retorno")
         
-        # Verificar dados faltantes
-        missing_pct = returns_2018_2019.isnull().sum() / len(returns_2018_2019)
-        if missing_pct.max() > 0.1:  # Máximo 10% faltante
-            problematic_assets = missing_pct[missing_pct > 0.1].index.tolist()
-            print(f"   AVISO: Ativos com >10% dados faltantes: {problematic_assets}")
-        
-        # Preencher dados faltantes (forward fill)
-        returns_df_clean = returns_2018_2019.fillna(method='ffill').fillna(0)
+        # Tratamento robusto de dados faltantes
+        returns_df_clean = self.tratar_dados_faltantes_robusto(returns_2018_2019)
         
         return returns_df_clean
+    
+    def tratar_dados_faltantes_robusto(self, returns_df):
+        """
+        Tratamento robusto e defensável de dados faltantes
+        """
+        print("   Tratando dados faltantes com rigor acadêmico...")
+        
+        # Verificar percentual de dados faltantes por ativo
+        missing_pct = returns_df.isnull().sum() / len(returns_df)
+        
+        print(f"   Análise de dados faltantes:")
+        for asset in returns_df.columns:
+            pct = missing_pct[asset] * 100
+            if pct > 0:
+                print(f"     {asset}: {pct:.1f}% faltante")
+        
+        # CRITÉRIO 1: Excluir ativos com >15% dados faltantes (muito rigoroso)
+        assets_to_keep = missing_pct[missing_pct <= 0.15].index.tolist()
+        assets_removed = [col for col in returns_df.columns if col not in assets_to_keep]
+        
+        if assets_removed:
+            print(f"   REMOVIDOS (>15% faltante): {assets_removed}")
+            returns_df = returns_df[assets_to_keep]
+        
+        # CRITÉRIO 2: Para dados restantes, usar interpolação inteligente
+        returns_clean = returns_df.copy()
+        
+        for asset in returns_clean.columns:
+            if returns_clean[asset].isnull().any():
+                # Método 1: Interpolação linear (para gaps pequenos <=2 meses)
+                returns_clean[asset] = returns_clean[asset].interpolate(method='linear', limit=2)
+                
+                # Método 2: Forward fill (para início da série)
+                returns_clean[asset] = returns_clean[asset].fillna(method='ffill', limit=1)
+                
+                # Método 3: Backward fill (para final da série)  
+                returns_clean[asset] = returns_clean[asset].fillna(method='bfill', limit=1)
+                
+                # Método 4: Se ainda há NAs, usar média histórica do ativo
+                if returns_clean[asset].isnull().any():
+                    media_historica = returns_clean[asset].mean()
+                    returns_clean[asset] = returns_clean[asset].fillna(media_historica)
+        
+        # Verificação final
+        remaining_nas = returns_clean.isnull().sum().sum()
+        if remaining_nas > 0:
+            print(f"   AVISO: {remaining_nas} NAs restantes - usando zero")
+            returns_clean = returns_clean.fillna(0)
+        
+        print(f"   Resultado: {len(returns_clean.columns)} ativos, {len(returns_clean)} períodos")
+        return returns_clean
     
     def calcular_estatisticas_basicas(self, returns_df):
         """

@@ -47,7 +47,6 @@ Análise comparativa das estratégias de alocação:
 
 - pandas
 - numpy
-- scipy
+- scipy (otimização SLSQP)
 - matplotlib
 - seaborn
-- cvxpy

@@ -100,9 +100,8 @@ PETR4, VALE3, ITUB4, BBDC4, ABEV3, B3SA3, WEGE3, RENT3, LREN3, ELET3
 
 - **Python 3.13+**
   - pandas, numpy (manipulação de dados)
-  - scipy (otimização e testes estatísticos)  
+  - scipy (otimização SLSQP e testes estatísticos)  
   - matplotlib, seaborn (visualização)
-  - cvxpy (otimização convexa - alternativa)
 - **LaTeX** (documentação)
 - **Economática** (fonte de dados)
 - **Git/GitHub** (controle de versão)
@@ -110,7 +109,7 @@ PETR4, VALE3, ITUB4, BBDC4, ABEV3, B3SA3, WEGE3, RENT3, LREN3, ELET3
 ## 📋 Requisitos
 
 ```bash
-pip install pandas numpy scipy matplotlib seaborn cvxpy openpyxl
+pip install pandas numpy scipy matplotlib seaborn openpyxl
 ```
 
 ## 🚀 Como Executar
@@ -141,7 +140,7 @@ python src/generate_missing_charts.py
 
 ## 📝 Limitações
 
-- Custos de transação, impostos e slippage não incorporados nos resultados principais
+- Resultados principais apresentados sem custos (análise com custos disponível no texto completo)
 - Período de análise limitado (2018-2019) - alta volatilidade política
 - Apenas três estratégias analisadas
 - Taxa livre de risco simplificada (CDI médio)

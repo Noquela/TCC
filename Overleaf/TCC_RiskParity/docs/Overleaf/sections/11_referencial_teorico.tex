@@ -38,7 +38,7 @@ onde $RC_i$ é a contribuição marginal de risco do ativo $i$, $w_i$ é o peso 
 \min_{w} \sum_{i=1}^{n} \left( RC_i - \frac{\sigma_p}{n} \right)^2
 \end{equation}
 
-Esta formulação garante que cada ativo contribua igualmente ($\frac{\sigma_p}{n}$) para o risco total da carteira, considerando explicitamente as correlações entre os ativos através da matriz de covariância $\Sigma$. A abordagem ERC produz carteiras mais equilibradas em termos de contribuição de risco comparada ao simples Inverse Volatility Portfolio (IVP).
+Esta formulação garante que cada ativo contribua igualmente ($\frac{\sigma_p}{n}$) para o risco total da carteira, considerando explicitamente as correlações entre os ativos através da matriz de covariância $\Sigma$. A abordagem ERC produz carteiras mais equilibradas em termos de contribuição de risco comparada a métodos que ignoram as correlações entre ativos.
 
 \section{MÉTRICAS DE AVALIAÇÃO: ÍNDICE DE SHARPE E SORTINO RATIO}
 
@@ -224,7 +224,7 @@ Entre as bibliotecas previstas, destacam-se:
 
 \textbf{NumPy:} será empregada para cálculos vetoriais e matriciais, como a média dos retornos, o desvio-padrão e, principalmente, o cálculo da matriz de covariância entre os ativos. O NumPy é a base para operações matemáticas eficientes em Python.
 
-\textbf{cvxpy:} biblioteca voltada para otimização convexa, será utilizada para implementar a carteira de Markowitz. A ferramenta permite a formulação de problemas de programação quadrática, muito utilizada em finanças quantitativas.
+\textbf{scipy.optimize:} biblioteca de otimização científica, será utilizada para implementar a carteira de Markowitz através do algoritmo SLSQP (Sequential Least Squares Programming). A ferramenta oferece algoritmos robustos para problemas de otimização com restrições, amplamente utilizada em finanças quantitativas.
 
 \textbf{matplotlib e seaborn:} serão usadas para gerar gráficos e visualizações como a evolução das carteiras, boxplots de retorno e heatmaps de correlação, contribuindo para a análise visual dos resultados.
 
@@ -236,19 +236,22 @@ Essas ferramentas foram escolhidas por serem de código aberto, amplamente docum
 
 A seguir estão descritos em detalhe todos os componentes de cada fórmula utilizada na avaliação de desempenho e construção de carteiras neste estudo:
 
-\subsection{Fórmula 1 -- Peso na Estratégia Risk Parity}
+\subsection{Fórmula 1 -- Equal Risk Contribution (ERC) na Estratégia Risk Parity}
 
 \begin{equation}
-w_i = \frac{1/\sigma_i}{\sum_{j=1}^{n}(1/\sigma_j)}
+RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p} = \frac{\sigma_p}{n} \quad \forall i
 \end{equation}
 
 Em que:
 \begin{itemize}
+    \item $RC_i$: contribuição marginal de risco do ativo $i$;
     \item $w_i$: peso do ativo $i$ na carteira;
-    \item $\sigma_i$: desvio-padrão dos retornos do ativo $i$.
+    \item $\Sigma$: matriz de covariância dos ativos;
+    \item $\sigma_p$: volatilidade total da carteira;
+    \item $n$: número total de ativos.
 \end{itemize}
 
-\textbf{Interpretação:} ao atribuir ao peso o inverso da volatilidade, ativos mais voláteis recebem menor participação, equilibrando a contribuição de risco de cada ativo.
+\textbf{Interpretação:} a formulação ERC garante que cada ativo contribua igualmente ($\frac{\sigma_p}{n}$) para o risco total da carteira, considerando explicitamente as correlações entre os ativos através da matriz de covariância.
 
 \subsection{Fórmula 2 -- Índice de Sharpe}
 

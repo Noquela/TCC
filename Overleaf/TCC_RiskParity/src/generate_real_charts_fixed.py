@@ -173,7 +173,7 @@ def create_portfolio_evolution(portfolio_results, returns_df, benchmark_returns=
     benchmark_returns = benchmark_returns.reindex(returns_df.index).dropna()
     benchmark_cumulative = (1 + benchmark_returns).cumprod()
     bench_label = bench_type
-    print(f"    ✓ Benchmark validado: {bench_label}")
+    print(f"    OK: Benchmark validado: {bench_label}")
     
     # Plotar evolução de cada estratégia
     strategies = ['Equal Weight', 'Markowitz', 'Risk Parity']
@@ -341,12 +341,12 @@ def main():
         benchmark_returns = ibov_loader.load_ibovespa_data('2018-01-01', '2019-12-31')
         if benchmark_returns is not None and len(benchmark_returns) >= 10:
             benchmark_returns.benchmark_type = 'Ibovespa B3 (Oficial)'
-            print("  ✓ Ibovespa B3 oficial carregado com sucesso")
+            print("  OK: Ibovespa B3 oficial carregado com sucesso")
         else:
             raise FileNotFoundError("Dados B3 insuficientes")
     except Exception as e:
         # ERRO CRÍTICO: TCC só aceita Ibovespa B3 oficial
-        print(f"  ✗ ERRO CRÍTICO: {e}")
+        print(f"  ERRO: ERRO CRÍTICO: {e}")
         print("  Sistema abortado - TCC requer exclusivamente Ibovespa B3 oficial")
         benchmark_returns = None
     

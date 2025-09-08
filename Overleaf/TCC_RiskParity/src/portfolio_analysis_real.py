@@ -58,25 +58,96 @@ class PortfolioAnalyzer:
     
     def risk_parity_portfolio(self):
         """
-        Estratégia Risk Parity (ERC - Equal Risk Contribution)
+        Estratégia Risk Parity ERC (Equal Risk Contribution) CORRETA
+        Equaliza contribuições marginais de risco usando matriz covariância completa
         """
-        def risk_budget_objective(weights):
+        def erc_objective(weights):
+            # Volatilidade do portfólio
             portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(self.cov_matrix, weights)))
+            
+            if portfolio_vol == 0:
+                return 1e6  # Penalidade por volatilidade zero
+            
+            # Contribuições marginais de risco
             marginal_contrib = np.dot(self.cov_matrix, weights) / portfolio_vol
-            contrib = weights * marginal_contrib
-            target_contrib = portfolio_vol / self.n_assets
-            return np.sum((contrib - target_contrib) ** 2)
+            
+            # Contribuições de risco (RC_i = w_i * MC_i)
+            risk_contrib = weights * marginal_contrib
+            
+            # CORREÇÃO DEFINITIVA: Objetivo ERC padrão
+            # Minimizar soma dos quadrados das diferenças entre contribuições
+            # Equivale a equalizar RC_i para todos i
+            n = len(weights)
+            target_contrib = np.sum(risk_contrib) / n  # Contribuição média
+            
+            # Função objetivo: minimizar dispersão das contribuições
+            objective = np.sum((risk_contrib - target_contrib) ** 2)
+            
+            return objective
         
         # Restrições
         constraints = ({'type': 'eq', 'fun': lambda x: np.sum(x) - 1})
-        bounds = tuple((0.001, 1.0) for _ in range(self.n_assets))  # Mínimo 0.1%, sem teto
+        bounds = tuple((0.01, 0.5) for _ in range(self.n_assets))  # Limites mais restritivos
         
-        # Otimização
+        # Otimização com parâmetros melhorados
         x0 = np.ones(self.n_assets) / self.n_assets
-        result = minimize(risk_budget_objective, x0, method='SLSQP',
-                         bounds=bounds, constraints=constraints)
         
-        return result.x if result.success else None
+        # Tentar diferentes algoritmos se SLSQP falhar
+        methods = ['SLSQP', 'trust-constr']
+        
+        for method in methods:
+            try:
+                result = minimize(erc_objective, x0, method=method,
+                                bounds=bounds, constraints=constraints,
+                                options={'maxiter': 1000, 'ftol': 1e-9})
+                
+                if result.success and result.fun < 1e-6:
+                    return result.x
+                    
+            except:
+                continue
+        
+        # Se nenhum método funcionou, retornar equal weight
+        print("AVISO: ERC não convergiu, usando Equal Weight")
+        return x0
+    
+    def validate_erc(self, weights):
+        """
+        Valida se a carteira atende aos critérios ERC
+        """
+        if weights is None:
+            print("ERRO: Pesos não fornecidos para validação ERC")
+            return False
+            
+        portfolio_vol = np.sqrt(np.dot(weights.T, np.dot(self.cov_matrix, weights)))
+        marginal_contrib = np.dot(self.cov_matrix, weights) / portfolio_vol
+        risk_contrib = weights * marginal_contrib
+        
+        # Contribuições devem ser aproximadamente iguais
+        # Target é a contribuição média (soma das contribuições / n)
+        target = np.sum(risk_contrib) / self.n_assets
+        
+        # Desvios relativos para avaliar equalização
+        relative_deviations = np.abs(risk_contrib - target) / target
+        max_relative_deviation = np.max(relative_deviations)
+        
+        print(f"=== VALIDACAO ERC ===")
+        print(f"Volatilidade total: {portfolio_vol:.6f}")
+        print(f"Variancia total: {portfolio_vol**2:.6f}")
+        print(f"Target por ativo (var/n): {target:.6f}")
+        print(f"Contribuicoes de risco por ativo:")
+        for i, asset in enumerate(self.assets):
+            deviation_pct = relative_deviations[i] * 100
+            print(f"{asset}: {risk_contrib[i]:.6f} (target: {target:.6f}, desvio: {deviation_pct:.2f}%)")
+        
+        print(f"Maximo desvio relativo: {max_relative_deviation:.4f} ({max_relative_deviation*100:.2f}%)")
+        print(f"Tolerancia: 0.10 (10%)")
+        
+        is_valid = max_relative_deviation < 0.10  # Tolerância de 10%
+        print(f"ERC Valido: {'SIM' if is_valid else 'NAO'}")
+        print()
+        
+        return is_valid
     
     def calculate_portfolio_metrics(self, weights):
         """
@@ -176,6 +247,11 @@ class PortfolioAnalyzer:
         print("3. Calculando estratégia Risk Parity (ERC)...")
         rp_weights = self.risk_parity_portfolio()
         strategies['Risk Parity'] = self.calculate_portfolio_metrics(rp_weights)
+        
+        # Validar ERC
+        if rp_weights is not None:
+            print("4. Validando implementação ERC...")
+            self.validate_erc(rp_weights)
         
         return strategies
     

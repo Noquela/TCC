@@ -280,8 +280,8 @@ class EconomaticaLoader:
             print("ERRO: Poucos períodos com dados completos para todos os ativos")
             return None, None
         
-        # CORREÇÃO: Adicionar preços de dezembro 2017 para calcular retornos de janeiro 2018
-        returns_df = self._calculate_returns_with_december_base(price_df)
+        # CORREÇÃO: Tentar buscar dezembro 2017 para calcular retornos corretos de janeiro 2018
+        returns_df = self._calculate_returns_with_december_base(price_df, start_date)
         
         print(f"\nDados carregados com sucesso!")
         print(f"Ativos: {list(returns_df.columns)}")
@@ -296,29 +296,85 @@ class EconomaticaLoader:
         """
         return {asset: self.asset_info[asset] for asset in successful_assets if asset in self.asset_info}
     
-    def _calculate_returns_with_december_base(self, price_df):
+    def _calculate_returns_with_december_base(self, price_df, start_date):
         """
-        Calcula retornos logarítmicos incluindo janeiro 2018
-        Estratégia simplificada: usar retorno 0% como base para janeiro 2018
+        Calcula retornos corretos tentando buscar dezembro 2017
+        Conforme ROADMAP: calcular retorno real de janeiro 2018: ln(P_jan/P_dez)
         """
-        print("    Incluindo janeiro 2018 nos retornos...")
+        print("    Calculando retornos corrigidos para janeiro 2018...")
         
-        # Calcular retornos normais (perde janeiro)
-        normal_returns = np.log(price_df / price_df.shift(1)).dropna()
+        start_date = pd.to_datetime(start_date)
         
-        # Criar retorno artificial de janeiro = 0% (ln(1) = 0)
-        # Isso significa que consideramos janeiro como "mês base" com retorno neutro
-        jan_2018_timestamp = pd.Timestamp('2018-01-31 23:59:59.999999999')
-        jan_returns = pd.Series([0.0] * len(price_df.columns), 
-                               index=price_df.columns, 
-                               name=jan_2018_timestamp)
+        # Tentar buscar dados de dezembro 2017
+        december_2017_data = self._try_load_december_2017(price_df.columns)
         
-        # Combinar janeiro com os outros retornos
-        returns_with_jan = pd.concat([jan_returns.to_frame().T, normal_returns])
+        if december_2017_data is not None and len(december_2017_data) > 0:
+            print("    OK: Dados de dezembro 2017 encontrados - calculando retornos reais")
+            
+            # Adicionar dezembro 2017 ao início do DataFrame de preços
+            extended_prices = pd.concat([december_2017_data.to_frame().T, price_df])
+            
+            # Calcular retornos logarítmicos normais (incluindo janeiro real)
+            returns_df = np.log(extended_prices / extended_prices.shift(1)).dropna()
+            
+            print(f"    OK: Janeiro 2018 com retorno REAL calculado vs dezembro 2017")
+            print(f"    Total de observacoes: {len(returns_df)}")
+            
+        else:
+            print("    AVISO: Dezembro 2017 nao disponivel - usando primeira observacao como base")
+            
+            # Calcular retornos normais usando primeira observação como base
+            returns_df = np.log(price_df / price_df.shift(1)).dropna()
+            
+            # DOCUMENTAR esta limitação claramente
+            print("    AVISO: LIMITACAO DOCUMENTADA: Janeiro 2018 perdido por falta de base dezembro 2017")
+            print(f"    Primeira observacao inicia em: {returns_df.index[0].date()}")
+            print(f"    Total de observacoes: {len(returns_df)}")
         
-        print(f"    OK: Incluído janeiro 2018 como mês base (retorno=0%), total: {len(returns_with_jan)} observações")
+        return returns_df
+    
+    def _try_load_december_2017(self, asset_columns):
+        """
+        Tenta buscar dados de dezembro 2017 nas abas dos ativos
+        """
+        print("    Buscando dezembro 2017 nos dados...")
         
-        return returns_with_jan
+        try:
+            all_sheets = self.load_selected_sheets_only()
+            if all_sheets is None:
+                return None
+            
+            december_data = {}
+            december_2017 = pd.Timestamp('2017-12-31')
+            
+            for asset in asset_columns:
+                if asset in all_sheets:
+                    asset_data = self.extract_asset_data(all_sheets[asset], asset)
+                    
+                    if asset_data is not None:
+                        # Procurar dados de dezembro 2017 (tolerância de ±15 dias)
+                        december_mask = (asset_data['Date'] >= '2017-12-15') & (asset_data['Date'] <= '2017-12-31')
+                        december_prices = asset_data[december_mask]
+                        
+                        if len(december_prices) > 0:
+                            # Pegar preço mais próximo do fim do mês
+                            last_december_price = december_prices.iloc[-1]['Price']
+                            december_data[asset] = last_december_price
+                            print(f"      OK {asset}: preco dezembro 2017 = {last_december_price:.2f}")
+                        else:
+                            print(f"      ERRO {asset}: sem dados dezembro 2017")
+            
+            if len(december_data) == len(asset_columns):
+                # Todos os ativos têm dados de dezembro
+                december_series = pd.Series(december_data, name=december_2017)
+                return december_series
+            else:
+                print(f"    ERRO: Apenas {len(december_data)}/{len(asset_columns)} ativos com dezembro 2017")
+                return None
+                
+        except Exception as e:
+            print(f"    ERRO ao buscar dezembro 2017: {e}")
+            return None
     
     def load_benchmark_series(self, start_date='2018-01-01', end_date='2019-12-31'):
         """

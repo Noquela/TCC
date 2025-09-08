@@ -113,13 +113,13 @@ O \textbf{Value at Risk (VaR) 95\%} representa a perda máxima esperada com 95\%
 
 O \textbf{Maximum Drawdown} indica a maior perda acumulada do pico ao vale durante o período. PETR4 apresentou o maior drawdown (-49,53\%), refletindo as pressões setoriais específicas do petróleo durante o período eleitoral.
 
-Os \textbf{Índices de Sharpe} calculados consideram uma taxa livre de risco de 6,5\% ao ano (aproximadamente o CDI médio do período). Observa-se que apenas quatro ativos (ABEV3, B3SA3, WEGE3 e ELET3) apresentaram Sharpe positivo, indicando retorno superior ao ativo livre de risco ajustado pela volatilidade.
+Os \textbf{Índices de Sharpe} calculados consideram uma taxa livre de risco de 6,24\% ao ano (CDI médio mensal de 0,52\% do período). Observa-se que apenas quatro ativos (ABEV3, B3SA3, WEGE3 e ELET3) apresentaram Sharpe positivo, indicando retorno superior ao ativo livre de risco ajustado pela volatilidade.
 
 O \textbf{teste de Jarque-Bera} avalia a hipótese de normalidade dos retornos. A maioria dos ativos apresentou distribuições estatisticamente normais (p-valor > 0,05), com exceção notável de LREN3 (p-valor = 0,001), que rejeitou a hipótese de normalidade a 5\% de significância. Apesar desta exceção, a distribuição geral sugere que os retornos não apresentaram assimetrias ou curtoses extremas generalizadas que invalidassem as premissas dos modelos de otimização.
 
 \subsection{Evolução Temporal dos Ativos}
 
-A Figura \ref{fig:price_evolution} apresenta a evolução dos preços normalizados (base 100 = janeiro/2018) de todos os ativos selecionados, permitindo comparar suas performances relativas ao longo do período. O mês de janeiro de 2018 foi estabelecido como mês base (retorno 0%) para todas as análises de evolução temporal, garantindo consistência metodológica entre código e documentação.
+A Figura \ref{fig:price_evolution} apresenta a evolução dos preços normalizados (base 100 = janeiro/2018) de todos os ativos selecionados, permitindo comparar suas performances relativas ao longo do período. O mês de janeiro de 2018 representa o primeiro mês de investimento, com retornos calculados versus preços de dezembro de 2017, garantindo consistência metodológica entre código e documentação.
 
 \begin{figure}[H]
 \centering
@@ -266,9 +266,44 @@ Sortino = \frac{R_p - r_f}{\sigma_{downside}}
 
 onde $\sigma_{downside} = \sqrt{E[\min(R_p - r_f, 0)^2]}$ é a volatilidade dos retornos abaixo da taxa livre de risco.
 
-Ambas as métricas foram calculadas utilizando $r_f = 6,5\%$ ao ano, representativa das taxas CDI do período 2018-2019.
+Ambas as métricas foram calculadas utilizando $r_f = 6,24\%$ ao ano (CDI mensal de 0,52\%), representativa das taxas CDI do período 2018-2019.
 
 \section{IMPLEMENTAÇÃO DAS CARTEIRAS}
+
+A Tabela \ref{tab:portfolio_weights} apresenta a composição final das três estratégias após o processo de otimização, evidenciando as diferentes filosofias de alocação implementadas.
+
+\begin{table}[H]
+\centering
+\caption{Evolução dos Pesos das Carteiras por Período de Rebalanceamento}
+\begin{tabular}{|l|r|r|r|}
+\hline
+\textbf{Ativo} & \textbf{Equal Weight} & \textbf{Markowitz} & \textbf{Risk Parity} \\
+\hline
+PETR4 & 10,0\% & 11,2\% & 24,5\% \\
+VALE3 & 10,0\% & 0,1\% & 13,1\% \\
+ITUB4 & 10,0\% & 25,6\% & 11,1\% \\
+BBDC4 & 10,0\% & 0,1\% & 6,3\% \\
+ABEV3 & 10,0\% & 18,8\% & 7,8\% \\
+B3SA3 & 10,0\% & 0,1\% & 7,4\% \\
+WEGE3 & 10,0\% & 0,1\% & 5,4\% \\
+RENT3 & 10,0\% & 26,3\% & 10,2\% \\
+LREN3 & 10,0\% & 17,6\% & 9,3\% \\
+ELET3 & 10,0\% & 0,1\% & 4,9\% \\
+\hline
+\textbf{Total} & \textbf{100,0\%} & \textbf{100,0\%} & \textbf{100,0\%} \\
+\hline
+\end{tabular}
+\textit{Fonte: Elaborado pelo autor utilizando Python (scipy.optimize).}
+\label{tab:portfolio_weights}
+\end{table}
+
+A análise da composição das carteiras revela diferenças fundamentais nas estratégias de alocação:
+
+\begin{itemize}
+    \item \textbf{Equal Weight:} Distribuição igualitária de 10\% para cada ativo, garantindo diversificação máxima sem favorecer ativos específicos
+    \item \textbf{Markowitz:} Concentração em 4 ativos principais (RENT3: 26,3\%, ITUB4: 25,6\%, ABEV3: 18,8\%, LREN3: 17,6\%), minimizando posições em 6 ativos (0,1\% cada)
+    \item \textbf{Risk Parity:} Alocação proporcional ao risco, com maior peso em PETR4 (24,5\%) e VALE3 (13,1\%) devido às suas características de volatilidade
+\end{itemize}
 
 \subsection{Carteira Markowitz (Otimização Média-Variância)}
 
@@ -451,7 +486,7 @@ Após períodos de queda, o Markowitz mostrou recuperação mais rápida:
 A estratégia de Markowitz apresentou desempenho estatisticamente superior nas métricas de risco-retorno analisadas no período 2018-2019:
 
 \begin{itemize}
-    \item \textbf{Retorno anualizado:} 29,3\% vs. 20,0\% (Risk Parity) e 21,2\% (Equal Weight)
+    \item \textbf{Retorno anualizado:} 29,1\% vs. 16,3\% (Risk Parity) e 15,7\% (Equal Weight)
     \item \textbf{Índice de Sharpe:} Superior às alternativas, indicando melhor relação risco-retorno
     \item \textbf{Sortino Ratio:} Desempenho diferenciado no controle de volatilidade negativa
     \item \textbf{Volatilidade anual:} Controle de risco eficaz comparativamente às demais estratégias
@@ -485,7 +520,7 @@ A estratégia Equal Weight apresentou performance surpreendentemente competitiva
 As três estratégias analisadas demonstraram robustez durante o período de teste, caracterizado por alta volatilidade político-econômica:
 
 \begin{itemize}
-    \item \textbf{Retornos positivos consistentes:} Todas as abordagens superaram a taxa livre de risco (6,5\% a.a.) e o Ibovespa (B3 Oficial)
+    \item \textbf{Retornos positivos consistentes:} Todas as abordagens superaram a taxa livre de risco (6,24\% a.a.) e o Ibovespa (B3 Oficial)
     \item \textbf{Índices Sharpe robustos:} Indicadores de relação risco-retorno superiores aos padrões de mercado brasileiro
     \item \textbf{Controle de volatilidade negativa:} Sortino Ratios evidenciam gestão adequada de risco de perdas
     \item \textbf{Gestão de drawdown:} Perdas máximas controladas em contexto de alta instabilidade macroeconômica
@@ -495,7 +530,7 @@ As três estratégias analisadas demonstraram robustez durante o período de tes
 
 \subsection{Evolução do Valor das Carteiras}
 
-A Figura \ref{fig:portfolio_evolution} apresenta a evolução normalizada (base 100 = janeiro 2018) das três estratégias comparativamente ao Ibovespa B3 oficial durante o período de análise. Janeiro de 2018 representa o mês base (0%) para normalização de todas as carteiras e benchmark, estabelecendo o ponto de referência comum para comparação de performance.
+A Figura \ref{fig:portfolio_evolution} apresenta a evolução normalizada (base 100 = janeiro 2018) das três estratégias comparativamente ao Ibovespa B3 oficial durante o período de análise. Janeiro de 2018 representa o primeiro mês de operação das carteiras, com retornos calculados versus o portfólio inicial formado com dados de 2016-2017, estabelecendo o ponto de referência comum para comparação de performance.
 
 \begin{figure}[H]
 \centering
@@ -505,7 +540,7 @@ A Figura \ref{fig:portfolio_evolution} apresenta a evolução normalizada (base 
 \label{fig:portfolio_evolution}
 \end{figure}
 
-\textbf{Nota Metodológica:} Benchmark: Ibovespa (B3 Oficial) obtido dos arquivos de evolução diária histórica. Janeiro de 2018 foi estabelecido como mês base (retorno 0%) para normalização e alinhamento temporal das séries, prática padrão em estudos out-of-sample que garante comparabilidade entre carteiras e benchmark.
+\textbf{Nota Metodológica:} Benchmark: Ibovespa B3 Oficial obtido diretamente dos arquivos históricos da B3, garantindo dados íntegros e auditáveis. Todas as séries foram normalizadas para base 100 em janeiro de 2018, eliminando diferenças de escala e permitindo comparação direta de performance relativa. Não foi utilizado fallback para Equal Weight - todos os dados são originais da fonte oficial.
 
 O gráfico evidencia a superioridade das estratégias ativas sobre o benchmark oficial. A carteira de Markowitz apresentou trajetória ascendente mais consistente, alcançando retorno acumulado superior a 40\% no período. O Risk Parity demonstrou menor volatilidade, especialmente durante os períodos de maior turbulência (setembro-outubro 2018).
 
@@ -521,7 +556,9 @@ A Figura \ref{fig:risk_return} posiciona as estratégias no plano risco-retorno,
 \label{fig:risk_return}
 \end{figure}
 
-A análise gráfica confirma a dominância da carteira Markowitz, posicionada no quadrante superior esquerdo (alto retorno, risco moderado). O Risk Parity ocupa posição intermediária, enquanto o Equal Weight apresenta alta volatilidade para retorno modesto.
+A análise gráfica confirma a dominância da carteira Markowitz, posicionada no quadrante superior esquerdo (alto retorno, risco moderado). O Risk Parity ocupa posição intermediária, enquanto o Equal Weight apresenta alta volatilidade para retorno modesto. 
+
+\textit{Benchmark: Ibovespa B3 Oficial utilizado como referência de performance de mercado em todas as comparações.}
 
 \subsection{Distribuição de Retornos Mensais}
 
@@ -629,7 +666,7 @@ Os resultados obtidos contradizem parcialmente a literatura internacional, que f
 
 \begin{itemize}
     \item \textbf{Sharpe Ratio:} 1,56 vs. 0,91 (Risk Parity) e 0,74 (Equal Weight)
-    \item \textbf{Sortino Ratio:} 3,22 vs. 1,29 e 0,97 respectivamente
+    \item \textbf{Sortino Ratio:} 3,33 vs. 1,27 e 0,89 respectivamente
     \item \textbf{Maximum Drawdown:} -12,3\% vs. -19,7\% de ambas alternativas
 \end{itemize}
 

@@ -9,7 +9,13 @@
       "Bash(git add:*)",
       "Bash(git rm:*)",
       "Bash(git push:*)",
-      "Bash(gh repo create:*)"
+      "Bash(gh repo create:*)",
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(sed:*)",
+      "Bash(dir:*)",
+      "Bash(del automated_validation_report.json erc_validation_results.json quantitative_methodology_validation.json real_returns_data_backup.csv)"
     ],
     "deny": [],
     "ask": []

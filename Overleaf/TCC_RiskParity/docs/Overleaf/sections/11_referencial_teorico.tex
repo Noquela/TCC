@@ -20,7 +20,9 @@ Estudos indicam que, em muitos casos, o desempenho de carteiras Equal Weight pod
 
 A estratégia Risk Parity surgiu como uma alternativa para endereçar o problema da concentração de risco observado em abordagens tradicionais. Na sua implementação mais rigorosa (Equal Risk Contribution - ERC), o objetivo é equalizar as contribuições marginais de risco de cada ativo, considerando não apenas as volatilidades individuais, mas também as correlações entre os ativos por meio da matriz de covariância (MAILLARD; RONCALLI; TEILETCHE, 2010).
 
-Este trabalho implementa o verdadeiro Risk Parity (ERC), que equaliza as contribuições marginais de risco considerando a matriz de covariância completa. Para referência, a fórmula básica do Inverse Volatility Portfolio (IVP) é apresentada abaixo:
+Este trabalho implementa o verdadeiro Risk Parity (ERC), que equaliza as contribuições marginais de risco considerando a matriz de covariância completa. 
+
+\textbf{Distinção Metodológica:} A fórmula básica do Inverse Volatility Portfolio (IVP) é apresentada como referência conceitual, mas não representa a implementação utilizada neste estudo. O IVP considera apenas volatilidades individuais:
 
 \begin{equation}
 \label{eq:risk_parity}
@@ -29,7 +31,7 @@ w_i = \frac{(1/\sigma_i)}{\sum_{j=1}^{n}(1/\sigma_j)}
 
 onde $w_i$ representa o peso do ativo $i$ e $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$.
 
-A implementação ERC utilizada neste trabalho resolve o seguinte problema de otimização para equalizar as contribuições marginais de risco:
+\textbf{Implementação Efetiva (ERC):} Este trabalho utiliza a abordagem ERC mais sofisticada que considera a matriz de covariância completa. A implementação ERC resolve o seguinte problema de otimização para equalizar as contribuições marginais de risco:
 
 \begin{equation}
 \label{eq:erc_optimization}

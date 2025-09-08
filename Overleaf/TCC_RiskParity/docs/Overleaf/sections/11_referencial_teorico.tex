@@ -22,23 +22,23 @@ A estratégia Risk Parity surgiu como uma alternativa para endereçar o problema
 
 Este trabalho implementa o verdadeiro Risk Parity (ERC), que equaliza as contribuições marginais de risco considerando a matriz de covariância completa. 
 
-\textbf{Distinção Metodológica:} A fórmula básica do Inverse Volatility Portfolio (IVP) é apresentada como referência conceitual, mas não representa a implementação utilizada neste estudo. O IVP considera apenas volatilidades individuais:
+A implementação Risk Parity deste estudo utiliza a metodologia ERC (Equal Risk Contribution), que equaliza as contribuições marginais de risco de cada ativo considerando a matriz de covariância completa:
 
 \begin{equation}
 \label{eq:risk_parity}
-w_i = \frac{(1/\sigma_i)}{\sum_{j=1}^{n}(1/\sigma_j)}
+RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p} = \frac{\sigma_p}{n} \quad \forall i
 \end{equation}
 
-onde $w_i$ representa o peso do ativo $i$ e $\sigma_i$ é o desvio-padrão dos retornos do ativo $i$.
+onde $RC_i$ é a contribuição marginal de risco do ativo $i$, $w_i$ é o peso do ativo $i$, $\Sigma$ é a matriz de covariância, $\sigma_p$ é a volatilidade do portfólio, e $n$ é o número de ativos.
 
-\textbf{Implementação Efetiva (ERC):} Este trabalho utiliza a abordagem ERC mais sofisticada que considera a matriz de covariância completa. A implementação ERC resolve o seguinte problema de otimização para equalizar as contribuições marginais de risco:
+\textbf{Problema de Otimização ERC:} Para encontrar os pesos que satisfazem a condição acima, resolve-se o seguinte problema de otimização:
 
 \begin{equation}
 \label{eq:erc_optimization}
 \min_{w} \sum_{i=1}^{n} \left( RC_i - \frac{\sigma_p}{n} \right)^2
 \end{equation}
 
-onde $RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p}$ é a contribuição marginal de risco do ativo $i$, $\Sigma$ é a matriz de covariância, e $\sigma_p$ é a volatilidade do portfólio. Essa abordagem ERC considera explicitamente as correlações entre os ativos, produzindo carteiras mais equilibradas em termos de contribuição de risco.
+Esta formulação garante que cada ativo contribua igualmente ($\frac{\sigma_p}{n}$) para o risco total da carteira, considerando explicitamente as correlações entre os ativos através da matriz de covariância $\Sigma$. A abordagem ERC produz carteiras mais equilibradas em termos de contribuição de risco comparada ao simples Inverse Volatility Portfolio (IVP).
 
 \section{MÉTRICAS DE AVALIAÇÃO: ÍNDICE DE SHARPE E SORTINO RATIO}
 

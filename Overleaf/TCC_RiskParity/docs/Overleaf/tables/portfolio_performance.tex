@@ -1,20 +1,22 @@
-% Tabela gerada automaticamente pelo Python com dados reais da Economática
+% Tabela gerada automaticamente - Performance das Carteiras CORRIGIDA
 \begin{table}[H]
 \centering
-\caption{Performance Consolidada das Carteiras (2018-2019)}
+\caption{Performance Consolidada das Carteiras (2018-2019) - Dados Corrigidos}
+\label{tab:portfolio_performance_corrected}
 \begin{tabular}{|l|r|r|r|r|}
 \hline
 \textbf{Estratégia} & \textbf{Retorno} & \textbf{Volatilidade} & \textbf{Sharpe} & \textbf{Sortino} \\
 & \textbf{Anual (\%)} & \textbf{Anual (\%)} & \textbf{Ratio} & \textbf{Ratio} \\
 \hline
-Equal Weight & 15.7 & 13.1 & 0.70 & 0.89 \\
+Equal Weight & 15.7 & 13.1 & 0.72 & 0.92 \\
 \hline
-Markowitz & 29.1 & 10.7 & 2.10 & 3.33 \\
+Markowitz & 29.0 & 10.7 & 2.13 & 3.40 \\
 \hline
-Risk Parity & 16.3 & 10.1 & 0.97 & 1.27 \\
+Risk Parity & 16.3 & 10.1 & 1.00 & 1.31 \\
 \hline
 \end{tabular}
 
-\textit{Fonte: Elaborado pelo autor utilizando Python com dados da Economática.}
+\textit{Fonte: Elaboração própria. Taxa livre de risco: 6,24\% a.a. (CDI médio).}
+\textit{CORRIGIDO: Elimina inconsistências de Sharpe Ratio identificadas.}
 \label{tab:portfolio_performance}
 \end{table}

@@ -1,0 +1,29 @@
+{
+  "data_processamento": "2025-09-08T19:39:20.133574",
+  "criterios_aplicados": [
+    "Completude >= 70%",
+    "Volatilidade entre P25-1.5*IQR e P75+1.5*IQR",
+    "Liquidez >= percentil 30",
+    "Dados teste >= 20 meses",
+    "Sele\u00e7\u00e3o final por score composto"
+  ],
+  "total_analisados": 29,
+  "total_selecionados": 15,
+  "ativos_finais": [
+    "ABEV3",
+    "ALUP11",
+    "AMER3",
+    "ALOS3",
+    "ABCB4",
+    "AZZA3",
+    "ALPA4",
+    "BEES3",
+    "BAZA3",
+    "B3SA3",
+    "ALPA3",
+    "BGIP4",
+    "BPAN4",
+    "ANIM3",
+    "EALT4"
+  ]
+}

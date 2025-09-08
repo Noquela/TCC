@@ -1,0 +1,38 @@
+{
+  "data_processamento": "2025-09-08T19:43:36.378920",
+  "periodo_analise": "2018-01-01 a 2019-12-31",
+  "taxa_livre_risco": 0.0624,
+  "total_ativos": 10,
+  "ativos_analisados": [
+    "ABEV3",
+    "ALUP11",
+    "AMER3",
+    "ALOS3",
+    "ABCB4",
+    "AZZA3",
+    "ALPA4",
+    "BEES3",
+    "BAZA3",
+    "B3SA3"
+  ],
+  "estrategias": {
+    "equal_weight": {
+      "retorno_anual": 0.3233341700744819,
+      "volatilidade": 0.18952006882254024,
+      "sharpe": 1.376815509278921,
+      "sortino": 1.7098614609146823
+    },
+    "markowitz": {
+      "retorno_anual": 0.42880408500048184,
+      "volatilidade": 0.19751675665325422,
+      "sharpe": 1.85505316717869,
+      "sortino": 2.5705128266594985
+    },
+    "risk_parity": {
+      "retorno_anual": 0.2976522956856701,
+      "volatilidade": 0.1804244680092542,
+      "sharpe": 1.3038824405656757,
+      "sortino": 1.5600966795662474
+    }
+  }
+}

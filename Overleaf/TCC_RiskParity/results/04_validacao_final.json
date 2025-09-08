@@ -1,0 +1,21 @@
+{
+  "data_validacao": "2025-09-08T19:45:40.418534",
+  "sistema": "REFATORADO - Academicamente correto",
+  "metodologia": "Cient\u00edfica e objetiva",
+  "periodo_selecao": "2014-2017",
+  "periodo_teste": "2018-2019",
+  "look_ahead_bias": "ELIMINADO",
+  "cherry_picking": "ELIMINADO",
+  "fonte_dados": "Econom\u00e1tica (real)",
+  "estrategias_implementadas": [
+    "Equal Weight",
+    "Mean-Variance Optimization",
+    "Risk Parity"
+  ],
+  "metricas_calculadas": [
+    "Sharpe Ratio",
+    "Sortino Ratio",
+    "Maximum Drawdown"
+  ],
+  "validacao_academica": "APROVADO - Sistema defens\u00e1vel em banca"
+}

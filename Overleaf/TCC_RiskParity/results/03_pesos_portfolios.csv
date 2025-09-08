@@ -1,0 +1,31 @@
+Estratégia,Ativo,Peso_Pct
+Equal Weight,ABEV3,10.0
+Equal Weight,ALUP11,10.0
+Equal Weight,AMER3,10.0
+Equal Weight,ALOS3,10.0
+Equal Weight,ABCB4,10.0
+Equal Weight,AZZA3,10.0
+Equal Weight,ALPA4,10.0
+Equal Weight,BEES3,10.0
+Equal Weight,BAZA3,10.0
+Equal Weight,B3SA3,10.0
+Mean-Variance Optimization,ABEV3,0.0
+Mean-Variance Optimization,ALUP11,0.0
+Mean-Variance Optimization,AMER3,19.03472010818482
+Mean-Variance Optimization,ALOS3,19.912668957647654
+Mean-Variance Optimization,ABCB4,0.0
+Mean-Variance Optimization,AZZA3,0.0
+Mean-Variance Optimization,ALPA4,0.0
+Mean-Variance Optimization,BEES3,49.182724118390915
+Mean-Variance Optimization,BAZA3,0.0
+Mean-Variance Optimization,B3SA3,11.86988681577661
+Equal Risk Contribution,ABEV3,12.3874014565709
+Equal Risk Contribution,ALUP11,10.967121892580355
+Equal Risk Contribution,AMER3,7.1554598874078765
+Equal Risk Contribution,ALOS3,8.623691892814769
+Equal Risk Contribution,ABCB4,8.119251000629877
+Equal Risk Contribution,AZZA3,12.0407010015932
+Equal Risk Contribution,ALPA4,7.57636969988177
+Equal Risk Contribution,BEES3,12.091862691878507
+Equal Risk Contribution,BAZA3,12.605237377147818
+Equal Risk Contribution,B3SA3,8.432903099494911

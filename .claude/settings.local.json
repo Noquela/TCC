@@ -17,7 +17,10 @@
       "Bash(dir:*)",
       "Bash(del automated_validation_report.json erc_validation_results.json quantitative_methodology_validation.json real_returns_data_backup.csv)",
       "Bash(del real_economatica_loader.py fast_economatica_loader.py robust_asset_selector.py calculate_updated_stats.py selected_assets_integrator.py extract_real_2018_2019.py)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(del /q /s backup_old_results*)",
+      "Bash(rd:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []

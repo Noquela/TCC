@@ -117,7 +117,7 @@ A matriz de covariância $\Sigma$ desempenha papel central na determinação dos
 
 Apesar de sua elegância teórica, a implementação prática da teoria de Markowitz enfrenta desafios significativos que frequentemente comprometem sua eficácia:
 
-\textbf{Sensibilidade a Erros de Estimação:} Michaud (1989) identificou o "enigma da otimização" - carteiras teoricamente ótimas frequentemente apresentam performance decepcionante fora da amostra devido à instabilidade das estimativas paramétricas. Pequenas mudanças nas estimativas de retorno esperado, em particular, podem resultar em alocações drasticamente diferentes.
+\textbf{Sensibilidade a Erros de Estimação:} Michaud (1989) identificou o "enigma da otimização" - carteiras teoricamente ótimas frequentemente apresentam desempenho decepcionante fora da amostra devido à instabilidade das estimativas paramétricas. Pequenas mudanças nas estimativas de retorno esperado, em particular, podem resultar em alocações drasticamente diferentes.
 
 Chopra e Ziemba (1993) quantificaram esta sensibilidade, demonstrando que erros nas estimativas de retorno esperado têm impacto na performance da carteira 11 vezes maior que erros equivalentes nas estimativas de variância, e 2 vezes maior que erros nas estimativas de covariância. Esta descoberta sugere que a qualidade das estimativas de retorno esperado é crítica para o sucesso da implementação.
 
@@ -430,7 +430,7 @@ Mercados emergentes apresentam volatilidade tipicamente 2-3 vezes superior a mer
 
 \textbf{Menor Diversificação Econômica:} Economias emergentes frequentemente dependem de poucos setores ou commodities, amplificando impacto de choques específicos.
 
-\textbf{Fluxos de Capital Voláteis:} Capital estrangeiro pode entrar e sair rapidamente, criando volatilidade relacionada a sentiment global rather than fundamentals locais.
+\textbf{Fluxos de Capital Voláteis:} Capital estrangeiro pode entrar e sair rapidamente, criando volatilidade relacionada ao sentimento global em vez de fundamentos locais.
 
 \textbf{Menor Liquidez:} Mercados menos profundos amplificam impacto de trades individuais, aumentando volatilidade intraday e de curto prazo.
 
@@ -468,23 +468,23 @@ O mercado acionário brasileiro apresenta concentração setorial elevada:
 
 \textbf{Utilities:} Empresas de energia elétrica (Eletrobras, Copel, Cemig) contribuem substancialmente, com performance ligada a regulação setorial e regime hidrológico.
 
-Esta concentração implica que performance do mercado brasileiro é heavily influenced por performance destes poucos setores dominantes.
+Esta concentração implica que o desempenho do mercado brasileiro é fortemente influenciado pelo desempenho destes poucos setores dominantes.
 
 \subsubsection{Sensibilidade a Fatores Externos}
 
-\textbf{Preços de Commodities:} Como major exporter de minério de ferro, petróleo, soja, e outros commodities, o mercado brasileiro correlaciona-se fortemente com preços internacionais destes produtos.
+\textbf{Preços de Commodities:} Como grande exportador de minério de ferro, petróleo, soja, e outros commodities, o mercado brasileiro correlaciona-se fortemente com preços internacionais destes produtos.
 
-\textbf{Taxa de Câmbio:} Muitas empresas listadas possuem revenues em dólares ou são heavily influenced por competitividade international, criando sensitivity significativa a USD/BRL.
+\textbf{Taxa de Câmbio:} Muitas empresas listadas possuem receitas em dólares ou são fortemente influenciadas por competitividade internacional, criando sensibilidade significativa ao USD/BRL.
 
-\textbf{Interest Rates Globais:} Como mercado emergente, Brasil compete com outros destinos por capital internacional, sendo sensitivo a mudanças em interest rates globais, especialmente nos EUA.
+\textbf{Taxas de Juros Globais:} Como mercado emergente, Brasil compete com outros destinos por capital internacional, sendo sensível a mudanças nas taxas de juros globais, especialmente nos EUA.
 
-\textbf{Risk Appetite Global:} Durante períodos de "risk-off", investidores tendem a retirar capital de mercados emergentes, afetando performance independentemente de fundamentals locais.
+\textbf{Apetite ao Risco Global:} Durante períodos de "aversaão ao risco", investidores tendem a retirar capital de mercados emergentes, afetando performance independentemente de fundamentos locais.
 
 \subsubsection{Fatores Político-Econômicos}
 
 \textbf{Política Fiscal:} Preocupações sobre sustentabilidade fiscal frequently move markets, com debates sobre teto de gastos, reforma da previdência, e outros affecting investor confidence.
 
-\textbf{Política Monetária:} Decisões do Banco Central sobre taxa SELIC têm impacto major em valuations, especialmente considerando que Brasil historically teve interest rates muito elevados.
+\textbf{Política Monetária:} Decisões do Banco Central sobre taxa SELIC têm impacto significativo em avaliações, especialmente considerando que Brasil historicamente teve taxas de juros muito elevadas.
 
 \textbf{Eleições:} Ciclos eleitorais criam uncertainty significativa, especialmente quando candidates with different economic philosophies compete.
 
@@ -508,9 +508,9 @@ A literatura sobre comparação de estratégias de alocação é extensive em me
 
 \subsubsection{DeMiguel et al. (2009)}
 
-Este estudo seminal comparou 14 estratégias de alocação usando dados de mercados desenvolvidos (principalmente EUA) e concluiu que Equal Weight frequently supera estratégias otimizadas out-of-sample. O trabalho estabeleceu benchmark methodology para comparações rigorosas e highlighted importance de evaluation out-of-sample.
+Este estudo seminal comparou 14 estratégias de alocação usando dados de mercados desenvolvidos (principalmente EUA) e concluiu que Equal Weight frequentemente supera estratégias otimizadas fora da amostra. O trabalho estabeleceu metodologia de referência para comparações rigorosas e destacou a importância da avaliação fora da amostra.
 
-Key findings incluem superior performance de Equal Weight especialmente quando estimation window é pequeno relative to número de ativos, e robust performance across different market conditions.
+Os principais achados incluem performance superior de Equal Weight especialmente quando a janela de estimação é pequena relativamente ao número de ativos, e performance robusta através de diferentes condições de mercado.
 
 \subsubsection{Maillard, Roncalli e Teiletche (2010)}
 
@@ -528,16 +528,66 @@ Analisaram estratégias de otimização no período 1995-2005, focusing em compa
 
 Compararam Markowitz e Equal Weight usando small sample (20 ativos, 5 anos) e found similar performance entre strategies. However, study lacked statistical significance testing e não incluiu Risk Parity metodologies.
 
+\section{SELEÇÃO DE ATIVOS NA LITERATURA}
+
+\subsection{Fundamentação Teórica da Seleção de Ativos}
+
+A teoria clássica de portfólio, estabelecida por Markowitz (1952), assume que o universo de ativos é dado \emph{a priori}, concentrando-se exclusivamente na otimização de pesos dentro desse conjunto predefinido. No entanto, Markowitz (1959) reconheceu posteriormente que "a escolha dos títulos a serem incluídos no portfólio é tão importante quanto a determinação de suas proporções ótimas". Esta observação inaugural destacou a necessidade de critérios científicos para definir o universo de ativos antes da aplicação de técnicas de otimização.
+
+Black e Litterman (1992) reforçaram esta perspectiva ao demonstrarem que a qualidade do universo inicial influencia dramaticamente os resultados de otimização. Os autores argumentaram que "um modelo de otimização é apenas tão bom quanto os ativos que alimentam o sistema", estabelecendo a seleção de ativos como etapa fundamental do processo de gestão de portfólio.
+
+A literatura posterior desenvolveu dois pilares fundamentais para seleção científica de ativos: (1) filtros de liquidez, para garantir negociabilidade; e (2) critérios de robustez, para excluir comportamentos anômalos que possam comprometer a estabilidade do portfólio.
+
+\subsection{Filtros de Liquidez}
+
+\subsubsection{Fundamentação Teórica}
+
+A importância da liquidez na seleção de ativos foi formalmente estabelecida por Amihud (2002), que desenvolveu a medida de iliquidez baseada na relação entre retorno absoluto e volume de negociação. Esta métrica demonstrou que ativos com baixa liquidez apresentam custos de transação implícitos elevados e maior volatilidade não relacionada a fundamentos econômicos.
+
+Goyal e Jegadeesh (1997) comprovaram empiricamente que a inclusão de ativos pouco negociados em análises de performance pode gerar conclusões espúrias sobre eficácia de estratégias de investimento. Os autores demonstraram que filtros de liquidez adequados são essenciais para validação científica de metodologias de alocação.
+
+\subsubsection{Métricas Operacionais}
+
+\textbf{Zero-return days:} Roll (1984) propôs esta métrica como proxy inversa de liquidez, baseada na observação de que ativos líquidos raramente apresentam dias consecutivos sem variação de preço. A literatura estabelece threshold de 20\% como limite aceitável para inclusão em análises de portfólio.
+
+\textbf{Roll spread:} Roll (1984) desenvolveu estimador de bid-ask spread usando covariância serial de retornos. Esta medida captura custos implícitos de transação, sendo fundamental para avaliação de implementabilidade prática das estratégias.
+
+\textbf{Autocorrelação lag-1:} Amostras com autocorrelação excessivamente negativa (< -0.30) indicam ruído microestrutural que pode comprometer estimação de parâmetros estatísticos, conforme documentado por Lo e MacKinlay (1990).
+
+\subsection{Critérios de Robustez}
+
+\subsubsection{Momentum como Fator de Seleção}
+
+Jegadeesh e Titman (1993) estabeleceram momentum 12-1 como fator preditivo robusto de retornos futuros, demonstrando que ativos com performance positiva nos 12 meses anteriores (excluindo o último mês) tendem a manter superioridade no horizonte subsequente. Esta evidência fundamenta o uso de momentum como critério de seleção.
+
+\subsubsection{Métricas de Risco}
+
+\textbf{Volatilidade:} Fama e French (1992, 1993) documentaram que ativos com volatilidade excessiva frequentemente apresentam fatores de risco idiossincráticos não compensados por retorno superior, justificando sua exclusão de análises focadas em alocação estratégica.
+
+\textbf{Maximum Drawdown:} Esta métrica captura risco de cauda e estabilidade temporal, sendo especialmente relevante para mercados emergentes caracterizados por episódios de volatilidade extrema.
+
+\textbf{Downside Deviation:} Sortino e van der Meer (1991) demonstraram que downside deviation captura mais adequadamente preferências de investidores aversos ao risco que métricas simétricas como desvio-padrão, fundamentando seu uso como critério de seleção.
+
+\subsection{Metodologia de Score Composto}
+
+A combinação de critérios múltiplos através de score ponderado permite integração objetiva de diferentes dimensões de qualidade. A literatura sugere pesos baseados em importância relativa: maior peso para momentum (35\%) por seu poder preditivo documentado, seguido por estabilidade (volatilidade, 25\%) e controle de risco extremo (drawdown e downside, 20\% cada).
+
+\subsection{Controles de Diversificação}
+
+\textbf{Diversificação Setorial:} Restrição de máximo dois ativos por setor evita concentração setorial não intencional, mantendo representatividade ampla da economia.
+
+\textbf{Correlação Máxima:} Threshold de 0.85 entre ativos selecionados assegura que cada ativo contribua com informação única para o portfólio, evitando redundância estatística.
+
 \subsection{Gap Identificado na Literatura}
 
-Comprehensive review revela lacuna significativa:
+Revisão abrangente revela lacuna significativa:
 
-\textbf{Ausência de Comparação Triangular:} Nenhum estudo anterior comparou simultaneously Markowitz, Equal Weight, e Risk Parity no mercado brasileiro.
+\textbf{Ausência de Comparação Triangular:} Nenhum estudo anterior comparou simultaneamente Markowitz, Equal Weight, e Risk Parity no mercado brasileiro.
 
-\textbf{Falta de Metodologia Out-of-Sample:} Estudos existentes predominantly utilizaram in-sample analysis, comprometendo validity dos results.
+\textbf{Falta de Metodologia Out-of-Sample:} Estudos existentes predominantemente utilizaram análise within-sample, comprometendo a validade dos resultados.
 
-\textbf{Período não Coberto:} O período 2018-2019 não foi estudado previous, apesar de oferecer laboratory natural para testing strategies during high volatility.
+\textbf{Período não Coberto:} O período 2018-2019 não foi estudado anteriormente, apesar de oferecer laboratório natural para testar estratégias durante alta volatilidade.
 
-\textbf{Ausência de Testes de Significância:} Studies existentes frequentemente não included statistical testing para determine se differences em performance são statistically significant.
+\textbf{Ausência de Testes de Significância:} Estudos existentes frequentemente não incluíram testes estatísticos para determinar se diferenças em performance são estatisticamente significativas.
 
-Este gap justifica completamente a contribution deste estudo para literatura nacional e internacional.
+Esta lacuna justifica completamente a contribuição deste estudo para a literatura nacional e internacional.

@@ -52,51 +52,92 @@ A determinação do número adequado de ativos em uma carteira é uma questão f
 
 \subsection{Metodologia Científica de Seleção de Ativos}
 
-A seleção dos 10 ativos foi conduzida através de metodologia científica rigorosa baseada em critérios quantitativos objetivos, aplicados exclusivamente no período 2014-2017 para evitar look-ahead bias. Esta abordagem elimina completamente seleções manuais ou baseadas em conhecimento a posteriori.
+A seleção dos 10-12 ativos segue metodologia científica rigorosa fundamentada na literatura acadêmica, aplicada exclusivamente no período 2014-2017 para eliminação completa de look-ahead bias. Esta abordagem integra filtros de liquidez e critérios de robustez conforme estabelecido por Amihud (2002), Roll (1984), e Jegadeesh e Titman (1993).
 
-\textbf{Critério 1 - Elegibilidade Básica:}
+\subsubsection{Etapa 1: Elegibilidade Mínima}
+
+\textbf{Completude de Dados:} Aplicação de filtro de elegibilidade baseado em Goyal e Jegadeesh (1997):
 \begin{itemize}
-    \item Período de seleção: 2014-2017 (janela histórica de 4 anos)
-    \item Completude mínima: $\geq$ 85\% de meses válidos no período
-    \item Ausência de gaps grandes nas séries históricas
-    \item Dados de teste suficientes: $\geq$ 20 meses em 2018-2019
+    \item Período de avaliação: 2014-2017 (janela histórica de 4 anos)
+    \item Completude mínima: $\geq$ 85\% dos dias válidos no período
+    \item Ausência de interrupções superiores a 30 dias consecutivos
+    \item Disponibilidade mínima: $\geq$ 22 meses válidos em 2018-2019 para teste
 \end{itemize}
 
-\textbf{Critério 2 - Liquidez (Proxies Quantitativas):}
-\begin{itemize}
-    \item Máximo 20\% de meses com retorno = 0 (proxy de inatividade)
-    \item Média de |retorno| mensal $\geq$ percentil 20 (proxy de negociação efetiva)
-\end{itemize}
+\subsubsection{Etapa 2: Filtros de Liquidez}
 
-\textbf{Critério 3 - Métricas de Risco/Retorno (2014-2017):}
-\begin{itemize}
-    \item \textit{Momentum 12-1:} Retorno acumulado dos últimos 12 meses excluindo mês corrente
-    \item \textit{Volatilidade:} Desvio-padrão anualizado dos retornos mensais
-    \item \textit{Maximum Drawdown:} Maior perda percentual desde pico anterior
-    \item \textit{Downside Deviation:} Desvio-padrão dos retornos negativos (downside risk)
-\end{itemize}
+Implementação de bateria de filtros fundamentados em Roll (1984) e Amihud (2002):
 
-\textbf{Critério 4 - Score de Seleção Composto:}
-O score final combina as quatro métricas principais, cada uma normalizada em percentis (0-1):
-
+\textbf{Zero-return days:} Baseado em Roll (1984)
 \begin{equation}
-Score_{final} = 0.40 \times Momentum_{rank} + 0.20 \times (1/Vol)_{rank} + 0.20 \times (1/DD)_{rank} + 0.20 \times (1/Down)_{rank}
+ZRD_i = \frac{\text{Dias com } r_{i,t} = 0}{\text{Total de dias negociados}} \leq 0.20
 \end{equation}
 
-onde:
+\textbf{Roll spread estimado:} Proxy de bid-ask spread (Roll, 1984)
+\begin{equation}
+\text{Roll Spread}_i = 2\sqrt{-\text{Cov}(r_{i,t}, r_{i,t-1})} \leq \text{Percentil 80}
+\end{equation}
+
+\textbf{Controle de ruído microestrutural:} Baseado em Lo e MacKinlay (1990)
+\begin{equation}
+\text{Autocorr}(r_{i,t}, r_{i,t-1}) \geq -0.30
+\end{equation}
+
+\subsubsection{Etapa 3: Critérios de Robustez}
+
+Aplicação de métricas fundamentadas na literatura de fatores de risco:
+
+\textbf{Momentum 12-1:} Conforme Jegadeesh e Titman (1993)
+\begin{equation}
+\text{Momentum}_{i} = \prod_{t=-12}^{-2}(1 + r_{i,t}) - 1
+\end{equation}
+
+\textbf{Volatilidade anualizada:} Baseado em Fama e French (1992)
+\begin{equation}
+\sigma_{i} = \sqrt{12} \times \text{std}(r_{i,t})
+\end{equation}
+
+\textbf{Maximum Drawdown:} Métrica de risco de cauda
+\begin{equation}
+\text{MaxDD}_i = \max_{t} \left( \frac{\text{Pico}_{t} - \text{Vale}_{t}}{\text{Pico}_{t}} \right)
+\end{equation}
+
+\textbf{Downside Deviation:} Conforme Sortino e van der Meer (1991)
+\begin{equation}
+\text{DD}_i = \sqrt{\frac{1}{N} \sum_{r_{i,t} < 0} r_{i,t}^2}
+\end{equation}
+
+\subsubsection{Etapa 4: Score de Seleção Composto}
+
+Integração objetiva baseada em pesos derivados da importância relativa na literatura:
+
+\begin{equation}
+\text{Score}_i = 0.35 \times \text{Mom}_{rank} + 0.25 \times (1/\text{Vol})_{rank} + 0.20 \times (1/\text{DD})_{rank} + 0.20 \times (1/\text{Down})_{rank}
+\end{equation}
+
+onde cada componente é normalizado em percentis (0-1):
 \begin{itemize}
-    \item $Momentum_{rank}$: Percentil do momentum 12-1 (maior = melhor)
-    \item $(1/Vol)_{rank}$: Percentil inverso da volatilidade (menor volatilidade = melhor)
-    \item $(1/DD)_{rank}$: Percentil inverso do drawdown (menor perda = melhor)  
-    \item $(1/Down)_{rank}$: Percentil inverso do downside risk (menor = melhor)
+    \item $\text{Mom}_{rank}$: Percentil do momentum 12-1 (peso 35\% - maior poder preditivo)
+    \item $(1/\text{Vol})_{rank}$: Percentil inverso da volatilidade (peso 25\% - estabilidade)
+    \item $(1/\text{DD})_{rank}$: Percentil inverso do máximo drawdown (peso 20\% - controle de cauda)
+    \item $(1/\text{Down})_{rank}$: Percentil inverso da downside deviation (peso 20\% - risco assimétrico)
 \end{itemize}
 
-\textbf{Critério 5 - Diversificação e Controle de Correlação:}
-\begin{itemize}
-    \item Máximo 2 ativos por setor econômico (classificação B3)
-    \item Controle de correlações altas (> 0.85) entre pares de ativos
-    \item Seleção dos 10-12 melhores ativos por score, respeitando diversificação
-\end{itemize}
+\subsubsection{Etapa 5: Controles de Diversificação}
+
+Aplicação de filtros finais para garantir diversificação adequada:
+
+\textbf{Diversificação Setorial:} Restrição baseada na literatura de construção de portfólios
+\begin{equation}
+\max(\text{Ativos por setor}) \leq 2
+\end{equation}
+
+\textbf{Controle de Redundância Estatística:} Baseado em Markowitz (1952)
+\begin{equation}
+\text{Corr}(r_{i,t}, r_{j,t}) \leq 0.85 \quad \forall i \neq j
+\end{equation}
+
+\textbf{Seleção Final:} Os top 10-12 ativos por score composto, respeitando restrições de diversificação
 
 \textbf{Resultado da Seleção Científica:}
 O processo resultou na seleção final de 10 ativos de alta qualidade:
@@ -225,7 +266,7 @@ onde $T = 24$ meses é o tamanho da janela de estimação, $r_{i,t}$ é o retorn
 
 \textit{Algoritmo de Otimização:} A otimização é realizada utilizando o algoritmo SLSQP (Sequential Least Squares Programming), implementado na biblioteca scipy.optimize do Python. Este algoritmo é particularmente adequado para problemas de programação quadrática com restrições lineares e não-lineares.
 
-\textbf{Propriedades e Limitações:} A estratégia de Markowitz é altamente sensível à qualidade das estimativas de parâmetros, especialmente a matriz de covariância. Esta sensibilidade é conhecida na literatura como "estimation error sensitivity" e representa uma das principais limitações práticas da abordagem.
+\textbf{Propriedades e Limitações:} A estratégia de Markowitz é altamente sensível à qualidade das estimativas de parâmetros, especialmente a matriz de covariância. Esta sensibilidade é conhecida na literatura como "sensibilidade ao erro de estimação" e representa uma das principais limitações práticas da abordagem.
 
 \subsection{Estratégia Equal Weight: Simplicidade e Robustez}
 

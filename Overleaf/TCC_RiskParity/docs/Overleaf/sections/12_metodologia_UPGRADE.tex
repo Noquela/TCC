@@ -1,0 +1,350 @@
+% ==================================================================
+% 3 METODOLOGIA
+% ==================================================================
+
+\chapter{METODOLOGIA}
+
+\section{FUNDAMENTAÇÃO METODOLÓGICA DA PESQUISA}
+
+\subsection{Natureza da Pesquisa}
+
+Esta pesquisa caracteriza-se como um estudo quantitativo-empírico de natureza experimental em finanças. O objetivo principal é comparar, de forma cientificamente rigorosa, três estratégias fundamentais de alocação de ativos no mercado acionário brasileiro. A escolha por uma abordagem quantitativa justifica-se pela necessidade de mensurar precisamente métricas de performance financeira e estabelecer comparações objetivas entre as estratégias.
+
+A natureza empírica do estudo baseia-se na utilização de dados reais do mercado brasileiro, contrastando com estudos puramente teóricos ou baseados em simulações. Esta escolha metodológica garante que os resultados reflitam condições reais de mercado, incluindo todas as imperfeições, assimetrias e características específicas do ambiente brasileiro.
+
+\subsection{Paradigma Out-of-Sample}
+
+O fundamento metodológico central desta pesquisa é a análise out-of-sample, considerada o padrão-ouro em estudos de estratégias de investimento. Esta abordagem foi popularizada por DeMiguel, Garlappi e Uppal (2009) em seu influente trabalho "Optimal Versus Naive Diversification" e tornou-se prática obrigatória em pesquisas sérias sobre alocação de ativos.
+
+\textbf{Conceito de Out-of-Sample:} A metodologia out-of-sample divide os dados históricos em duas janelas temporais completamente separadas. A primeira janela, chamada "período de estimação" ou "in-sample", é utilizada exclusivamente para calibrar os parâmetros das estratégias (estimativas de retorno esperado, volatilidades, correlações). A segunda janela, denominada "período de teste" ou "out-of-sample", é utilizada apenas para avaliar a performance das estratégias, sem que qualquer informação deste período seja utilizada na construção das carteiras.
+
+\textbf{Importância Científica:} Esta separação temporal rigorosa elimina o "look-ahead bias" - um dos vieses mais perniciosos em pesquisas financeiras. O look-ahead bias ocorre quando informações do futuro são inadvertidamente incorporadas na construção de estratégias, levando a resultados artificialmente otimistas que não podem ser replicados na prática. Ao garantir que nenhuma informação do período de teste seja utilizada na estimação, a metodologia out-of-sample assegura que os resultados são genuinamente preditivos.
+
+\subsection{Divisão Temporal Específica}
+
+Para este estudo, os dados históricos são divididos da seguinte forma:
+
+\textbf{Janela de Estimação:} Janeiro 2016 - Dezembro 2017 (24 meses)
+- Função: Calibrar todos os parâmetros necessários para as três estratégias
+- Uso: Estimar retornos esperados, calcular matrizes de covariância, definir pesos iniciais
+- Característica: Período relativamente tranquilo no mercado brasileiro, adequado para estimação de parâmetros base
+
+\textbf{Janela de Teste:} Janeiro 2018 - Dezembro 2019 (24 meses)
+- Função: Avaliar performance real das estratégias em condições de mercado não utilizadas na construção
+- Característica: Período de alta volatilidade incluindo greve dos caminhoneiros, eleições presidenciais, e alta incerteza política e econômica
+- Vantagem: Oferece teste rigoroso das estratégias em condições adversas
+
+Esta divisão equilibrada (24 meses para cada janela) proporciona dados suficientes tanto para estimação robusta quanto para avaliação estatisticamente significativa da performance.
+
+\section{UNIVERSO DE INVESTIMENTO E SELEÇÃO DE ATIVOS}
+
+\subsection{Fundamentação Teórica para o Número de Ativos}
+
+A determinação do número adequado de ativos em uma carteira é uma questão fundamental em teoria de portfólio, com implicações diretas tanto para os benefícios de diversificação quanto para a complexidade de implementação.
+
+\textbf{Evidência Clássica sobre Diversificação:} O trabalho seminal de Evans e Archer (1968) estabeleceu que carteiras contendo entre 10 a 15 ativos capturam aproximadamente 90\% dos benefícios de diversificação teoricamente possíveis. Este resultado foi obtido através de análise empírica no mercado americano e tornou-se referência fundamental na literatura.
+
+\textbf{Adaptação para Mercados Emergentes:} No contexto de mercados emergentes, como o brasileiro, algumas considerações específicas devem ser feitas. Primeiro, estes mercados tipicamente apresentam correlações mais elevadas entre ativos individuais em comparação com mercados desenvolvidos. Segundo, a menor eficiência informacional pode gerar oportunidades de diversificação diferentes. Terceiro, a menor liquidez de alguns ativos pode limitar as opções práticas.
+
+\textbf{Considerações Estatísticas:} Do ponto de vista estatístico, a escolha de 10 ativos mantém a razão T/N (número de observações por parâmetro estimado) em nível adequado. Com 24 meses de dados na janela de estimação e 10 ativos, temos 240 observações de retorno para estimar 10 volatilidades individuais, 45 correlações únicas, e 10 retornos esperados. Esta razão proporciona estimação estatisticamente robusta dos parâmetros necessários.
+
+\textbf{Simplicidade Operacional:} Carteiras com número moderado de ativos facilitam implementação prática, reduzem custos de transação, e permitem monitoramento mais efetivo. Para fins acadêmicos e aplicações práticas em gestão de recursos, 10 ativos representam equilíbrio ótimo entre diversificação e operacionalidade.
+
+\subsection{Processo de Seleção de Ativos}
+
+A seleção dos 10 ativos foi conduzida através de processo sistemático e objetivo, baseado exclusivamente em informações disponíveis até 31 de dezembro de 2017. Esta data foi escolhida como ponto de corte para garantir que nenhuma informação do período de teste (2018-2019) fosse utilizada na seleção.
+
+\textbf{Critério 1 - Liquidez:} Volume médio diário superior a R\$ 50 milhões durante o biênio 2016-2017. Este critério garante que os ativos selecionados possam ser negociados sem impacto significativo no preço, viabilizando implementação prática das estratégias. A liquidez é fundamental porque estratégias de alocação requerem rebalanceamentos periódicos, e custos de transação elevados podem erodir significativamente a performance.
+
+\textbf{Critério 2 - Representatividade Econômica:} Participação mínima de 1\% no índice Ibovespa, calculada com base na composição vigente em dezembro de 2017. Este critério assegura que os ativos selecionados são economicamente relevantes e representam empresas com peso significativo na economia brasileira. Ativos com participação muito pequena no índice podem apresentar características idiossincráticas que não são representativas do mercado como um todo.
+
+\textbf{Critério 3 - Diversificação Setorial:} Limitação de máximo 3 ativos por setor econômico, seguindo a classificação setorial da B3. Este critério é crucial para evitar concentração excessiva em setores específicos, que poderia comprometer os benefícios de diversificação. A diversificação setorial é especialmente importante no mercado brasileiro, onde alguns setores (como bancário e de commodities) têm peso significativo.
+
+\textbf{Critério 4 - Completude de Dados:} Disponibilidade completa de séries históricas de preços ajustados por dividendos e eventos corporativos durante todo o período de análise (2016-2019). Este critério técnico é essencial para garantir que os cálculos de retorno e risco sejam baseados em dados íntegros e consistentes.
+
+\textbf{Critério 5 - Estabilidade:} Permanência contínua na composição do Ibovespa durante o período 2016-2017, evitando ativos que entraram ou saíram do índice durante a janela de estimação. Este critério reduz ruídos relacionados a mudanças na relevância econômica dos ativos.
+
+\subsection{Eliminação Sistemática de Vieses}
+
+O processo de seleção foi especificamente desenhado para eliminar dois tipos principais de viés que comprometem a validade de estudos empíricos em finanças:
+
+\textbf{Survivorship Bias (Viés de Sobrevivência):} Este viés ocorre quando apenas ativos que "sobreviveram" até o final do período de análise são incluídos no estudo, ignorando aqueles que saíram de mercado por falência, delisting, ou outros motivos. No contexto deste estudo, o survivorship bias é eliminado pela seleção ex-ante dos ativos baseada exclusivamente em critérios vigentes em 31/12/2017. Importante notar que todos os 10 ativos selecionados permaneceram negociados durante todo o período de teste (2018-2019), validando ex-post a robustez da seleção.
+
+\textbf{Look-ahead Bias (Viés de Antecipação):} Este viés, ainda mais pernicioso, ocorre quando informações do futuro são inadvertidamente utilizadas na construção de estratégias ou seleção de ativos. A prevenção deste viés é absolutamente crítica para a validade científica do estudo. Todas as decisões de seleção foram baseadas rigorosamente em informações disponíveis até o ponto de corte temporal, sem qualquer consideração de performance futura.
+
+\subsection{Documentação e Reprodutibilidade}
+
+Todo o processo de seleção foi documentado em formato JSON estruturado, incluindo:
+- Critérios específicos aplicados
+- Dados utilizados para cada critério
+- Timestamp das decisões
+- Lista final dos ativos selecionados com justificativas
+
+Esta documentação garante auditabilidade completa e permite reprodução exata do processo por pesquisadores independentes, atendendo aos padrões de transparência científica.
+
+\section{DADOS E PROCEDIMENTOS DE TRATAMENTO}
+
+\subsection{Fonte e Qualidade dos Dados}
+
+\textbf{Base de Dados Principal:} Todos os dados utilizados nesta pesquisa provêm da base Economática, que representa o padrão de excelência para dados financeiros brasileiros em pesquisas acadêmicas. A Economática é amplamente reconhecida pela comunidade acadêmica nacional e internacional pela qualidade, completude e rigor de suas séries históricas do mercado de capitais brasileiro.
+
+\textbf{Vantagens da Base Economática:} A escolha desta fonte específica oferece várias vantagens críticas: (1) cobertura completa e consistente de dados históricos; (2) ajustes automáticos para eventos corporativos; (3) verificação contínua de qualidade; (4) padronização que facilita comparabilidade entre estudos; (5) rastreabilidade e auditabilidade dos dados.
+
+\textbf{Validação da Fonte:} A confiabilidade da base Economática é atestada por seu uso em centenas de estudos acadêmicos publicados em periódicos nacionais e internacionais. Trabalhos seminais sobre o mercado brasileiro, incluindo aqueles de pesquisadores de instituições como FGV, USP, e universidades internacionais, consistentemente utilizam esta base.
+
+\subsection{Procedimentos de Preparação dos Dados}
+
+\textbf{Ajustes Corporativos Completos:} Uma das características mais importantes dos dados utilizados é que todas as séries de preços são previamente ajustadas pela Economática para refletir todos os eventos corporativos relevantes. Estes ajustes incluem:
+
+- **Dividendos:** Todos os dividendos pagos são reinvestidos automaticamente, assegurando que os retornos calculados reflitam o retorno total disponível aos investidores
+- **Splits e Grupamentos:** Eventos de divisão ou agrupamento de ações são ajustados retroativamente em toda a série histórica
+- **Subscrições:** Direitos de subscrição são incorporados ao cálculo de retorno total
+- **Juros sobre Capital Próprio:** Pagamentos de JCP são tratados como equivalentes a dividendos
+- **Bonificações:** Emissões gratuitas de ações são ajustadas na série histórica
+
+Esses ajustes são fundamentais porque garantem que os retornos calculados representem fidedignamente a experiência de um investidor real, incluindo todos os benefícios econômicos da propriedade das ações.
+
+\textbf{Metodologia de Cálculo de Retornos:} Os retornos são calculados utilizando a metodologia padrão de log-retornos (retornos logarítmicos), expressa matematicamente como:
+
+\begin{equation}
+r_{i,t} = \ln(P_{i,t}) - \ln(P_{i,t-1}) = \ln\left(\frac{P_{i,t}}{P_{i,t-1}}\right)
+\end{equation}
+
+onde $r_{i,t}$ é o retorno do ativo $i$ no período $t$, e $P_{i,t}$ é o preço ajustado do ativo $i$ no período $t$.
+
+\textbf{Vantagens dos Log-Retornos:} A escolha por log-retornos ao invés de retornos aritméticos oferece várias vantagens técnicas importantes:
+- **Propriedade de Aditividade Temporal:** Log-retornos de múltiplos períodos podem ser somados diretamente
+- **Simetria:** Tratamento matemático simétrico de ganhos e perdas
+- **Aproximação Normal:** Para retornos pequenos, log-retornos aproximam-se melhor da distribuição normal
+- **Facilidade de Agregação:** Simplifica cálculos de retornos de carteira e análises estatísticas
+
+\subsection{Controle de Qualidade dos Dados}
+
+\textbf{Verificação de Completude:} Todos os dados são sistematicamente verificados quanto à completude temporal. Para cada ativo selecionado, confirma-se a disponibilidade de preços diários para todos os dias úteis no período de análise (2016-2019). Qualquer gap nos dados é identificado e investigado.
+
+\textbf{Consistência Temporal:} As séries são verificadas quanto à consistência temporal, garantindo que não existam saltos anômalos que não correspondam a eventos de mercado legítimos. Esta verificação inclui análise de mudanças extremas dia-a-dia que possam indicar erros de dados.
+
+\textbf{Validação Cruzada:} Sempre que possível, dados-chave são validados através de comparação com fontes alternativas (como dados da B3 ou provedores internacionais), especialmente para eventos corporativos importantes.
+
+\subsection{Tratamento de Outliers e Eventos Extremos}
+
+\textbf{Identificação Sistemática de Outliers:} Retornos diários que excedem 3 desvios-padrão da média são automaticamente flagrados para investigação detalhada. Este critério, embora conservador, garante que eventos extremos legítimos não sejam erroneamente removidos.
+
+\textbf{Processo de Investigação:} Para cada outlier identificado, realiza-se investigação para determinar sua legitimidade:
+- **Consulta a Fontes de Notícias:** Verificação se o retorno extremo corresponde a notícias específicas sobre a empresa ou setor
+- **Análise de Volume:** Confirmação se retornos extremos foram acompanhados por volumes de negociação elevados
+- **Eventos Corporativos:** Verificação se o retorno extremo corresponde a algum evento corporativo não capturado pelos ajustes automáticos
+
+\textbf{Critério de Manutenção:} Outliers são mantidos na base de dados se:
+- Correspondem a eventos de mercado documentados
+- São acompanhados por volume de negociação significativo
+- Fazem sentido econômico no contexto específico
+
+\textbf{Transparência no Tratamento:} Todos os outliers investigados e as decisões tomadas são documentados para garantir transparência e reprodutibilidade do processo.
+
+\section{IMPLEMENTAÇÃO TÉCNICA DAS ESTRATÉGIAS}
+
+\subsection{Estratégia de Markowitz: Fundamentação e Implementação}
+
+\textbf{Fundamentação Teórica:} A estratégia de Markowitz, também conhecida como Mean-Variance Optimization (MVO), representa o paradigma clássico de otimização de portfólio. Desenvolvida por Harry Markowitz em 1952, esta abordagem busca encontrar a combinação de ativos que oferece o máximo retorno esperado para um dado nível de risco, ou alternativamente, o mínimo risco para um dado retorno esperado.
+
+\textbf{Formulação Matemática:} Neste estudo, implementa-se a versão de mínima variância da otimização de Markowitz, que busca minimizar o risco da carteira sem impor restrições específicas de retorno. A formulação matemática é:
+
+\begin{align}
+\min_{w} \quad & w^T \Sigma w \label{eq:markowitz_obj} \\
+\text{sujeito a:} \quad & \sum_{i=1}^{N} w_i = 1 \label{eq:markowitz_sum} \\
+& w_i \geq 0 \quad \forall i = 1, ..., N \label{eq:markowitz_long}
+\end{align}
+
+onde:
+- $w = [w_1, w_2, ..., w_N]^T$ é o vetor de pesos dos ativos na carteira
+- $\Sigma$ é a matriz de covariância $(N \times N)$ dos retornos dos ativos
+- $N = 10$ é o número de ativos na carteira
+
+\textbf{Interpretação das Restrições:}
+- Equação \ref{eq:markowitz_sum}: Garante que os pesos somem 100\%, ou seja, todo o capital é investido
+- Equação \ref{eq:markowitz_long}: Impõe restrição de long-only, proibindo vendas a descoberto
+
+\textbf{Processo de Estimação de Parâmetros:}
+
+\textit{Estimação da Matriz de Covariância:} A matriz $\Sigma$ é estimada usando a covariância amostral dos retornos históricos na janela de estimação:
+
+\begin{equation}
+\hat{\Sigma}_{ij} = \frac{1}{T-1} \sum_{t=1}^{T} (r_{i,t} - \bar{r}_i)(r_{j,t} - \bar{r}_j)
+\end{equation}
+
+onde $T = 24$ meses é o tamanho da janela de estimação, $r_{i,t}$ é o retorno do ativo $i$ no mês $t$, e $\bar{r}_i$ é a média dos retornos do ativo $i$.
+
+\textit{Algoritmo de Otimização:} A otimização é realizada utilizando o algoritmo SLSQP (Sequential Least Squares Programming), implementado na biblioteca scipy.optimize do Python. Este algoritmo é particularmente adequado para problemas de programação quadrática com restrições lineares e não-lineares.
+
+\textbf{Propriedades e Limitações:} A estratégia de Markowitz é altamente sensível à qualidade das estimativas de parâmetros, especialmente a matriz de covariância. Esta sensibilidade é conhecida na literatura como "estimation error sensitivity" e representa uma das principais limitações práticas da abordagem.
+
+\subsection{Estratégia Equal Weight: Simplicidade e Robustez}
+
+\textbf{Fundamentação:} A estratégia Equal Weight (EW) representa o extremo oposto da sofisticação em relação ao Markowitz. Sua implementação é deliberadamente simples: todos os ativos recebem peso igual na carteira, independentemente de suas características individuais de risco e retorno.
+
+\textbf{Formulação Matemática:} A alocação Equal Weight é definida simplesmente como:
+
+\begin{equation}
+w_i = \frac{1}{N} = \frac{1}{10} = 0.10 \quad \forall i \in \{1, 2, ..., 10\}
+\end{equation}
+
+\textbf{Vantagens Conceituais:}
+- **Eliminação de Erros de Estimação:** Por não depender de estimativas de parâmetros, a estratégia EW elimina completamente erros de estimação que podem comprometer outras abordagens
+- **Simplicidade Operacional:** Implementação trivial que reduz custos operacionais e possibilidade de erros
+- **Robustez:** Performance consistente em diferentes condições de mercado
+- **Transparência:** Facilidade de compreensão e explicação para investidores
+
+\textbf{Fundamentação Teórica da Robustez:} A literatura acadêmica tem demonstrado que, em ambientes de alta incerteza paramétrica (como mercados emergentes), estratégias simples como Equal Weight frequentemente superam abordagens sofisticadas. Isto ocorre porque os benefícios teóricos da otimização são anulados pelos erros de estimação dos parâmetros necessários.
+
+\textbf{Implementação Prática:} A implementação de Equal Weight requer apenas:
+1. Divisão do capital total pelo número de ativos
+2. Rebalanceamento periódico para manter pesos iguais
+3. Nenhuma estimação de parâmetros ou otimização matemática
+
+\subsection{Estratégia Risk Parity: Equalização de Contribuições de Risco}
+
+\textbf{Conceito Fundamental:} A estratégia Risk Parity, também conhecida como Equal Risk Contribution (ERC), representa uma abordagem intermediária entre a simplicidade do Equal Weight e a complexidade do Markowitz. O princípio fundamental é alocar capital de forma que cada ativo contribua igualmente para o risco total da carteira.
+
+\textbf{Definição de Contribuição de Risco:} A contribuição de risco do ativo $i$ para o risco total da carteira é definida como:
+
+\begin{equation}
+RC_i = w_i \times \frac{\partial \sigma_p}{\partial w_i} = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
+\end{equation}
+
+onde:
+- $RC_i$ é a contribuição de risco do ativo $i$
+- $\sigma_p = \sqrt{w^T \Sigma w}$ é a volatilidade total da carteira
+- $(\Sigma w)_i$ é a $i$-ésima componente do produto matriz-vetor $\Sigma w$
+
+\textbf{Objetivo da Estratégia Risk Parity:} O objetivo é encontrar pesos $w$ tais que:
+
+\begin{equation}
+RC_i = \frac{\sigma_p}{N} \quad \forall i = 1, ..., N
+\end{equation}
+
+Isto significa que cada ativo contribui com exatamente $1/N = 10\%$ do risco total da carteira.
+
+\textbf{Formulação como Problema de Otimização:} O problema Risk Parity pode ser formulado como um problema de otimização que minimiza a diferença entre as contribuições de risco:
+
+\begin{align}
+\min_{w} \quad & \sum_{i=1}^{N} \left(RC_i - \frac{\sigma_p}{N}\right)^2 \\
+\text{sujeito a:} \quad & \sum_{i=1}^{N} w_i = 1 \\
+& w_i \geq 0 \quad \forall i
+\end{align}
+
+\textbf{Algoritmo de Implementação:} A implementação utiliza algoritmo iterativo:
+
+1. **Inicialização:** Começar com pesos iguais $w^{(0)} = (1/N, 1/N, ..., 1/N)$
+2. **Cálculo de Contribuições:** Para cada iteração $k$, calcular $RC_i^{(k)}$ para todos os ativos
+3. **Ajuste de Pesos:** Ajustar pesos na direção que equaliza contribuições de risco
+4. **Convergência:** Parar quando $\max_i |RC_i^{(k)} - \sigma_p^{(k)}/N| < 10^{-6}$
+
+\textbf{Vantagens da Abordagem Risk Parity:}
+- **Diversificação Efetiva:** Evita concentração de risco em poucos ativos
+- **Estabilidade:** Menor sensibilidade a erros de estimação que Markowitz
+- **Robustez:** Utiliza apenas informações de volatilidade e correlação, mais estáveis que retornos esperados
+- **Adaptação Automática:** Naturalmente reduz exposição a ativos mais voláteis
+
+\section{METODOLOGIA OUT-OF-SAMPLE}
+
+\subsection{Divisão Temporal}
+
+A metodologia out-of-sample divide os dados em duas janelas:
+
+\textbf{Janela de Estimação:} Janeiro 2016 - Dezembro 2017 (24 meses)
+- Utilizada para estimar parâmetros das estratégias (médias, covariâncias)
+- Calibração dos algoritmos de otimização
+
+\textbf{Janela de Teste:} Janeiro 2018 - Dezembro 2019 (24 meses)  
+- Utilizada exclusivamente para avaliação de performance
+- Nenhuma informação deste período é usada na construção das estratégias
+
+Esta divisão equilibrada proporciona dados suficientes para estimação robusta e período de teste representativo.
+
+\subsection{Rebalanceamento}
+
+As carteiras são rebalanceadas semestralmente (janeiro e julho) por razões práticas:
+
+\textbf{Custos de Transação:} Frequência moderada que equilibra captura de oportunidades com custos operacionais.
+
+\textbf{Estabilidade:} Evita over-trading que pode degradar performance líquida.
+
+\textbf{Implementação:} Frequência típica utilizada por gestores institucionais brasileiros.
+
+\subsection{Controle de Look-Ahead Bias}
+
+Para garantir validade da análise out-of-sample:
+
+1. **Seleção de Ativos:** Baseada exclusivamente em dados disponíveis até 31/12/2017
+2. **Estimação de Parâmetros:** Utiliza apenas dados da janela de estimação
+3. **Rebalanceamento:** Baseado apenas em informações disponíveis na data de decisão
+4. **Documentação:** Processo completamente auditável e reprodutível
+
+\section{MÉTRICAS DE AVALIAÇÃO}
+
+As estratégias são avaliadas através de métricas padrão da literatura:
+
+\subsection{Sharpe Ratio}
+
+\begin{equation}
+Sharpe = \frac{\bar{r} - r_f}{\sigma_r}
+\end{equation}
+
+onde $\bar{r}$ é o retorno médio mensal, $r_f = 0,52\%$ mensal (CDI médio 2018-2019), e $\sigma_r$ é o desvio-padrão mensal.
+
+\subsection{Sortino Ratio}
+
+\begin{equation}
+Sortino = \frac{\bar{r} - r_f}{\sigma_{down}}
+\end{equation}
+
+onde $\sigma_{down}$ é o desvio-padrão dos retornos abaixo da taxa livre de risco, focando apenas na volatilidade negativa.
+
+\subsection{Maximum Drawdown}
+
+\begin{equation}
+MDD = \max_{t} \left( \frac{\text{Pico} - \text{Vale}}{\text{Pico}} \right)
+\end{equation}
+
+Representa a maior perda percentual desde um pico anterior, medindo risco de perdas extremas.
+
+\subsection{Volatilidade Anualizada}
+
+\begin{equation}
+\sigma_{anual} = \sigma_{mensal} \times \sqrt{12}
+\end{equation}
+
+\section{TESTE DE SIGNIFICÂNCIA}
+
+Para verificar se diferenças em Sharpe Ratios são estatisticamente significativas, utiliza-se o teste de Jobson-Korkie (1981):
+
+\begin{equation}
+t = \frac{SR_1 - SR_2}{\sqrt{\text{Var}(SR_1 - SR_2)}}
+\end{equation}
+
+Este teste permite determinar se a superioridade de uma estratégia é estatisticamente robusta ou apenas resultado de acaso amostral.
+
+\section{FERRAMENTAS COMPUTACIONAIS}
+
+A implementação utiliza Python com as seguintes bibliotecas:
+
+\textbf{NumPy e Pandas:} Manipulação de dados e cálculos matriciais
+\textbf{SciPy:} Algoritmos de otimização (SLSQP para Markowitz, algoritmos iterativos para Risk Parity)
+\textbf{Matplotlib:} Visualização de resultados
+
+\section{LIMITAÇÕES METODOLÓGICAS}
+
+\subsection{Limitações Reconhecidas}
+
+\textbf{Período Específico:} Resultados são específicos ao período 2018-2019 e podem não se generalizar para outros contextos.
+
+\textbf{Número de Ativos:} Análise limitada a 10 ativos pode não capturar toda a diversidade do mercado brasileiro.
+
+\textbf{Custos de Transação:} Não explicitamente modelados, embora a frequência semestral de rebalanceamento minimize seu impacto.
+
+\textbf{Estimação de Parâmetros:} Estratégias dependem de estimativas históricas que podem não refletir condições futuras.
+
+\subsection{Validade dos Resultados}
+
+Apesar das limitações, a metodologia out-of-sample rigorosa e o controle de vieses garantem validade científica dos resultados dentro do escopo definido.

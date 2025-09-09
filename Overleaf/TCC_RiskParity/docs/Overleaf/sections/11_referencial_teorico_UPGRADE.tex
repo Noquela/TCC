@@ -1,0 +1,220 @@
+% ==================================================================
+% 2 REFERENCIAL TEÓRICO
+% ==================================================================
+
+\chapter{REFERENCIAL TEÓRICO}
+
+\section{MODERNA TEORIA DE PORTFÓLIO DE MARKOWITZ}
+
+\subsection{Fundamentos da Teoria de Markowitz}
+
+A Moderna Teoria de Portfólio (MPT), desenvolvida por Markowitz (1952), revolucionou a gestão de investimentos ao formalizar matematicamente o conceito de diversificação. O trabalho "Portfolio Selection" estabeleceu que investidores racionais devem considerar simultaneamente retorno esperado e risco na construção de carteiras eficientes.
+
+A contribuição fundamental de Markowitz foi demonstrar que o risco de uma carteira não é simplesmente a média dos riscos individuais dos ativos, mas depende das correlações entre eles:
+
+\begin{equation}
+\sigma_p^2 = \sum_{i=1}^{n} w_i^2 \sigma_i^2 + \sum_{i=1}^{n} \sum_{j \neq i}^{n} w_i w_j \sigma_{ij}
+\end{equation}
+
+onde $\sigma_p^2$ é a variância da carteira, $w_i$ são os pesos dos ativos, $\sigma_i^2$ são as variâncias individuais, e $\sigma_{ij}$ são as covariâncias entre os ativos.
+
+Esta fórmula revela que quando as correlações entre ativos são menores que +1, o risco da carteira é reduzido abaixo da média ponderada dos riscos individuais - este é o benefício matemático da diversificação.
+
+\subsection{Premissas e Limitações da Teoria}
+
+A MPT baseia-se em premissas específicas que podem ser violadas na prática:
+
+\textbf{Distribuição Normal:} Assume que os retornos seguem distribuição normal. Harvey (1995) documenta que mercados emergentes frequentemente apresentam assimetria e curtose elevada, violando esta premissa.
+
+\textbf{Parâmetros Estáveis:} Pressupõe que médias, variâncias e correlações permanecem constantes. Bekaert e Harvey (2003) mostram que mercados emergentes são caracterizados por mudanças estruturais frequentes.
+
+\textbf{Sensibilidade a Erros:} Michaud (1989) identificou o "enigma da otimização" - carteiras teoricamente ótimas frequentemente apresentam performance decepcionante devido à instabilidade das estimativas.
+
+Chopra e Ziemba (1993) quantificaram esta sensibilidade, demonstrando que erros nas estimativas de retorno esperado têm impacto muito maior na performance que erros nas estimativas de risco.
+
+\section{ESTRATÉGIA EQUAL WEIGHT}
+
+\subsection{Fundamentos da Estratégia Equal Weight}
+
+A estratégia Equal Weight (1/N) consiste na alocação igualitária de capital entre todos os ativos da carteira. Cada ativo recebe peso de 1/N, onde N é o número total de ativos, independentemente de suas características individuais de risco e retorno.
+
+DeMiguel, Garlappi e Uppal (2009) demonstraram em estudo seminal que esta estratégia aparentemente simples frequentemente supera estratégias otimizadas sofisticadas quando avaliadas fora da amostra. Esta superioridade decorre da robustez da estratégia a erros de estimação paramétrica.
+
+\subsection{Vantagens da Estratégia Equal Weight}
+
+A literatura identifica vantagens específicas do Equal Weight:
+
+\textbf{Simplicidade Operacional:} Não requer estimação de parâmetros complexos como retornos esperados ou matrizes de covariância.
+
+\textbf{Robustez a Erros:} Como não depende de estimativas paramétricas, é imune a erros de previsão que afetam estratégias otimizadas.
+
+\textbf{Menores Custos de Transação:} Requer rebalanceamento menos frequente comparado a estratégias que dependem de otimização contínua.
+
+\textbf{Transparência:} A metodologia é facilmente compreensível e auditável por investidores.
+
+\subsection{Limitações da Estratégia}
+
+A principal limitação do Equal Weight surge quando ativos possuem características de risco muito diferentes:
+
+\textbf{Concentração de Risco:} Ativos mais voláteis contribuem desproporcionalmente para o risco total da carteira.
+
+\textbf{Ineficiência em Correlações:} A estratégia não aproveita informações sobre correlações entre ativos que poderiam reduzir o risco da carteira.
+
+\textbf{Desconsideração do Retorno:} Não utiliza informações sobre retornos esperados que poderiam melhorar a performance.
+
+\section{ESTRATÉGIA RISK PARITY}
+
+\subsection{Conceito e Desenvolvimento}
+
+A estratégia Risk Parity foi desenvolvida para endereçar uma limitação fundamental das abordagens tradicionais: a concentração de risco em poucos ativos. Popularizada por Ray Dalio na Bridgewater Associates e posteriormente formalizada por Maillard, Roncalli e Teiletche (2010), esta estratégia busca equalizar as contribuições de risco de cada ativo na carteira.
+
+O princípio é intuitivo: ao invés de alocar capital igualmente (Equal Weight) ou otimizar retorno/risco (Markowitz), a estratégia Risk Parity aloca o risco igualmente entre todos os ativos.
+
+\subsection{Formulação do Equal Risk Contribution (ERC)}
+
+A implementação mais comum do Risk Parity é o Equal Risk Contribution (ERC), onde cada ativo contribui igualmente para o risco total da carteira:
+
+\begin{equation}
+RC_i = w_i \times \frac{(\Sigma w)_i}{\sigma_p} = \frac{\sigma_p}{N} \quad \forall i
+\end{equation}
+
+onde:
+- $RC_i$ é a contribuição de risco do ativo $i$
+- $w_i$ é o peso do ativo $i$
+- $\Sigma$ é a matriz de covariância
+- $\sigma_p$ é a volatilidade da carteira
+- $N$ é o número de ativos
+
+\subsection{Vantagens da Estratégia Risk Parity}
+
+A estratégia Risk Parity oferece benefícios específicos:
+
+\textbf{Melhor Diversificação:} Evita concentração de risco em ativos mais voláteis, distribuindo o risco de forma mais equilibrada.
+
+\textbf{Robustez Intermediária:} Utiliza informações de volatilidade e correlação (mais estáveis) sem depender de estimativas de retorno esperado (mais instáveis).
+
+\textbf{Controle de Risco:} Foca explicitamente no controle de risco, adequado para investidores aversos ao risco.
+
+\textbf{Performance em Volatilidade:} Tende a apresentar melhor performance durante períodos de alta volatilidade.
+
+\subsection{Limitações da Estratégia}
+
+As principais limitações incluem:
+
+\textbf{Complexidade Computacional:} Requer algoritmos iterativos para encontrar os pesos ótimos, sendo mais complexa que Equal Weight.
+
+\textbf{Dependência de Estimativas:} Embora menos sensível que Markowitz, ainda depende de estimativas de volatilidades e correlações.
+
+\textbf{Bias Conservador:} Pode ter viés toward ativos menos voláteis, potencialmente perdendo oportunidades de maior retorno.
+
+\section{MÉTRICAS DE AVALIAÇÃO DE PERFORMANCE}
+
+\subsection{Índice de Sharpe}
+
+O Índice de Sharpe, desenvolvido por Sharpe (1966), é a métrica mais utilizada para avaliar performance ajustada ao risco:
+
+\begin{equation}
+Sharpe = \frac{R_p - R_f}{\sigma_p}
+\end{equation}
+
+onde $R_p$ é o retorno médio da carteira, $R_f$ é a taxa livre de risco, e $\sigma_p$ é o desvio-padrão dos retornos.
+
+Esta métrica mede quanto retorno excedente (acima da taxa livre de risco) a carteira gera por unidade de risco total. Quanto maior o Sharpe Ratio, melhor a relação risco-retorno.
+
+\textbf{Limitações do Sharpe Ratio:}
+- Considera toda volatilidade como risco, incluindo variações positivas
+- Assume distribuição normal dos retornos
+- Pode ser influenciado por outliers extremos
+
+\subsection{Sortino Ratio}
+
+O Sortino Ratio, proposto por Sortino e Price (1994), representa uma evolução do Sharpe Ratio ao focar apenas na volatilidade negativa:
+
+\begin{equation}
+Sortino = \frac{R_p - R_f}{\sigma_{down}}
+\end{equation}
+
+onde $\sigma_{down}$ é o desvio-padrão dos retornos abaixo da taxa livre de risco.
+
+Esta métrica é mais adequada para investidores que se preocupam principalmente com perdas, pois não penaliza volatilidade causada por retornos excepcionalmente positivos.
+
+\subsection{Maximum Drawdown}
+
+O Maximum Drawdown mede a maior perda percentual desde um pico anterior até o vale subsequente:
+
+\begin{equation}
+MDD = \max_{t} \left( \frac{\text{Pico} - \text{Vale}}{\text{Pico}} \right)
+\end{equation}
+
+Esta métrica é particularmente importante pois captura o risco de perdas extremas, sendo facilmente interpretável por investidores.
+
+\section{MERCADOS EMERGENTES E CONTEXTO BRASILEIRO}
+
+\subsection{Características de Mercados Emergentes}
+
+Harvey (1995) identificou características específicas de mercados emergentes que afetam estratégias de alocação:
+
+\textbf{Maior Volatilidade:} Mercados emergentes apresentam volatilidade 2-3 vezes superior a mercados desenvolvidos, refletindo menor estabilidade econômica e política.
+
+\textbf{Correlações Instáveis:} As correlações entre ativos variam significativamente ao longo do tempo, especialmente durante crises, reduzindo os benefícios de diversificação.
+
+\textbf{Sensibilidade a Eventos Políticos:} Eleições e mudanças políticas têm impacto amplificado sobre os preços dos ativos.
+
+\textbf{Higher Moments:} Presença de assimetria e curtose elevada, violando premissas de distribuição normal.
+
+\subsection{Especificidades do Mercado Brasileiro}
+
+O mercado acionário brasileiro possui características que influenciam estratégias de alocação:
+
+\textbf{Concentração Setorial:} Aproximadamente 70\% da capitalização do Ibovespa concentra-se em poucos setores (financeiro, petróleo, mineração, utilities).
+
+\textbf{Dependência de Commodities:} Forte correlação com preços de commodities, especialmente petróleo e minério de ferro.
+
+\textbf{Sensibilidade Cambial:} Alta correlação com variações do dólar americano devido ao perfil exportador de muitas empresas.
+
+\subsection{O Período 2018-2019}
+
+O período escolhido para análise é particularmente relevante devido a eventos específicos:
+
+\textbf{Eleições Presidenciais 2018:} Período de alta incerteza política que elevou significativamente a volatilidade do mercado.
+
+\textbf{Greve dos Caminhoneiros:} Choque idiossincrático que afetou diferentemente os setores da economia.
+
+\textbf{Mudanças de Política Econômica:} Transição de governo trouxe incertezas sobre direcionamento econômico.
+
+\section{ESTUDOS RELACIONADOS}
+
+A literatura sobre comparação de estratégias de alocação no Brasil é limitada:
+
+\textbf{Rochman e Eid Jr. (2006):} Analisaram estratégias de otimização no período 1995-2005, encontrando vantagens para métodos baseados em volatilidade.
+
+\textbf{Silva e Famá (2011):} Compararam Markowitz e Equal Weight, encontrando performance similar sem diferenças estatisticamente significativas.
+
+\textbf{Gap Identificado:} Nenhum estudo anterior comparou simultaneamente Markowitz, Equal Weight e Risk Parity no mercado brasileiro durante período de alta volatilidade usando metodologia out-of-sample.
+
+\section{METODOLOGIA OUT-OF-SAMPLE}
+
+\subsection{Importância da Avaliação Out-of-Sample}
+
+A avaliação out-of-sample é fundamental para evitar look-ahead bias, que ocorre quando informações futuras são inadvertidamente utilizadas na construção de estratégias, inflando artificialmente os resultados.
+
+\subsection{Divisão Temporal}
+
+Este estudo divide os dados em:
+
+\textbf{Período de Estimação:} 2016-2017 (24 meses) - utilizado para estimar parâmetros das estratégias
+\textbf{Período de Teste:} 2018-2019 (24 meses) - utilizado exclusivamente para avaliar performance
+
+Esta separação garante que nenhuma informação do período de teste influencie a construção das estratégias.
+
+\section{HIPÓTESES DE PESQUISA}
+
+Com base na literatura revisada, formulam-se três hipóteses principais:
+
+\textbf{H1:} A estratégia Equal Weight apresentará performance competitiva durante o período de alta volatilidade devido à sua robustez a erros de estimação paramétrica.
+
+\textbf{H2:} A estratégia Risk Parity demonstrará superioridade em métricas ajustadas ao risco, especialmente em controle de downside risk, devido à melhor distribuição de risco entre ativos.
+
+\textbf{H3:} O modelo de Markowitz apresentará maior instabilidade de performance devido à alta sensibilidade a erros de estimação, particularmente problemática em mercados emergentes voláteis.
+
+Estas hipóteses serão testadas empiricamente utilizando dados do mercado brasileiro no período 2018-2019.

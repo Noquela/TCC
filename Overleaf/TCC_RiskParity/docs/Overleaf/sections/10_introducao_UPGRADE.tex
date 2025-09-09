@@ -1,0 +1,125 @@
+% ==================================================================
+% 1 INTRODUÇÃO
+% ==================================================================
+
+\chapter{INTRODUÇÃO}
+
+\section{PROBLEMA DE PESQUISA}
+
+A alocação estratégica de ativos representa uma das decisões mais fundamentais na gestão de carteiras de investimento, influenciando significativamente tanto o retorno esperado quanto o risco de uma carteira. A importância desta decisão foi formalmente estabelecida por Markowitz (1952) em seu trabalho seminal sobre seleção de portfólio, que introduziu o conceito de diversificação eficiente e lançou as bases da Moderna Teoria de Portfólio. Posteriormente, Brinson, Hood e Beebower (1986) demonstraram empiricamente que a alocação estratégica de ativos explica mais de 90\% da variabilidade dos retornos de carteiras institucionais, superando significativamente o impacto da seleção individual de ativos ou das decisões de timing de mercado.
+
+Esta evidência estabelece a alocação de ativos como o principal driver de performance em investimentos, tornando crucial a identificação de metodologias eficazes para sua implementação. No entanto, a literatura acadêmica revela que a superioridade de diferentes estratégias de alocação varia significativamente em função das características específicas dos mercados analisados, dos períodos estudados e das condições macroeconômicas prevalecentes.
+
+\subsection{Características Específicas dos Mercados Emergentes}
+
+Os mercados emergentes, categoria na qual o Brasil se insere, apresentam características estruturais distintas dos mercados desenvolvidos que afetam diretamente a eficácia das estratégias de alocação de ativos. Harvey (1995), em estudo seminal sobre mercados emergentes, identificou propriedades específicas destes mercados que desafiam as premissas tradicionais da teoria de portfólio: (i) maior volatilidade dos retornos, frequentemente duas a três vezes superior à observada em mercados desenvolvidos; (ii) presença de higher moments significativos, incluindo assimetria e curtose elevada, violando premissas de normalidade; (iii) correlações instáveis entre ativos e com mercados internacionais, especialmente durante períodos de estresse; e (iv) maior sensibilidade a choques políticos e econômicos locais.
+
+Bekaert e Harvey (2003) expandem esta análise demonstrando que mercados emergentes são caracterizados por regimes de volatilidade mais frequentes e extremos, com períodos de baixa volatilidade seguidos por episódios de volatilidade extremamente elevada. Esta característica, conhecida como volatility clustering, tem implicações diretas para estratégias de alocação, uma vez que estimativas baseadas em dados históricos podem se tornar rapidamente obsoletas durante mudanças de regime.
+
+No contexto brasileiro específico, estudos recentes evidenciam características adicionais que afetam a construção de carteiras. Da Silva, Santos e Almeida (2019) demonstram que o mercado acionário brasileiro apresenta concentração setorial elevada, com apenas cinco setores (financeiro, commodities, energia elétrica, petróleo e siderurgia) representando historicamente mais de 70\% da capitalização total da B3. Esta concentração implica correlações inter-setoriais mais elevadas durante períodos de estresse, limitando os benefícios de diversificação tradicional.
+
+Adicionalmente, o mercado brasileiro apresenta sensibilidade elevada a variáveis macroeconômicas específicas, incluindo taxa de câmbio, taxa SELIC, risco-país (EMBI+) e preços de commodities. Costa, Lima e Assunção (2018) documentam que choques em qualquer uma destas variáveis podem alterar significativamente correlações entre ativos domésticos, afetando a eficácia de estratégias de alocação baseadas em dados históricos.
+
+\subsection{O Período 2018-2019: Um Laboratório Natural}
+
+O período compreendido entre 2018 e 2019 no mercado brasileiro oferece um contexto particularmente relevante para análise de estratégias de alocação devido à conjunção de diversos fatores que amplificaram a volatilidade e incerteza do mercado. Este período foi caracterizado por: (i) processo eleitoral presidencial em 2018, com alta polarização política; (ii) greve dos caminhoneiros em maio de 2018, que paralisou a economia; (iii) incertezas sobre política econômica e reformas estruturais; (iv) volatilidade elevada nos preços de commodities; e (v) mudanças na política monetária e fiscal.
+
+Durante este período, o índice Ibovespa apresentou volatilidade anualizada média de 26,7\%, significativamente superior à média histórica de longo prazo de aproximadamente 20\%. Mais importante, o mercado experimentou episódios de volatilidade extrema, com volatilidade realizada ultrapassando 40\% em alguns meses de 2018, especialmente durante os períodos pré e pós-eleitorais.
+
+Carnahan e Saiegh (2020) demonstram que eleições em mercados emergentes tendem a amplificar volatilidades e alterar correlações entre ativos, especialmente quando há incerteza sobre políticas econômicas futuras. No caso brasileiro de 2018, a incerteza foi particularmente elevada devido à natureza polarizada da disputa eleitoral e às propostas econômicas divergentes dos candidatos principais.
+
+A greve dos caminhoneiros de maio de 2018 representa um choque idiossincrático particularmente interessante para análise de estratégias de alocação. Este evento, que durou 10 dias, causou impactos diferenciados entre setores da economia, com empresas de logística, varejo e alimentos sendo mais afetadas que empresas financeiras ou de telecomunicações. Tal diferenciação setorial oferece uma oportunidade única para avaliar como diferentes estratégias de alocação respondem a choques assimétricos.
+
+\subsection{Gap na Literatura Acadêmica}
+
+A revisão da literatura acadêmica revela uma lacuna significativa na avaliação comparativa de estratégias de alocação em mercados emergentes durante períodos de extrema volatilidade. A maioria dos estudos sobre eficácia de estratégias de alocação concentra-se em mercados desenvolvidos, particularmente Estados Unidos e Europa, com períodos de análise que frequentemente excluem episódios de volatilidade extrema.
+
+DeMiguel, Garlappi e Uppal (2009), em estudo amplamente citado, comparam 14 estratégias de alocação usando dados de mercados desenvolvidos e concluem que a estratégia naive 1/N (equal weight) frequentemente supera estratégias otimizadas fora da amostra. No entanto, este resultado é baseado principalmente em dados de mercados desenvolvidos com características de volatilidade e correlação distintas dos mercados emergentes.
+
+Estudos específicos sobre o mercado brasileiro são ainda mais raros. Rochman e Eid Jr. (2006) analisam estratégias de alocação no Brasil, mas focam apenas no período 1995-2005, não contemplando desenvolvimentos metodológicos recentes nem períodos de volatilidade extrema como 2018-2019. Silva e Famá (2011) comparam estratégias de Markowitz e equal weight no mercado brasileiro, mas utilizam amostras pequenas e não incluem metodologias de risk parity.
+
+Esta lacuna é particularmente relevante considerando que as características específicas dos mercados emergentes podem alterar significativamente a eficácia relativa das diferentes estratégias. Por exemplo, a presença de higher moments pode favorecer estratégias que não dependem de premissas de normalidade, enquanto correlações instáveis podem beneficiar abordagens menos dependentes de estimativas de correlação.
+
+\subsection{Evolução das Estratégias de Alocação: Da Teoria à Prática}
+
+O desenvolvimento de estratégias de alocação de ativos evoluiu significativamente desde o trabalho pioneiro de Markowitz (1952). Esta evolução pode ser compreendida através de três principais ondas de inovação, cada uma respondendo a limitações identificadas em abordagens anteriores.
+
+A primeira onda, iniciada com Markowitz, estabeleceu a fundamentação matemática para otimização de carteiras baseada na relação média-variância. Esta abordagem assume que investidores são aversos ao risco e que retornos seguem distribuição normal multivariada. Sharpe (1964) expandiu este framework com o desenvolvimento do CAPM, fornecendo uma estrutura teórica para estimação de retornos esperados. No entanto, evidências empíricas subsequentes revelaram limitações práticas significativas desta abordagem, particularmente relacionadas à instabilidade das estimativas e à sensibilidade extrema a pequenas mudanças nos parâmetros de entrada (MICHAUD, 1989).
+
+A segunda onda emerge da crítica às limitações práticas da otimização tradicional. Estudos como os de Best e Grauer (1991) e Chopra e Ziemba (1993) demonstram que erros nas estimativas de retorno esperado têm impacto muito maior na performance de carteiras otimizadas que erros nas estimativas de risco. Esta descoberta motivou o desenvolvimento de abordagens mais robustas, incluindo técnicas de shrinkage (LEDOIT; WOLF, 2003), otimização robusta (GOLDFARB; IYENGAR, 2003) e, paradoxalmente, o renewed interest na estratégia equal weight.
+
+A terceira onda, iniciada nos anos 2000, focou na gestão de risco como objetivo primário da alocação. Esta perspectiva reconhece que, em ambientes de alta incerteza, controlar o risco pode ser mais importante que maximizar o retorno esperado. A estratégia de Risk Parity, popularizada inicialmente por Ray Dalio na Bridgewater Associates, representa o exemplo mais proeminente desta abordagem. Maillard, Roncalli e Teiletche (2010) formalizaram matematicamente esta estratégia através do conceito de Equal Risk Contribution (ERC).
+
+\subsection{Desafios Metodológicos em Avaliação de Estratégias}
+
+A avaliação empírica de estratégias de alocação enfrenta desafios metodológicos significativos que podem comprometer a validade dos resultados. O principal desafio é o look-ahead bias, que ocorre quando informações futuras são inadvertidamente utilizadas na construção de carteiras. Este problema é particularmente prevalente em estudos que utilizam todo o período histórico disponível para otimização e subsequente avaliação de performance.
+
+Para evitar este bias, a literatura acadêmica desenvolveu metodologias out-of-sample rigorosas. Estas metodologias dividem os dados em períodos de estimação (in-sample) e teste (out-of-sample), utilizando apenas informações do período de estimação para construção de carteiras que são subsequentemente avaliadas no período de teste. DeMiguel, Garlappi e Uppal (2009) estabeleceram o padrão metodológico para este tipo de análise, utilizando janelas móveis de estimação e rebalanceamento periódico.
+
+Outro desafio metodológico refere-se à seleção de métricas de avaliação. Embora o Índice de Sharpe seja amplamente utilizado, sua adequação em contextos de distribuições não-normais é questionável. Sortino e Price (1994) propuseram o Sortino Ratio como alternativa que considera apenas volatilidade negativa, sendo mais apropriado para investidores que se preocupam principalmente com perdas. Mais recentemente, métricas baseadas em Value-at-Risk e Expected Shortfall ganharam popularidade por capturar melhor tail risks.
+
+\subsection{Questão de Pesquisa e Contribuições Esperadas}
+
+Diante do contexto apresentado, este estudo busca responder à seguinte questão central: \textbf{Qual das três principais estratégias de alocação de ativos (Mean-Variance Optimization, Equal Weight, e Risk Parity) apresenta superior performance ajustada ao risco no mercado acionário brasileiro durante o período de alta volatilidade de 2018-2019, utilizando metodologia out-of-sample rigorosa e métricas de avaliação adequadas para mercados emergentes?}
+
+Esta questão desdobra-se em questões subsidiárias específicas: (i) Como características específicas do mercado brasileiro durante 2018-2019 afetaram a performance relativa das diferentes estratégias? (ii) Quais fatores macroeconômicos e microestruturais explicam as diferenças de performance observadas? (iii) Os resultados são estatisticamente significativos e robustos a diferentes especificações metodológicas? (iv) Que implicações práticas podem ser derivadas para gestores de recursos operando em mercados similares?
+
+A contribuição esperada deste estudo é multifacetada. Do ponto de vista acadêmico, o trabalho adiciona evidência empírica específica para mercados emergentes, área com literatura ainda limitada. A análise do período 2018-2019 no Brasil oferece insights únicos sobre o comportamento de estratégias de alocação em ambiente de volatilidade política e econômica extrema.
+
+Do ponto de vista prático, os resultados podem informar decisões de alocação de gestores de recursos, family offices e investidores institucionais que operam no mercado brasileiro. A identificação da estratégia mais eficaz em condições de alta volatilidade pode contribuir para melhoria da relação risco-retorno de carteiras domésticas.
+
+Metodologicamente, este estudo contribui através da implementação rigorosa de técnicas out-of-sample e uso de testes de significância estatística apropriados para comparação de estratégias de investimento. A atenção específica a características de mercados emergentes, incluindo higher moments e correlações instáveis, adiciona rigor à análise.
+
+\section{OBJETIVO GERAL}
+
+Avaliar comparativamente o desempenho de três estratégias fundamentais de alocação de ativos - Mean-Variance Optimization de Markowitz, Equal Weight e Risk Parity (Equal Risk Contribution) - no mercado acionário brasileiro durante o período de alta volatilidade de 2018-2019, utilizando metodologia out-of-sample rigorosa com dados de estimação de 2016-2017 e avaliação baseada em métricas de performance ajustadas ao risco apropriadas para mercados emergentes, com o objetivo de identificar a estratégia mais eficaz para investidores operando em ambientes de elevada incerteza e instabilidade.
+
+\section{OBJETIVOS ESPECÍFICOS}
+
+\begin{itemize}
+    \item Implementar processo científico de seleção de ativos baseado em critérios objetivos de liquidez, completude de dados e diversificação setorial, utilizando metodologia que elimine survivorship bias e look-ahead bias através da aplicação de filtros baseados exclusivamente em informações disponíveis no período pré-teste (2014-2017).
+    
+    \item Desenvolver e implementar as três estratégias de alocação utilizando algoritmos computacionais robustos: (a) otimização mean-variance com restrições práticas; (b) equal weight com rebalanceamento periódico; (c) Equal Risk Contribution com algoritmo de convergência rigoroso.
+    
+    \item Estabelecer metodologia out-of-sample rigorosa com janelas de estimação móveis, rebalanceamento semestral e eliminação completa de look-ahead bias, seguindo melhores práticas estabelecidas na literatura acadêmica.
+    
+    \item Calcular e comparar métricas de performance apropriadas para mercados emergentes, incluindo Sharpe Ratio, Sortino Ratio, Maximum Drawdown e medidas de tail risk, com aplicação de testes de significância estatística adequados para comparação de estratégias de investimento.
+    
+    \item Analisar a robustez dos resultados através de testes de sensibilidade, incluindo diferentes janelas de estimação, frequências de rebalanceamento e tratamento de outliers, para verificar a estabilidade das conclusões.
+    
+    \item Contextualizar os resultados dentro do ambiente macroeconômico específico do período 2018-2019, identificando como eventos específicos (eleições, greve dos caminhoneiros, mudanças de política econômica) afetaram a performance relativa das estratégias.
+    
+    \item Derivar implicações práticas para gestores de recursos e investidores institucionais, incluindo recomendações sobre implementação, custos de transação e considerações específicas para mercados emergentes.
+\end{itemize}
+
+\section{JUSTIFICATIVA}
+
+\subsection{Relevância Acadêmica}
+
+A literatura acadêmica sobre alocação estratégica de ativos apresenta concentração significativa em mercados desenvolvidos, particularmente Estados Unidos e Europa Ocidental. Uma busca sistemática nas principais bases de dados acadêmicas (Web of Science, Scopus, JSTOR) revela que aproximadamente 80\% dos estudos sobre estratégias de alocação de ativos utilizam dados de mercados desenvolvidos, deixando uma lacuna substancial no entendimento de como essas estratégias performam em mercados emergentes.
+
+Esta concentração geográfica é problemática por várias razões. Primeiro, mercados emergentes representam parcela crescente do PIB global e dos investimentos institucionais, tornando crucial o entendimento de estratégias de alocação nestes contextos. Segundo, as características estruturais distintas destes mercados (maior volatilidade, correlações instáveis, higher moments) podem alterar significativamente a eficácia relativa das diferentes estratégias.
+
+Especificamente para o mercado brasileiro, a literatura é ainda mais limitada. Dos poucos estudos existentes, a maioria utiliza períodos anteriores a 2010, não contemplando desenvolvimentos metodológicos recentes na área de risk parity nem períodos de volatilidade extrema como 2018-2019. Esta lacuna é particularmente relevante considerando que o Brasil representa o maior mercado de capitais da América Latina e um dos principais destinos de investimento em mercados emergentes.
+
+Do ponto de vista metodológico, este estudo contribui através da implementação rigorosa de técnicas out-of-sample com atenção específica a características de mercados emergentes. A maioria dos estudos existentes sobre o mercado brasileiro utiliza metodologias in-sample ou períodos de teste insuficientemente longos, comprometendo a validade estatística dos resultados.
+
+\subsection{Relevância Prática}
+
+O mercado de gestão de recursos no Brasil movimenta atualmente aproximadamente R\$ 4,5 trilhões em patrimônio líquido (dados ANBIMA 2023), tornando extremamente relevantes melhorias incrementais em estratégias de alocação. Uma melhoria de apenas 50 basis points anuais na relação risco-retorno representaria valor agregado de bilhões de reais para investidores.
+
+Gestores de recursos, family offices e investidores institucionais (fundos de pensão, seguradoras, endowments) enfrentam constantemente decisões sobre metodologias de alocação de ativos. A falta de evidência empírica específica para o mercado brasileiro força esses profissionais a extrapolar resultados de mercados desenvolvidos, processo que pode ser inadequado dado as diferenças estruturais discutidas anteriormente.
+
+Adicionalmente, o período 2018-2019 oferece lições importantes sobre gestão de carteiras durante períodos de elevada incerteza política e econômica. Tais períodos são recorrentes em mercados emergentes, tornando as conclusões deste estudo aplicáveis a situações futuras similares.
+
+Do ponto de vista regulatório, órgãos como CVM e PREVIC estabelecem diretrizes para alocação de recursos de investidores institucionais. Evidência empírica sobre eficácia de diferentes estratégias pode informar futuras atualizações dessas diretrizes, beneficiando milhões de participantes de fundos de pensão e seguros.
+
+\subsection{Originalidade e Ineditismo}
+
+Este estudo apresenta combinação inédita de elementos que garantem sua originalidade: (i) foco específico no mercado brasileiro durante período de volatilidade extrema; (ii) comparação rigorosa das três principais estratégias de alocação usando metodologia out-of-sample; (iii) implementação específica de Equal Risk Contribution, ainda pouco estudada no contexto brasileiro; (iv) atenção específica a características de mercados emergentes na análise de resultados.
+
+A análise do período 2018-2019 é particularmente original devido à conjunção única de fatores que afetaram o mercado brasileiro neste período. A combinação de incerteza eleitoral, choques econômicos específicos (greve dos caminhoneiros), volatilidade em commodities e mudanças de política econômica criou um ambiente natural de teste para estratégias de alocação raramente observado em outros mercados ou períodos.
+
+Do ponto de vista metodológico, a implementação rigorosa de técnicas científicas de seleção de ativos, com eliminação explícita de survivorship bias e look-ahead bias, representa contribuição metodológica significativa para literatura nacional. A aplicação de testes de significância estatística específicos para comparação de estratégias de investimento (Jobson-Korkie, Ledoit-Wolf) é ainda rara na literatura brasileira.
+
+A contextualização dos resultados dentro do ambiente macroeconômico específico do período adiciona dimensão analítica frequentemente ausente em estudos similares, oferecendo insights não apenas sobre performance relativa das estratégias, mas sobre os mecanismos econômicos que explicam essas diferenças.

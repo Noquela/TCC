@@ -20,7 +20,11 @@
       "Bash(rm:*)",
       "Bash(del /q /s backup_old_results*)",
       "Bash(rd:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(copy:*)",
+      "Bash(xcopy:*)",
+      "Bash(pip install:*)",
+      "Bash(del \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\Overleaf\\TCC_RiskParity\\docs\\Overleaf\\sections\\10_introducao.tex\")"
     ],
     "deny": [],
     "ask": []

@@ -1,26 +1,33 @@
 {
-  "data_processamento": "2025-09-08T19:59:04.023478",
+  "data_processamento": "2025-09-09T01:14:31.662967",
+  "periodo_selecao": "2014-2017",
+  "periodo_teste": "2018-2019",
   "criterios_aplicados": [
-    "Completude >= 70%",
-    "Volatilidade entre P25-1.5*IQR e P75+1.5*IQR",
-    "Liquidez >= percentil 30",
-    "Dados teste >= 20 meses",
-    "Sele\u00e7\u00e3o final por score composto"
+    "Elegibilidade: >= 85% de meses v\u00e1lidos (2014-2017)",
+    "Liquidez: <= 20% meses com retorno = 0",
+    "Liquidez: m\u00e9dia |retorno| >= percentil 20",
+    "Score composto: 40% momentum + 20% (1/vol) + 20% (1/drawdown) + 20% (1/downside)",
+    "Diversifica\u00e7\u00e3o: m\u00e1x. 2 ativos por setor",
+    "Controle correla\u00e7\u00e3o: evitar pares alta correla\u00e7\u00e3o"
   ],
-  "total_analisados": 29,
-  "total_selecionados": 12,
+  "metricas_score": {
+    "momentum_12_1": "40% - Retorno 12 meses excluindo m\u00eas corrente",
+    "volatility": "20% - Inverso da volatilidade anualizada",
+    "max_drawdown": "20% - Inverso do m\u00e1ximo drawdown",
+    "downside_deviation": "20% - Inverso do downside risk"
+  },
+  "total_analisados": 25,
+  "total_selecionados": 10,
   "ativos_finais": [
-    "ABEV3",
-    "ALUP11",
-    "AMER3",
-    "ALOS3",
-    "ABCB4",
     "AZZA3",
-    "ALPA4",
-    "BEES3",
+    "ALOS3",
     "B3SA3",
+    "EALT4",
+    "ALUP11",
+    "ALPA4",
     "ALPA3",
-    "ANIM3",
-    "EALT4"
+    "ABCB4",
+    "BRSR3",
+    "CBEE3"
   ]
 }

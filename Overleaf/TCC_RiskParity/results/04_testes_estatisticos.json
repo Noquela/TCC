@@ -1,20 +1,20 @@
 {
   "MVO_vs_EW": {
-    "diferenca_sharpe": 0.16740556227004016,
-    "t_estatistica": 2.181087937480573,
-    "p_value": 0.03965716835578248,
-    "significante_5pct": true
+    "diferenca_sharpe": 0.17583726203653716,
+    "t_estatistica": 1.8477130004862512,
+    "p_value": 0.07754586586164613,
+    "significante_5pct": false
   },
   "MVO_vs_ERC": {
-    "diferenca_sharpe": 0.18689801433457354,
-    "t_estatistica": 2.183824099864503,
-    "p_value": 0.03943149562152559,
-    "significante_5pct": true
+    "diferenca_sharpe": 0.27584226608460816,
+    "t_estatistica": 1.8278148237622107,
+    "p_value": 0.08057978730666293,
+    "significante_5pct": false
   },
   "EW_vs_ERC": {
-    "diferenca_sharpe": 0.019492452064533372,
-    "t_estatistica": 0.9275565687033475,
-    "p_value": 0.3632698407474715,
+    "diferenca_sharpe": 0.10000500404807103,
+    "t_estatistica": 1.4157451163943606,
+    "p_value": 0.17024996146175053,
     "significante_5pct": false
   }
 }

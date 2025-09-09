@@ -1,31 +1,31 @@
 Estratégia,Ativo,Peso_Pct
-Equal Weight,ABEV3,10.0
-Equal Weight,ALUP11,10.0
-Equal Weight,AMER3,10.0
-Equal Weight,ALOS3,10.0
-Equal Weight,ABCB4,10.0
 Equal Weight,AZZA3,10.0
-Equal Weight,ALPA4,10.0
-Equal Weight,BEES3,10.0
+Equal Weight,ALOS3,10.0
 Equal Weight,B3SA3,10.0
+Equal Weight,EALT4,10.0
+Equal Weight,ALUP11,10.0
+Equal Weight,ALPA4,10.0
 Equal Weight,ALPA3,10.0
-Mean-Variance Optimization,ABEV3,0.0
+Equal Weight,ABCB4,10.0
+Equal Weight,BRSR3,10.0
+Equal Weight,CBEE3,10.0
+Mean-Variance Optimization,AZZA3,2.3347412031832868e-14
+Mean-Variance Optimization,ALOS3,20.67011883596312
+Mean-Variance Optimization,B3SA3,8.907762071428847
+Mean-Variance Optimization,EALT4,30.42211909260798
 Mean-Variance Optimization,ALUP11,0.0
-Mean-Variance Optimization,AMER3,31.549060292598547
-Mean-Variance Optimization,ALOS3,11.88292375130475
+Mean-Variance Optimization,ALPA4,39.999999999999986
+Mean-Variance Optimization,ALPA3,9.278342201564808e-15
 Mean-Variance Optimization,ABCB4,0.0
-Mean-Variance Optimization,AZZA3,1.1611444407858551e-14
-Mean-Variance Optimization,ALPA4,9.342090173688531
-Mean-Variance Optimization,BEES3,39.99999999999999
-Mean-Variance Optimization,B3SA3,7.2259257824081535
-Mean-Variance Optimization,ALPA3,2.1196963822543298e-14
-Equal Risk Contribution,ABEV3,13.180792511235587
-Equal Risk Contribution,ALUP11,11.356013888699174
-Equal Risk Contribution,AMER3,7.752815257578903
-Equal Risk Contribution,ALOS3,9.899290946907966
-Equal Risk Contribution,ABCB4,8.802091009315633
-Equal Risk Contribution,AZZA3,12.830421784704113
-Equal Risk Contribution,ALPA4,7.863231368926741
-Equal Risk Contribution,BEES3,13.176064443613864
-Equal Risk Contribution,B3SA3,8.779339353238232
-Equal Risk Contribution,ALPA3,6.359939435779798
+Mean-Variance Optimization,BRSR3,0.0
+Mean-Variance Optimization,CBEE3,4.7283809949734254e-14
+Equal Risk Contribution,AZZA3,16.395127584716533
+Equal Risk Contribution,ALOS3,12.18022718942913
+Equal Risk Contribution,B3SA3,13.219072206255756
+Equal Risk Contribution,EALT4,-9.916201649450148
+Equal Risk Contribution,ALUP11,15.361918121952037
+Equal Risk Contribution,ALPA4,6.810868760090745
+Equal Risk Contribution,ALPA3,6.75108931088369
+Equal Risk Contribution,ABCB4,19.9839655238286
+Equal Risk Contribution,BRSR3,8.930074567719739
+Equal Risk Contribution,CBEE3,10.283858384573929

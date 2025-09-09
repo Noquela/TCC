@@ -95,7 +95,7 @@ class GeradorRelatorios:
         print("2. Gerando tabela LaTeX - Ativos Selecionados...")
         
         # Selecionar top 10 e colunas relevantes
-        top10 = ativos_df.head(10)[['asset', 'selection_score', 'volatility_2014_2017', 'market_cap_proxy', 'completeness']].copy()
+        top10 = ativos_df.head(10)[['asset', 'selection_score', 'volatility_2014_2017', 'momentum_12_1', 'completeness']].copy()
         
         latex_table = "\\begin{table}[htbp]\n"
         latex_table += "\\centering\n"
@@ -103,17 +103,17 @@ class GeradorRelatorios:
         latex_table += "\\label{tab:ativos_selecionados}\n"
         latex_table += "\\begin{tabular}{|l|c|c|c|c|}\n"
         latex_table += "\\hline\n"
-        latex_table += "\\textbf{Ativo} & \\textbf{Score} & \\textbf{Vol. 2014-2017} & \\textbf{Cap. Proxy} & \\textbf{Completude} \\\\\n"
+        latex_table += "\\textbf{Ativo} & \\textbf{Score} & \\textbf{Vol. 2014-2017} & \\textbf{Momentum} & \\textbf{Completude} \\\\\n"
         latex_table += "\\hline\n"
         
         for idx, row in top10.iterrows():
-            latex_table += f"{row['asset']} & {row['selection_score']:.3f} & {row['volatility_2014_2017']:.1%} & {row['market_cap_proxy']:.2f} & {row['completeness']:.1%} \\\\\n"
+            latex_table += f"{row['asset']} & {row['selection_score']:.3f} & {row['volatility_2014_2017']:.1%} & {row['momentum_12_1']:+.1f}\\% & {row['completeness']:.1%} \\\\\n"
         
         latex_table += "\\hline\n"
         latex_table += "\\end{tabular}\n"
         latex_table += "\\footnotesize\n"
         latex_table += "Fonte: Elaboração própria com dados da Economática.\\\\\n"
-        latex_table += "Nota: Score baseado em liquidez (40\\%), capitalização (30\\%) e completude (30\\%).\n"
+        latex_table += "Nota: Score baseado em momentum (40\\%), volatilidade (20\\%), drawdown (20\\%) e downside (20\\%).\n"
         latex_table += "\\end{table}\n"
         
         return latex_table

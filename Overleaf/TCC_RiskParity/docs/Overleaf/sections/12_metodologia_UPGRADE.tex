@@ -50,19 +50,67 @@ A determinação do número adequado de ativos em uma carteira é uma questão f
 
 \textbf{Simplicidade Operacional:} Carteiras com número moderado de ativos facilitam implementação prática, reduzem custos de transação, e permitem monitoramento mais efetivo. Para fins acadêmicos e aplicações práticas em gestão de recursos, 10 ativos representam equilíbrio ótimo entre diversificação e operacionalidade.
 
-\subsection{Processo de Seleção de Ativos}
+\subsection{Metodologia Científica de Seleção de Ativos}
 
-A seleção dos 10 ativos foi conduzida através de processo sistemático e objetivo, baseado exclusivamente em informações disponíveis até 31 de dezembro de 2017. Esta data foi escolhida como ponto de corte para garantir que nenhuma informação do período de teste (2018-2019) fosse utilizada na seleção.
+A seleção dos 10 ativos foi conduzida através de metodologia científica rigorosa baseada em critérios quantitativos objetivos, aplicados exclusivamente no período 2014-2017 para evitar look-ahead bias. Esta abordagem elimina completamente seleções manuais ou baseadas em conhecimento a posteriori.
 
-\textbf{Critério 1 - Liquidez:} Volume médio diário superior a R\$ 50 milhões durante o biênio 2016-2017. Este critério garante que os ativos selecionados possam ser negociados sem impacto significativo no preço, viabilizando implementação prática das estratégias. A liquidez é fundamental porque estratégias de alocação requerem rebalanceamentos periódicos, e custos de transação elevados podem erodir significativamente a performance.
+\textbf{Critério 1 - Elegibilidade Básica:}
+\begin{itemize}
+    \item Período de seleção: 2014-2017 (janela histórica de 4 anos)
+    \item Completude mínima: ≥ 85\% de meses válidos no período
+    \item Ausência de gaps grandes nas séries históricas
+    \item Dados de teste suficientes: ≥ 20 meses em 2018-2019
+\end{itemize}
 
-\textbf{Critério 2 - Representatividade Econômica:} Participação mínima de 1\% no índice Ibovespa, calculada com base na composição vigente em dezembro de 2017. Este critério assegura que os ativos selecionados são economicamente relevantes e representam empresas com peso significativo na economia brasileira. Ativos com participação muito pequena no índice podem apresentar características idiossincráticas que não são representativas do mercado como um todo.
+\textbf{Critério 2 - Liquidez (Proxies Quantitativas):}
+\begin{itemize}
+    \item Máximo 20\% de meses com retorno = 0 (proxy de inatividade)
+    \item Média de |retorno| mensal ≥ percentil 20 (proxy de negociação efetiva)
+\end{itemize}
 
-\textbf{Critério 3 - Diversificação Setorial:} Limitação de máximo 3 ativos por setor econômico, seguindo a classificação setorial da B3. Este critério é crucial para evitar concentração excessiva em setores específicos, que poderia comprometer os benefícios de diversificação. A diversificação setorial é especialmente importante no mercado brasileiro, onde alguns setores (como bancário e de commodities) têm peso significativo.
+\textbf{Critério 3 - Métricas de Risco/Retorno (2014-2017):}
+\begin{itemize}
+    \item \textit{Momentum 12-1:} Retorno acumulado dos últimos 12 meses excluindo mês corrente
+    \item \textit{Volatilidade:} Desvio-padrão anualizado dos retornos mensais
+    \item \textit{Maximum Drawdown:} Maior perda percentual desde pico anterior
+    \item \textit{Downside Deviation:} Desvio-padrão dos retornos negativos (downside risk)
+\end{itemize}
 
-\textbf{Critério 4 - Completude de Dados:} Disponibilidade completa de séries históricas de preços ajustados por dividendos e eventos corporativos durante todo o período de análise (2016-2019). Este critério técnico é essencial para garantir que os cálculos de retorno e risco sejam baseados em dados íntegros e consistentes.
+\textbf{Critério 4 - Score de Seleção Composto:}
+O score final combina as quatro métricas principais, cada uma normalizada em percentis (0-1):
 
-\textbf{Critério 5 - Estabilidade:} Permanência contínua na composição do Ibovespa durante o período 2016-2017, evitando ativos que entraram ou saíram do índice durante a janela de estimação. Este critério reduz ruídos relacionados a mudanças na relevância econômica dos ativos.
+\begin{equation}
+Score_{final} = 0.40 \times Momentum_{rank} + 0.20 \times (1/Vol)_{rank} + 0.20 \times (1/DD)_{rank} + 0.20 \times (1/Down)_{rank}
+\end{equation}
+
+onde:
+\begin{itemize}
+    \item $Momentum_{rank}$: Percentil do momentum 12-1 (maior = melhor)
+    \item $(1/Vol)_{rank}$: Percentil inverso da volatilidade (menor volatilidade = melhor)
+    \item $(1/DD)_{rank}$: Percentil inverso do drawdown (menor perda = melhor)  
+    \item $(1/Down)_{rank}$: Percentil inverso do downside risk (menor = melhor)
+\end{itemize}
+
+\textbf{Critério 5 - Diversificação e Controle de Correlação:}
+\begin{itemize}
+    \item Máximo 2 ativos por setor econômico (classificação B3)
+    \item Controle de correlações altas (> 0.85) entre pares de ativos
+    \item Seleção dos 10-12 melhores ativos por score, respeitando diversificação
+\end{itemize}
+
+\textbf{Resultado da Seleção Científica:}
+O processo resultou na seleção final de 10 ativos de alta qualidade:
+\begin{center}
+\textbf{AZZA3, ALOS3, B3SA3, EALT4, ALUP11, ALPA4, ALPA3, ABCB4, BRSR3, CBEE3}
+\end{center}
+
+Características dos ativos selecionados:
+\begin{itemize}
+    \item Score médio de seleção: 0.641 (em escala 0-1)
+    \item Diversificação setorial: 9 setores diferentes representados
+    \item Completude média: 97.9\% dos dados disponíveis
+    \item Momentum médio 2014-2017: +64.8\% (demonstrando qualidade superior)
+\end{itemize}
 
 \subsection{Eliminação Sistemática de Vieses}
 

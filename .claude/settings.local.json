@@ -24,7 +24,8 @@
       "Bash(copy:*)",
       "Bash(xcopy:*)",
       "Bash(pip install:*)",
-      "Bash(del \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\Overleaf\\TCC_RiskParity\\docs\\Overleaf\\sections\\10_introducao.tex\")"
+      "Bash(del \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\Overleaf\\TCC_RiskParity\\docs\\Overleaf\\sections\\10_introducao.tex\")",
+      "Bash(del:*)"
     ],
     "deny": [],
     "ask": []

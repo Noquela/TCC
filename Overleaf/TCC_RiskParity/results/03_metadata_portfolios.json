@@ -1,38 +1,38 @@
 {
-  "data_processamento": "2025-09-09T01:15:57.156537",
+  "data_processamento": "2025-09-15T20:52:36.226413",
   "periodo_analise": "2018-01-01 a 2019-12-31",
   "taxa_livre_risco": 0.0624,
   "total_ativos": 10,
   "ativos_analisados": [
+    "LREN3",
+    "WEGE3",
+    "ABEV3",
     "AZZA3",
-    "ALOS3",
-    "B3SA3",
-    "EALT4",
-    "ALUP11",
     "ALPA4",
-    "ALPA3",
-    "ABCB4",
-    "BRSR3",
-    "CBEE3"
+    "RENT3",
+    "ITUB4",
+    "ALUP11",
+    "B3SA3",
+    "BBDC4"
   ],
   "estrategias": {
     "equal_weight": {
-      "retorno_anual": 0.27788892994804304,
-      "volatilidade": 0.19486775575496368,
-      "sharpe": 1.105821376723861,
-      "sortino": 1.5246455909443848
+      "retorno_anual": 0.29839718645601687,
+      "volatilidade": 0.1972010915841122,
+      "sharpe": 1.1967336720109227,
+      "sortino": 1.5841572854061226
     },
     "markowitz": {
-      "retorno_anual": 0.4608682771500255,
-      "volatilidade": 0.23235121266322875,
-      "sharpe": 1.7149395201460291,
-      "sortino": 3.962358130753514
+      "retorno_anual": 0.42450087276186244,
+      "volatilidade": 0.1948975112983561,
+      "sharpe": 1.8579040355602356,
+      "sortino": 3.4871125264355327
     },
     "risk_parity": {
-      "retorno_anual": 0.22007531743330377,
-      "volatilidade": 0.20763311562677333,
-      "sharpe": 0.7593938806790811,
-      "sortino": 1.018800464476346
+      "retorno_anual": 0.2874729390985664,
+      "volatilidade": 0.1862333089246974,
+      "sharpe": 1.2085536169556739,
+      "sortino": 1.586470603359387
     }
   }
 }

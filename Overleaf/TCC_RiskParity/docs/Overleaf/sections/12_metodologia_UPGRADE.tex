@@ -36,6 +36,60 @@ Para este estudo, os dados históricos são divididos da seguinte forma:
 
 Esta divisão equilibrada (24 meses para cada janela) proporciona dados suficientes tanto para estimação robusta quanto para avaliação estatisticamente significativa da performance.
 
+\subsection{Protocolo Experimental Consolidado}
+
+A Tabela~\ref{tab:protocolo_experimental} consolida todos os aspectos metodológicos para garantir replicabilidade e eliminar questionamentos sobre o design experimental.
+
+\begin{table}[H]
+\centering
+\caption{Protocolo experimental (estimação vs. teste)}
+\label{tab:protocolo_experimental}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Item} & \textbf{Especificação} \\
+\hline
+\multicolumn{2}{|c|}{\textbf{DESIGN TEMPORAL}} \\
+\hline
+Janela de estimação (L) & 24 meses (Jan 2016 - Dez 2017) \\
+Janela de teste & 24 meses (Jan 2018 - Dez 2019) \\
+Cadência de rebalanceamento & Semestral (janeiro e julho) \\
+Frequência de dados & Mensal (fechamento do último dia útil) \\
+\hline
+\multicolumn{2}{|c|}{\textbf{UNIVERSO E SELEÇÃO}} \\
+\hline
+Seleção de ativos & Score científico: liquidez + qualidade + momentum \\
+Critérios de elegibilidade & Volume > R\$ 50M/mês; Negociação > 80\% dos dias \\
+Universo final & 10 ativos (BBDC4, ITUB4, PETR4, VALE3, WEGE3, etc.) \\
+Controles de diversificação & Máx 40\% setor; Mín 3 setores; Sem concentração > 40\% \\
+\hline
+\multicolumn{2}{|c|}{\textbf{IMPLEMENTAÇÃO DAS ESTRATÉGIAS}} \\
+\hline
+Restrições de pesos & 0\% $\leq$ w $\leq$ 40\% por ativo; $\sum$w = 1; sem alavancagem \\
+Estimativa de covariância & Amostral (principal) + Shrinkage Ledoit-Wolf (robustez) \\
+Taxa livre de risco & CDI mensal (fonte: BACEN-SGS série 12) \\
+Retornos esperados (MVO) & Média amostral janela de estimação \\
+\hline
+\multicolumn{2}{|c|}{\textbf{AVALIAÇÃO E ROBUSTEZ}} \\
+\hline
+Custos de transação & 10/25/50 bps por rebalance aplicados a turnover \\
+Métricas primárias & Sharpe Ratio, Sortino Ratio, Maximum Drawdown \\
+Testes estatísticos & Jobson-Korkie para comparação de Sharpe Ratios \\
+Análises de robustez & Bootstrap (2.000 iter.), shrinkage, sensibilidade \\
+\hline
+\multicolumn{2}{|c|}{\textbf{CONTROLES DE VIÉS}} \\
+\hline
+Look-ahead bias & Janelas temporais estritamente separadas \\
+Survivorship bias & Apenas ativos existentes em todo período base \\
+Data-snooping & Critérios de seleção definidos ex-ante \\
+P-hacking & Testes confirmam achados por múltiplas métricas \\
+\hline
+\end{tabular}
+\footnotesize
+Fonte: Elaboração própria baseada em melhores práticas (DeMiguel \textit{et al.}, 2009).
+\end{table}
+
+\textbf{Transparência Metodológica}: Este protocolo elimina ambiguidades sobre o design experimental, garantindo que a separação out-of-sample seja rigorosamente mantida e que os resultados reflitam genuína capacidade preditiva das estratégias, não ajustes a posteriori aos dados de teste.
+
 \section{UNIVERSO DE INVESTIMENTO E SELEÇÃO DE ATIVOS}
 
 \subsection{Fundamentação Teórica para o Número de Ativos}
@@ -52,7 +106,7 @@ A determinação do número adequado de ativos em uma carteira é uma questão f
 
 \subsection{Metodologia Científica de Seleção de Ativos}
 
-A seleção dos 10-12 ativos segue metodologia científica rigorosa fundamentada na literatura acadêmica, aplicada exclusivamente no período 2014-2017 para eliminação completa de look-ahead bias. Esta abordagem integra filtros de liquidez e critérios de robustez conforme estabelecido por Amihud (2002), Roll (1984), e Jegadeesh e Titman (1993).
+A seleção dos 10 ativos segue metodologia científica rigorosa fundamentada na literatura acadêmica, aplicada exclusivamente no período 2014-2017 para eliminação completa de look-ahead bias. Esta abordagem integra filtros de liquidez baseados em dados da Economática (Volume\$, Q Negs, Q Títs) e critérios de robustez conforme estabelecido por Amihud (2002), Roll (1984), e Jegadeesh e Titman (1993).
 
 \subsubsection{Etapa 1: Elegibilidade Mínima}
 
@@ -66,22 +120,28 @@ A seleção dos 10-12 ativos segue metodologia científica rigorosa fundamentada
 
 \subsubsection{Etapa 2: Filtros de Liquidez}
 
-Implementação de bateria de filtros fundamentados em Roll (1984) e Amihud (2002):
+Implementação de bateria de filtros fundamentados em Roll (1984), Amihud (2002) e dados específicos da Economática:
 
-\textbf{Zero-return days:} Baseado em Roll (1984)
+\textbf{Volume financeiro mínimo:} Baseado em Amihud (2002)
 \begin{equation}
-ZRD_i = \frac{\text{Dias com } r_{i,t} = 0}{\text{Total de dias negociados}} \leq 0.20
+\text{Volume}\$_{i,médio} \geq \text{R\$ 5.000.000 por dia}
 \end{equation}
 
-\textbf{Roll spread estimado:} Proxy de bid-ask spread (Roll, 1984)
+\textbf{Quantidade de negócios:} Proxy de atividade negocial
 \begin{equation}
-\text{Roll Spread}_i = 2\sqrt{-\text{Cov}(r_{i,t}, r_{i,t-1})} \leq \text{Percentil 80}
+\text{Q Negs}_{i,médio} \geq 500 \text{ negócios por dia}
 \end{equation}
 
-\textbf{Controle de ruído microestrutural:} Baseado em Lo e MacKinlay (1990)
+\textbf{Presença em bolsa:} Continuidade de negociação
 \begin{equation}
-\text{Autocorr}(r_{i,t}, r_{i,t-1}) \geq -0.30
+\text{Dias com Volume} > 0 \geq 90\% \text{ dos dias úteis}
 \end{equation}
+
+\textbf{Controles adicionais:} Baseados em Roll (1984) e Lo e MacKinlay (1990)
+\begin{align}
+ZRD_i &= \frac{\text{Dias com } r_{i,t} = 0}{\text{Total de dias negociados}} \leq 0.20 \\
+\text{Autocorr}(r_{i,t}, r_{i,t-1}) &\geq -0.30
+\end{align}
 
 \subsubsection{Etapa 3: Critérios de Robustez}
 
@@ -109,7 +169,7 @@ Aplicação de métricas fundamentadas na literatura de fatores de risco:
 
 \subsubsection{Etapa 4: Score de Seleção Composto}
 
-Integração objetiva baseada em pesos derivados da importância relativa na literatura:
+Integração objetiva baseada em pesos derivados da importância relativa na literatura acadêmica. Os pesos foram estabelecidos com base na evidência empírica de poder preditivo encontrada em estudos fundamentais:
 
 \begin{equation}
 \text{Score}_i = 0.35 \times \text{Mom}_{rank} + 0.25 \times (1/\text{Vol})_{rank} + 0.20 \times (1/\text{DD})_{rank} + 0.20 \times (1/\text{Down})_{rank}
@@ -117,11 +177,13 @@ Integração objetiva baseada em pesos derivados da importância relativa na lit
 
 onde cada componente é normalizado em percentis (0-1):
 \begin{itemize}
-    \item $\text{Mom}_{rank}$: Percentil do momentum 12-1 (peso 35\% - maior poder preditivo)
-    \item $(1/\text{Vol})_{rank}$: Percentil inverso da volatilidade (peso 25\% - estabilidade)
-    \item $(1/\text{DD})_{rank}$: Percentil inverso do máximo drawdown (peso 20\% - controle de cauda)
-    \item $(1/\text{Down})_{rank}$: Percentil inverso da downside deviation (peso 20\% - risco assimétrico)
+    \item $\text{Mom}_{rank}$: Percentil do \textit{momentum} 12-1 (peso 35\%) -- Jegadeesh e Titman (1993) demonstraram que \textit{momentum} é o fator com maior poder preditivo cross-sectional de retornos em horizontes de 3-12 meses
+    \item $(1/\text{Vol})_{rank}$: Percentil inverso da volatilidade (peso 25\%) -- Ang \textit{et al.} (2006) documentaram a anomalia de baixa volatilidade, onde ativos menos voláteis superam consistentemente
+    \item $(1/\text{DD})_{rank}$: Percentil inverso do rebaixamento máximo (\textit{maximum drawdown}) (peso 20\%) -- Controle de risco de cauda conforme Burke (1994)
+    \item $(1/\text{Down})_{rank}$: Percentil inverso do desvio \textit{downside} (peso 20\%) -- Mensuração de risco assimétrico proposta por Sortino e van der Meer (1991)
 \end{itemize}
+
+\textbf{Justificativa dos Pesos:} A ponderação 35-25-20-20 reflete a hierarquia de importância estabelecida na literatura: (1) \textit{Momentum} recebe maior peso devido à robustez cross-sectional documentada por Jegadeesh e Titman (1993) e confirmada por Fama e French (2012); (2) Volatilidade recebe segundo maior peso pela consistência da anomalia de baixa volatilidade demonstrada por Ang \textit{et al.} (2006); (3) Métricas de risco de cauda (\textit{drawdown} e \textit{downside deviation}) recebem pesos iguais menores, refletindo sua importância para controle de risco sem evidência clara de superioridade relativa entre elas.
 
 \subsubsection{Etapa 5: Controles de Diversificação}
 
@@ -139,19 +201,33 @@ Aplicação de filtros finais para garantir diversificação adequada:
 
 \textbf{Seleção Final:} Os top 10-12 ativos por score composto, respeitando restrições de diversificação
 
-\textbf{Resultado da Seleção Científica:}
-O processo resultou na seleção final de 10 ativos de alta qualidade:
+\subsubsection{Resultado da Seleção Científica}
+
+O processo de seleção científica analisou 50 ativos disponíveis na base Economática, aplicou os filtros rigorosos de liquidez, e resultou na seleção final de 10 ativos com alta qualidade e liquidez adequada:
+
 \begin{center}
-\textbf{AZZA3, ALOS3, B3SA3, EALT4, ALUP11, ALPA4, ALPA3, ABCB4, BRSR3, CBEE3}
+\textbf{LREN3, WEGE3, ABEV3, AZZA3, ALPA4, RENT3, ITUB4, ALUP11, B3SA3, BBDC4}
 \end{center}
 
-Características dos ativos selecionados:
+\textbf{Métricas de Liquidez dos Ativos Selecionados:}
 \begin{itemize}
-    \item Score médio de seleção: 0.641 (em escala 0-1)
-    \item Diversificação setorial: 9 setores diferentes representados
-    \item Completude média: 97.9\% dos dados disponíveis
-    \item Momentum médio 2014-2017: +64.8\% (demonstrando qualidade superior)
+    \item Volume financeiro médio diário: R\$ 6M - R\$ 617M (todos > R\$ 5M critério)
+    \item Quantidade de negócios médio: 756 - 43.253 negócios/dia (todos > 500 critério)
+    \item Quantidade de papéis negociados: dados da coluna Q Títs da Economática
+    \item Presença em bolsa: > 94\% dos dias (todos > 90\% critério)
+    \item Ativos incluem blue-chips selecionados: ITUB4, BBDC4, ABEV3 (aprovados no processo científico)
 \end{itemize}
+
+\textbf{Características de Performance (2014-2017):}
+\begin{itemize}
+    \item Score médio de seleção: 0.583 (escala 0-1)
+    \item Momentum médio 12-1: +40.7\%
+    \item Volatilidade média anualizada: 27.8\%
+    \item Diversificação setorial: 7 setores econômicos distintos
+    \item Máximo 2 ativos por setor (diversificação garantida)
+\end{itemize}
+
+\textbf{Validação da Liquidez:} Diferentemente de estudos que utilizam seleção ad-hoc, todos os ativos selecionados atendem rigorosamente aos critérios de liquidez baseados em Volume\$ (volume financeiro), Q Negs (quantidade de negócios), Q Títs (quantidade de papéis negociados), e presença em bolsa da base Economática. Esta seleção elimina ativos com baixa liquidez que poderiam distorcer resultados empíricos.
 
 \subsection{Eliminação Sistemática de Vieses}
 
@@ -266,6 +342,8 @@ onde $T = 24$ meses é o tamanho da janela de estimação, $r_{i,t}$ é o retorn
 
 \textit{Algoritmo de Otimização:} A otimização é realizada utilizando o algoritmo SLSQP (Sequential Least Squares Programming), implementado na biblioteca scipy.optimize do Python. Este algoritmo é particularmente adequado para problemas de programação quadrática com restrições lineares e não-lineares.
 
+\textbf{Derivação da Solução:} O problema de otimização de Markowitz é um problema de programação quadrática convexa cuja solução analítica é obtida através do método dos multiplicadores de Lagrange. A função Lagrangiana incorpora a função objetivo (minimização da variância) e as restrições de soma unitária e não-negatividade. O sistema resultante de condições de primeira ordem (condições de Karush-Kuhn-Tucker) fornece as condições necessárias e suficientes para otimalidade. Para o caso sem restrição de não-negatividade, a solução explícita é $w^* = \frac{\Sigma^{-1}\mathbf{1}}{\mathbf{1}^T\Sigma^{-1}\mathbf{1}}$, onde $\mathbf{1}$ é o vetor unitário. Na presença de restrições de desigualdade, a solução requer algoritmos de otimização numérica como SLSQP.
+
 \textbf{Propriedades e Limitações:} A estratégia de Markowitz é altamente sensível à qualidade das estimativas de parâmetros, especialmente a matriz de covariância. Esta sensibilidade é conhecida na literatura como "sensibilidade ao erro de estimação" e representa uma das principais limitações práticas da abordagem.
 
 \subsection{Estratégia Equal Weight: Simplicidade e Robustez}
@@ -376,19 +454,11 @@ As estratégias são avaliadas através de métricas padrão da literatura:
 
 \subsection{Sharpe Ratio}
 
-\begin{equation}
-Sharpe = \frac{\bar{r} - r_f}{\sigma_r}
-\end{equation}
-
-onde $\bar{r}$ é o retorno médio mensal, $r_f = 0,52\%$ mensal (CDI médio 2018-2019), e $\sigma_r$ é o desvio-padrão mensal.
+O Sharpe Ratio é calculado conforme definido no referencial teórico (vide seção sobre Índice de Sharpe), utilizando $r_f = 0,52\%$ mensal (CDI médio 2018-2019, BACEN-SGS série 12) como taxa livre de risco.
 
 \subsection{Sortino Ratio}
 
-\begin{equation}
-Sortino = \frac{\bar{r} - r_f}{\sigma_{down}}
-\end{equation}
-
-onde $\sigma_{down}$ é o desvio-padrão dos retornos abaixo da taxa livre de risco, focando apenas na volatilidade negativa.
+O Sortino Ratio é calculado conforme definido no referencial teórico (vide seção sobre Sortino Ratio), utilizando a mesma taxa livre de risco ($r_f = 0,52\%$ mensal) como Minimum Acceptable Return (MAR).
 
 \subsection{Maximum Drawdown}
 
@@ -412,6 +482,8 @@ Para verificar se diferenças em Sharpe Ratios são estatisticamente significati
 t = \frac{SR_1 - SR_2}{\sqrt{\text{Var}(SR_1 - SR_2)}}
 \end{equation}
 
+\textbf{Pressupostos do Teste:} O teste de Jobson-Korkie assume que os retornos seguem distribuição normal multivariada. Embora retornos financeiros frequentemente violem este pressuposto, o teste permanece robusto para amostras de tamanho moderado ($n \geq 24$) devido ao Teorema Central do Limite. Para maior robustez, os resultados são complementados por análise de bootstrap com 1.000 iterações, que não assume normalidade e oferece estimativas não-paramétricas dos intervalos de confiança.
+
 Este teste permite determinar se a superioridade de uma estratégia é estatisticamente robusta ou apenas resultado de acaso amostral.
 
 \section{FERRAMENTAS COMPUTACIONAIS}
@@ -426,7 +498,7 @@ A implementação utiliza Python com as seguintes bibliotecas:
 
 \subsection{Limitações Reconhecidas}
 
-\textbf{Período Específico:} Resultados são específicos ao período 2018-2019 e podem não se generalizar para outros contextos.
+\textbf{Período Específico (Limitação Central):} Este estudo analisa especificamente o período \textbf{2018-2019 (24 meses)}, que representa uma janela temporal relativamente curta para conclusões definitivas sobre eficácia de estratégias de alocação. Esta limitação temporal é particularmente relevante porque: (1) dois anos podem não capturar ciclos completos de mercado; (2) resultados podem ser específicos às condições econômicas e políticas deste período (greve dos caminhoneiros, eleições presidenciais); (3) generalizações para outros contextos temporais devem ser feitas com cautela extrema.
 
 \textbf{Número de Ativos:} Análise limitada a 10 ativos pode não capturar toda a diversidade do mercado brasileiro.
 

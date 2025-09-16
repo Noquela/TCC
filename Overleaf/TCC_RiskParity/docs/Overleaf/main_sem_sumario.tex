@@ -1,0 +1,122 @@
+% ==================================================================
+% TEMPLATE TCC MACKENZIE - BRUNO GASPARONI BALLERINI
+% Baseado nas normas do Guia do TCC 2022 - Universidade Presbiteriana Mackenzie
+% VERSÃO SEM SUMÁRIO MANUAL (Pandoc gera automaticamente)
+% ==================================================================
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% ==================================================================
+% PACOTES NECESSÁRIOS
+% ==================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[portuguese]{babel}
+\usepackage{mathptmx} % Times New Roman
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+
+% ==================================================================
+% CONFIGURAÇÕES GERAIS MACKENZIE
+% ==================================================================
+
+% Margens: 3cm (superior e esquerda), 2cm (inferior e direita)
+\geometry{
+    a4paper,
+    top=3cm,
+    left=3cm,
+    bottom=2cm,
+    right=2cm
+}
+
+% Espaçamento 1.5
+\onehalfspacing
+
+% Recuo de parágrafo 1,25cm
+\setlength{\parindent}{1.25cm}
+
+% Espaçamento entre parágrafos - SEM espaço extra (conforme guia p.40)
+\setlength{\parskip}{0pt}
+
+% ==================================================================
+% CONFIGURAÇÃO DE TÍTULOS (NORMAS MACKENZIE)
+% ==================================================================
+
+% Seção primária: 1 LETRAS MAIÚSCULAS EM NEGRITO  
+\titleformat{\chapter}[hang]
+{\normalfont\fontsize{12}{14.4}\bfseries}
+{\thechapter}{1em}{\MakeUppercase}
+\titlespacing*{\chapter}{0pt}{0pt}{12pt}
+
+% Títulos de capítulos não numerados (centralizados)
+\titleformat{name=\chapter,numberless}[block]
+{\normalfont\fontsize{12}{14.4}\bfseries\centering}
+{}{0pt}{\MakeUppercase}
+\titlespacing*{name=\chapter,numberless}{0pt}{0pt}{12pt}
+
+% Seção secundária: 1.1 LETRAS MAIÚSCULAS SEM NEGRITO
+\titleformat{\section}[hang]
+{\normalfont\fontsize{12}{14.4}}
+{\thesection}{1em}{\MakeUppercase}
+\titlespacing*{\section}{0pt}{\baselineskip}{\baselineskip}
+
+% Seção terciária: 1.1.1 Letras minúsculas em negrito
+\titleformat{\subsection}[hang]
+{\normalfont\fontsize{12}{14.4}\bfseries}
+{\thesubsection}{1em}{}
+\titlespacing*{\subsection}{0pt}{12pt}{12pt}
+
+% Seção quaternária: 1.1.1.1 Letras minúsculas sem negrito
+\titleformat{\subsubsection}[hang]
+{\normalfont\fontsize{12}{14.4}}
+{\thesubsubsection}{1em}{}
+\titlespacing*{\subsubsection}{0pt}{12pt}{12pt}
+
+% ==================================================================
+% NUMERAÇÃO DE PÁGINAS
+% ==================================================================
+\setlength{\headheight}{13.19998pt}
+\pagestyle{fancy}
+\fancyhf{}
+% Numeração a 2cm das bordas superior e direita
+\fancyhead[R]{\fontsize{11}{13.2}\selectfont\thepage}
+\fancyheadoffset{0cm}
+\renewcommand{\headrulewidth}{0pt}
+
+% ==================================================================
+% INÍCIO DO DOCUMENTO
+% ==================================================================
+\begin{document}
+
+% ELEMENTOS TEXTUAIS
+\input{sections/10_introducao_UPGRADE}
+\input{sections/11_referencial_teorico_EXPANDIDO}
+\input{sections/12_metodologia_UPGRADE}
+\input{sections/13_resultados_NOVO_EMPIRICO}
+\input{sections/14_discussao_NOVA_DESCOBERTA}
+\input{sections/15_conclusao_NOVA_DESCOBERTA}
+
+% REFERÊNCIAS
+\input{sections/16_referencias}
+
+% APÊNDICE
+\input{sections/17_apendice}
+
+\end{document}

@@ -1,20 +1,20 @@
 {
-  "data_processamento": "2025-09-09T01:15:36.772243",
+  "data_processamento": "2025-09-15T20:45:39.695389",
   "periodo": "2018-01-01 a 2019-12-31",
   "total_ativos": 10,
   "total_observacoes": 24,
   "taxa_livre_risco": 0.0624,
   "ativos_processados": [
+    "LREN3",
+    "WEGE3",
+    "ABEV3",
     "AZZA3",
-    "ALOS3",
-    "B3SA3",
-    "EALT4",
-    "ALUP11",
     "ALPA4",
-    "ALPA3",
-    "ABCB4",
-    "BRSR3",
-    "CBEE3"
+    "RENT3",
+    "ITUB4",
+    "ALUP11",
+    "B3SA3",
+    "BBDC4"
   ],
   "fonte": "Econom\u00e1tica (dados reais)"
 }

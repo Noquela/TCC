@@ -4,15 +4,17 @@
 
 \chapter{DISCUSSÃO}
 
-\section{INTERPRETAÇÃO DA DESCOBERTA EMPÍRICA FUNDAMENTAL}
+\section{INTERPRETAÇÃO DOS RESULTADOS EMPÍRICOS}
 
-\subsection{Significado Teórico da Inversão de Resultados}
+\subsection{Mecanismos Explicativos para a Performance Observada}
 
-A descoberta empírica apresentada neste estudo – de que Mean-Variance Optimization supera significativamente Risk Parity quando aplicada a ativos selecionados cientificamente – representa contribuição fundamental à literatura de alocação de ativos. Esta inversão da hierarquia tradicional encontrada em estudos prévios sugere que a qualidade dos ativos pode ser mais importante que a sofisticação da estratégia de alocação.
+Os resultados observados – de que Mean-Variance Optimization apresentou performance superior às demais estratégias durante o período 2018-2019 – podem ser explicados por diferentes mecanismos causais que interagem com características específicas do período e dos ativos selecionados.
 
-Reavaliação das Críticas Históricas ao Markowitz: As críticas frequentes à otimização de Markowitz, tipicamente centradas em problemas de erro de estimação e instabilidade, podem ter sido influenciadas pela qualidade subótima dos ativos utilizados em estudos anteriores. Quando aplicada a ativos de alta qualidade – caracterizados por momentum positivo, volatilidade controlada, drawdowns limitados e baixo downside risk – a otimização de Markowitz demonstra sua eficácia teórica original.
+\textbf{Mecanismo 1 - Qualidade dos Inputs:} A metodologia científica de seleção de ativos pode ter reduzido significativamente os problemas tradicionais de error maximization que afetam a otimização de Markowitz. Michaud (1989) demonstra que a otimização é especialmente sensível a errors nos inputs; quando aplicada a ativos pré-filtrados por qualidade, esta sensibilidade pode ser mitigada.
 
-Condições para Eficácia da Otimização: Os resultados sugerem que a eficácia da otimização de Markowitz é condicional à qualidade dos inputs. Em universos de ativos cuidadosamente selecionados, a metodologia consegue identificar e explorar diferenças genuínas de risco-retorno, resultando em performance superior.
+\textbf{Mecanismo 2 - Regime de Mercado:} O período 2018-2019 foi caracterizado por volatilidade elevada e dispersão significativa entre performances individuais dos ativos. Durante tais regimes, estratégias que conseguem identificar e concentrar capital nos melhores ativos tendem a superar estratégias de diversificação mecânica.
+
+\textbf{Mecanismo 3 - Tamanho da Amostra:} Com apenas 10 ativos selecionados, o universo analisado pode favorecer estratégias de concentração seletiva sobre estratégias de diversificação ampla. Risk Parity e Equal Weight foram originalmente desenvolvidos para universos maiores onde diversificação oferece benefícios mais claros.
 
 \subsection{Explicações para o Desempenho Inferior de Risk Parity}
 
@@ -21,6 +23,24 @@ Limitações em Universos de Alta Qualidade: Risk Parity foi desenvolvido para f
 Perda de Oportunidades de Concentração: A filosofia de Risk Parity de evitar concentração pode ser contraproducente quando aplicada a ativos verdadeiramente superiores. O algoritmo, ao forçar contribuições de risco iguais, pode reduzir exposição a ativos excepcionais em favor de diversificação mecânica.
 
 Paradoxo da Qualidade: Este resultado ilustra um "paradoxo da qualidade" – estratégias desenhadas para funcionar com ativos medianos podem underperformar quando aplicadas a ativos de alta qualidade, onde concentração seletiva pode ser mais valiosa que diversificação automática.
+
+\section{EXPLICAÇÕES ALTERNATIVAS E LIMITAÇÕES}
+
+\subsection{Hipóteses Alternativas}
+
+\textbf{Data-Snooping Indireta:} Embora a metodologia out-of-sample elimine look-ahead bias direto, a seleção baseada em critérios específicos (momentum, volatilidade, drawdown, downside) pode indiretamente favorecer estratégias que exploram essas características. O score composto pode estar implicitamente "overfitted" ao período de teste.
+
+\textbf{Luck versus Skill:} A diferença de performance, embora estatisticamente significativa a 5\%, torna-se não-significativa após correção de Bonferroni. Com apenas 24 observações mensais, a probabilidade de resultados espúrios é elevada, sugerindo cautela na interpretação causal.
+
+\textbf{Regime Específico:} O período 2018-2019 foi atípico no mercado brasileiro, caracterizado por extrema incerteza política e económica. Os resultados podem refletir características específicas deste regime rather que eficácia generalizada da Mean-Variance Optimization.
+
+\subsection{Limitações Reconhecidas}
+
+\textbf{Limitação Temporal:} O período de teste de 24 meses é relativamente curto para conclusões robustas sobre performance de estratégias. Períodos mais longos seriam necessários para maior confiança estatística.
+
+\textbf{Limitação de Universo:} Apenas 10 ativos representam universo pequeno comparado aos típicos 50-500 ativos utilizados na prática por gestores institucionais. A generalização para universos maiores requer validação adicional.
+
+\textbf{Limitação de Mercado:} Resultados específicos ao mercado brasileiro podem não se aplicar a outros mercados emergentes ou desenvolvidos, limitando a generalização internacional.
 
 \section{IMPLICAÇÕES PARA A TEORIA DE PORTFÓLIO}
 
@@ -52,10 +72,11 @@ Eficácia Condicional: Estratégias de alocação apresentam eficácia condicion
 Características do Período 2018-2019: O período de teste caracterizou-se por alta volatilidade política e econômica no Brasil, incluindo eleições presidenciais, reformas estruturais, e mudanças significativas no ambiente de negócios. Estas condições ofereceram teste rigoroso para as estratégias.
 
 Qualidade dos Ativos Selecionados: Os 10 ativos selecionados através da metodologia científica apresentaram características superiores:
-- Momentum médio de +64.8% no período 2014-2017
-- Completude de dados de 97.9%
-- Diversificação setorial efetiva (9 setores)
-- Score médio de seleção de 0.641 (escala 0-1)
+- Momentum médio de +40.7% no período 2014-2017
+- Liquidez rigorosa: Volume R\$ 5M-617M/dia, Q Negs 756-43.253/dia
+- Diversificação setorial efetiva (7 setores econômicos distintos)
+- Score médio de seleção de 0.583 (escala 0-1)
+- Todos com presença > 94\% dos dias de negociação
 
 Performance Durante Volatilidade: Contrariamente às expectativas, Mean-Variance demonstrou melhor adaptação às condições voláteis, sugerindo que qualidade dos ativos pode ser mais importante que robustez metodológica para navegação de volatilidade.
 

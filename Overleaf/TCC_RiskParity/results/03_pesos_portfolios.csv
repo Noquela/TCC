@@ -1,31 +1,31 @@
 Estratégia,Ativo,Peso_Pct
+Equal Weight,LREN3,10.0
+Equal Weight,WEGE3,10.0
+Equal Weight,ABEV3,10.0
 Equal Weight,AZZA3,10.0
-Equal Weight,ALOS3,10.0
-Equal Weight,B3SA3,10.0
-Equal Weight,EALT4,10.0
-Equal Weight,ALUP11,10.0
 Equal Weight,ALPA4,10.0
-Equal Weight,ALPA3,10.0
-Equal Weight,ABCB4,10.0
-Equal Weight,BRSR3,10.0
-Equal Weight,CBEE3,10.0
-Mean-Variance Optimization,AZZA3,2.3347412031832868e-14
-Mean-Variance Optimization,ALOS3,20.67011883596312
-Mean-Variance Optimization,B3SA3,8.907762071428847
-Mean-Variance Optimization,EALT4,30.42211909260798
-Mean-Variance Optimization,ALUP11,0.0
-Mean-Variance Optimization,ALPA4,39.999999999999986
-Mean-Variance Optimization,ALPA3,9.278342201564808e-15
-Mean-Variance Optimization,ABCB4,0.0
-Mean-Variance Optimization,BRSR3,0.0
-Mean-Variance Optimization,CBEE3,4.7283809949734254e-14
-Equal Risk Contribution,AZZA3,16.395127584716533
-Equal Risk Contribution,ALOS3,12.18022718942913
-Equal Risk Contribution,B3SA3,13.219072206255756
-Equal Risk Contribution,EALT4,-9.916201649450148
-Equal Risk Contribution,ALUP11,15.361918121952037
-Equal Risk Contribution,ALPA4,6.810868760090745
-Equal Risk Contribution,ALPA3,6.75108931088369
-Equal Risk Contribution,ABCB4,19.9839655238286
-Equal Risk Contribution,BRSR3,8.930074567719739
-Equal Risk Contribution,CBEE3,10.283858384573929
+Equal Weight,RENT3,10.0
+Equal Weight,ITUB4,10.0
+Equal Weight,ALUP11,10.0
+Equal Weight,B3SA3,10.0
+Equal Weight,BBDC4,10.0
+Mean-Variance Optimization,LREN3,1.2748743692472394e-14
+Mean-Variance Optimization,WEGE3,40.00000000000001
+Mean-Variance Optimization,ABEV3,2.3340143404336918e-14
+Mean-Variance Optimization,AZZA3,6.9949653922381816e-15
+Mean-Variance Optimization,ALPA4,15.10866121565918
+Mean-Variance Optimization,RENT3,33.732458711193985
+Mean-Variance Optimization,ITUB4,0.0
+Mean-Variance Optimization,ALUP11,3.945209631116993e-15
+Mean-Variance Optimization,B3SA3,11.158880073146788
+Mean-Variance Optimization,BBDC4,0.0
+Equal Risk Contribution,LREN3,9.861200510901414
+Equal Risk Contribution,WEGE3,15.332457925351758
+Equal Risk Contribution,ABEV3,12.035310668510542
+Equal Risk Contribution,AZZA3,11.41165239458347
+Equal Risk Contribution,ALPA4,8.323842686434805
+Equal Risk Contribution,RENT3,8.606919125081443
+Equal Risk Contribution,ITUB4,8.450894580779789
+Equal Risk Contribution,ALUP11,10.855857230324045
+Equal Risk Contribution,B3SA3,8.361068119817295
+Equal Risk Contribution,BBDC4,6.76079675821544

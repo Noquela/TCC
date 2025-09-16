@@ -1,19 +1,30 @@
 """
-SISTEMA REFATORADO - TCC RISK PARITY
+SISTEMA CORRIGIDO - TCC RISK PARITY
 Script 3: Análise de Portfolio - Três Estratégias
 
 Autor: Bruno Gasparoni Ballerini
-Data: 2025-09-08
+Data: 2025-09-15 (Versão Corrigida)
+
+Correções aplicadas:
+- Correção do método fallback Markowitz (minimum variance vs tangency)
+- Validação mais rigorosa de inputs
+- Melhor tratamento de convergência ERC
+- Logging detalhado de otimização
 """
 
 import pandas as pd
 import numpy as np
 import json
 import os
+import logging
 from datetime import datetime
 from scipy.optimize import minimize
 import warnings
 warnings.filterwarnings('ignore')
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class AnalisadorPortfolio:
     """
@@ -127,8 +138,9 @@ class AnalisadorPortfolio:
             {'type': 'eq', 'fun': lambda w: np.sum(w) - 1.0},
         ]
         
-        # Limites por ativo: entre 0% e 40% (evitar concentração)
-        bounds = [(0.0, 0.4) for _ in range(n)]
+        # Limites por ativo: 0% a 40% (permitir concentração se ótima)
+        # Mantém teoria pura de Markowitz mas evita concentração extrema (>40%)
+        bounds = [(0.0, 0.40) for _ in range(n)]
         
         # Chute inicial: equal weight
         initial_guess = np.ones(n) / n
@@ -196,31 +208,45 @@ class AnalisadorPortfolio:
     def _markowitz_analitico(self, mu, Sigma, n):
         """
         Método analítico de fallback para Markowitz
+        
+        Implementa Maximum Sharpe Ratio Portfolio (Tangency Portfolio)
+        Referência: Markowitz, H. (1952) + Sharpe, W. (1966)
         """
         try:
+            logger.warning("Usando método analítico fallback para Markowitz")
+            
             # Inversa da matriz de covariância
             inv_Sigma = np.linalg.inv(Sigma.values)
             ones = np.ones((n, 1))
             
-            # Excess returns
+            # Excess returns (mu - rf)
             excess_returns = (mu.values - self.rf_rate).reshape(-1, 1)
             
-            # Pesos ótimos (Maximum Sharpe Ratio)
+            # Tangency Portfolio (Maximum Sharpe Ratio)
+            # w* = Σ^(-1) * (μ - rf) / (1^T * Σ^(-1) * (μ - rf))
             numerator = inv_Sigma @ excess_returns
             denominator = ones.T @ inv_Sigma @ excess_returns
+            
+            if denominator <= 0:
+                logger.warning("Denominador <= 0, usando equal weight")
+                return np.ones(n) / n
+                
             weights = (numerator / denominator).flatten()
             
-            # Garantir que pesos são positivos e somam 1
-            weights = np.maximum(weights, 0)
+            # Garantir que pesos são não-negativos e limitados
+            weights = np.clip(weights, 0.0, 0.40)
+            
+            # Renormalizar para somar 1
             if weights.sum() > 0:
                 weights = weights / weights.sum()
             else:
+                logger.warning("Pesos inválidos, usando equal weight")
                 weights = np.ones(n) / n
                 
             return weights
             
-        except np.linalg.LinAlgError:
-            # Se matriz singular, usar equal weight
+        except (np.linalg.LinAlgError, ValueError) as e:
+            logger.error(f"Erro no método analítico: {e}, usando equal weight")
             return np.ones(n) / n
     
     def calcular_estrategia_risk_parity(self, returns_df):

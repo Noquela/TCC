@@ -1,9 +1,15 @@
 """
-SISTEMA REFATORADO - TCC RISK PARITY
+SISTEMA CORRIGIDO - TCC RISK PARITY
 Script 4: Gerador de Relatórios Finais
 
 Autor: Bruno Gasparoni Ballerini
-Data: 2025-09-08
+Data: 2025-09-15 (Versão Corrigida)
+
+Correções aplicadas:
+- Implementação de correção Bonferroni para testes múltiplos
+- Intervalos de confiança bootstrap
+- Gráficos padronizados com cores consistentes
+- Validação mais rigorosa de resultados
 """
 
 import pandas as pd
@@ -17,11 +23,18 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings('ignore')
 
-# Configurar plots
-plt.style.use('seaborn-v0_8')
-sns.set_palette("husl")
+# Configurar plots - Padronização acadêmica
+plt.style.use('seaborn-v0_8-whitegrid')
+# Cores consistentes e acadêmicas
+CORES_ESTRATEGIAS = {
+    'Equal Weight': '#1f77b4',      # Azul
+    'Mean-Variance Optimization': '#ff7f0e',  # Laranja  
+    'Equal Risk Contribution': '#2ca02c'      # Verde
+}
 plt.rcParams['figure.figsize'] = (12, 8)
-plt.rcParams['font.size'] = 10
+plt.rcParams['font.size'] = 11
+plt.rcParams['axes.titlesize'] = 13
+plt.rcParams['axes.labelsize'] = 12
 
 class GeradorRelatorios:
     """
@@ -332,14 +345,25 @@ class GeradorRelatorios:
             'significante_5pct': p_val < 0.05 if not np.isnan(p_val) else False
         }
         
-        # Mostrar resultados
-        print("   TESTES DE SIGNIFICÂNCIA ESTATÍSTICA (Jobson-Korkie):")
+        # Aplicar correção de Bonferroni para testes múltiplos
+        n_comparacoes = len(comparacoes)
+        alpha_corrigido = 0.05 / n_comparacoes
+        
+        print("   TESTES DE SIGNIFICANCIA ESTATISTICA (Jobson-Korkie):")
+        print(f"   Correcao Bonferroni aplicada: alpha = 0.05/{n_comparacoes} = {alpha_corrigido:.3f}")
+        
         for comp, resultado in comparacoes.items():
             estrategias = comp.replace('_vs_', ' vs ')
             p_val = resultado['p_value']
-            signif = "SIM" if resultado['significante_5pct'] else "NÃO"
+            signif_5pct = "SIM" if resultado['significante_5pct'] else "NÃO"
+            signif_bonf = "SIM" if (p_val < alpha_corrigido) else "NÃO"
+            
+            # Atualizar resultado com correção Bonferroni
+            resultado['significante_bonferroni'] = p_val < alpha_corrigido if not np.isnan(p_val) else False
+            
             if not np.isnan(p_val):
-                print(f"   {estrategias}: p-value = {p_val:.3f}, Significante (5%): {signif}")
+                print(f"   {estrategias}: p-value = {p_val:.3f}")
+                print(f"     Significante (5%): {signif_5pct} | Bonferroni: {signif_bonf}")
             else:
                 print(f"   {estrategias}: Teste inconclusivo")
         

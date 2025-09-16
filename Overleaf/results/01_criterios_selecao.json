@@ -1,0 +1,27 @@
+{
+  "data_processamento": "2025-09-09T11:04:12.145308",
+  "periodo_selecao": "2014-2017",
+  "periodo_teste": "2018-2019",
+  "criterios_aplicados": [
+    "Etapa 1 - Elegibilidade: >= 85% de meses v\u00e1lidos (2014-2017)",
+    "Etapa 2 - Filtro liquidez 1: Zero-return days <= 20% (Roll 1984)",
+    "Etapa 2 - Filtro liquidez 2: Roll spread <= percentil 80 (Roll 1984)",
+    "Etapa 2 - Filtro liquidez 3: Autocorrela\u00e7\u00e3o lag-1 >= -0.30 (Lo & MacKinlay 1990)",
+    "Etapa 2 - Filtro liquidez 4: Atividade negocia\u00e7\u00e3o >= percentil 20",
+    "Etapa 3 - Score cient\u00edfico: 35% momentum + 25% (1/vol) + 20% (1/drawdown) + 20% (1/downside)",
+    "Etapa 4 - Diversifica\u00e7\u00e3o: m\u00e1x. 2 ativos por setor",
+    "Etapa 4 - Controle correla\u00e7\u00e3o: <= 0.85 entre pares selecionados"
+  ],
+  "metricas_score": {
+    "momentum_12_1": "35% - Retorno 12 meses excluindo m\u00eas corrente (maior poder preditivo)",
+    "volatility": "25% - Inverso da volatilidade anualizada (estabilidade)",
+    "max_drawdown": "20% - Inverso do m\u00e1ximo drawdown (controle de cauda)",
+    "downside_deviation": "20% - Inverso do downside risk (risco assim\u00e9trico)"
+  },
+  "total_analisados": 25,
+  "total_selecionados": 2,
+  "ativos_finais": [
+    "B3SA3",
+    "AMER3"
+  ]
+}

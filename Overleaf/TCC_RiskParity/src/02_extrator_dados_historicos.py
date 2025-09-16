@@ -1,18 +1,29 @@
 """
-SISTEMA REFATORADO - TCC RISK PARITY
+SISTEMA CORRIGIDO - TCC RISK PARITY
 Script 2: Extrator de Dados Históricos 2018-2019
 
 Autor: Bruno Gasparoni Ballerini
-Data: 2025-09-08
+Data: 2025-09-15 (Versão Corrigida)
+
+Correções aplicadas:
+- Correção de métodos pandas depreciados (fillna)
+- Melhor tratamento de outliers
+- Validação robusta de dados
+- Logging aprimorado
 """
 
 import pandas as pd
 import numpy as np
 import json
 import os
+import logging
 from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class ExtratorDadosHistoricos:
     """
@@ -209,11 +220,11 @@ class ExtratorDadosHistoricos:
                 # Método 1: Interpolação linear (para gaps pequenos <=2 meses)
                 returns_clean[asset] = returns_clean[asset].interpolate(method='linear', limit=2)
                 
-                # Método 2: Forward fill (para início da série)
-                returns_clean[asset] = returns_clean[asset].fillna(method='ffill', limit=1)
+                # Método 2: Forward fill (para início da série) - Versão corrigida
+                returns_clean[asset] = returns_clean[asset].ffill(limit=1)
                 
-                # Método 3: Backward fill (para final da série)  
-                returns_clean[asset] = returns_clean[asset].fillna(method='bfill', limit=1)
+                # Método 3: Backward fill (para final da série) - Versão corrigida  
+                returns_clean[asset] = returns_clean[asset].bfill(limit=1)
                 
                 # Método 4: Se ainda há NAs, usar média histórica do ativo
                 if returns_clean[asset].isnull().any():

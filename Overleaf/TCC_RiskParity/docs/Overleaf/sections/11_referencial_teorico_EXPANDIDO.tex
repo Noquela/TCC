@@ -16,7 +16,7 @@ A ausência de uma teoria formal levava a práticas de investimento inconsistent
 
 \subsection{A Revolução de Markowitz (1952)}
 
-Harry Markowitz revolucionou o campo de investimentos com sua dissertação de doutorado na Universidade de Chicago, posteriormente publicada como "Portfolio Selection" no Journal of Finance em 1952. Pela primeira vez na história, Markowitz forneceu uma base matemática rigorosa para a construção de carteiras eficientes, estabelecendo os fundamentos da moderna gestão de investimentos.
+Markowitz (1952) revolucionou o campo de investimentos com sua dissertação de doutorado na Universidade de Chicago, posteriormente publicada como "Portfolio Selection" no Journal of Finance em 1952. Pela primeira vez na história, Markowitz forneceu uma base matemática rigorosa para a construção de carteiras eficientes, estabelecendo os fundamentos da moderna gestão de investimentos.
 
 A contribuição fundamental de Markowitz foi reconhecer que o risco de uma carteira não é simplesmente a média ponderada dos riscos individuais dos ativos, mas depende crucialmente das correlações entre eles. Esta descoberta pode ser expressa matematicamente através da fórmula da variância da carteira:
 
@@ -133,25 +133,25 @@ Chopra e Ziemba (1993) quantificaram esta sensibilidade, demonstrando que erros 
 
 A estratégia Equal Weight, também conhecida como diversificação naïve ou estratégia 1/N, representa o extremo oposto da sofisticação da otimização de Markowitz. Cada ativo na carteira recebe peso idêntico de 1/N, onde N é o número total de ativos, independentemente de suas características individuais de risco, retorno ou correlação.
 
-Esta aparente simplicidade esconde fundamentação teórica robusta baseada no trade-off entre bias e variância na teoria estatística. Enquanto a otimização de Markowitz busca a solução teoricamente ótima (bias zero quando suas premissas são satisfeitas), ela pode apresentar alta variância devido à sensibilidade a erros de estimação. A estratégia Equal Weight aceita potencial bias (por ignorar informações sobre risco e retorno) em troca de variância muito baixa (por não depender de estimações paramétricas).
+Esta aparente simplicidade esconde fundamentação teórica robusta baseada no comprometimento (\textit{trade-off}) entre viés (\textit{bias}) e variância na teoria estatística. Enquanto a Otimização Média-Variância de Markowitz busca a solução teoricamente ótima (viés zero quando suas premissas são satisfeitas), ela pode apresentar alta variância devido à sensibilidade a erros de estimação. A estratégia de Peso Igual (\textit{Equal Weight}) aceita potencial viés (por ignorar informações sobre risco e retorno) em troca de variância muito baixa (por não depender de estimações paramétricas).
 
-\subsection{Condições de Superioridade do Equal Weight}
+\subsection{Condições de Superioridade do Peso Igual}
 
-DeMiguel, Garlappi e Uppal (2009) forneceram análise rigorosa das condições sob as quais Equal Weight supera estratégias otimizadas. Seu trabalho seminal "Optimal versus Naive Diversification: A Comparison of Portfolio Selection Rules" estabeleceu critérios específicos para a superioridade da estratégia naïve.
+DeMiguel, Garlappi e Uppal (2009) forneceram análise rigorosa das condições sob as quais a estratégia de Peso Igual (\textit{Equal Weight}) supera estratégias otimizadas. Seu trabalho seminal "Optimal versus Naive Diversification: A Comparison of Portfolio Selection Rules" estabeleceu critérios específicos para a superioridade da estratégia ingênua (\textit{naive}).
 
-A condição fundamental para superioridade do Equal Weight é:
+A condição fundamental para superioridade do Peso Igual (\textit{Equal Weight}) é:
 \begin{equation}
 T < \frac{N(N+2)}{4(\text{Sharpe Ratio})^2}
 \end{equation}
 
-onde $T$ é o número de observações históricas disponíveis para estimação, $N$ é o número de ativos, e Sharpe Ratio refere-se ao índice da carteira ótima de Markowitz.
+onde $T$ é o número de observações históricas disponíveis para estimação, $N$ é o número de ativos, e Índice de Sharpe (\textit{Sharpe Ratio}) refere-se ao índice da carteira ótima de Markowitz.
 
-Esta condição revela que Equal Weight é favorecido quando:
+Esta condição revela que o Peso Igual (\textit{Equal Weight}) é favorecido quando:
 - O histórico de dados é limitado (T pequeno)
 - O número de ativos é grande (N grande)
-- A melhoria potencial da otimização é pequena (Sharpe Ratio baixo)
+- A melhoria potencial da otimização é pequena (Índice de Sharpe baixo)
 
-Para carteiras típicas de 10-20 ativos com dados mensais de 2-5 anos, esta condição é frequentemente satisfeita, explicando a robustez empírica observada do Equal Weight em diversos estudos.
+Para carteiras típicas de 10-20 ativos com dados mensais de 2-5 anos, esta condição é frequentemente satisfeita, explicando a robustez empírica observada do Peso Igual (\textit{Equal Weight}) em diversos estudos.
 
 \subsection{Análise Teórica dos Benefícios}
 
@@ -191,13 +191,13 @@ Estudos empíricos em diversos mercados confirmaram a robustez da estratégia Eq
 
 \subsection{Gênese e Desenvolvimento Histórico}
 
-A estratégia Risk Parity surgiu da observação prática de que carteiras tradicionais, sejam cap-weighted ou otimizadas por Markowitz, frequentemente concentram risco em poucos ativos. Ray Dalio, fundador da Bridgewater Associates, pioneirou esta abordagem nos anos 1990, observando que carteiras típicas institutional derivam 70-80% de seu risco de ações, apesar de diversificação nominal entre classes de ativos.
+A estratégia Risk Parity surgiu da observação prática de que carteiras tradicionais, sejam cap-weighted ou otimizadas por Markowitz, frequentemente concentram risco em poucos ativos. Ray Dalio pioneirou esta abordagem nos anos 1990, observando que carteiras típicas institutional derivam 70-80% de seu risco de ações, apesar de diversificação nominal entre classes de ativos.
 
 A intuição fundamental é realocate capital de forma que cada ativo contribua igualmente para o risco total da carteira, ao invés de receber alocações iguais de capital. Esta distinção é crucial: enquanto Equal Weight equaliza capital, Risk Parity equaliza risco.
 
 \subsection{Fundamentação Matemática do Equal Risk Contribution}
 
-A implementação mais rigorosa de Risk Parity é o Equal Risk Contribution (ERC), que busca equalizar as contribuições marginais de risco de cada ativo. A contribuição de risco do ativo $i$ é definida como:
+A implementação mais rigorosa de Paridade de Risco (\textit{Risk Parity}) é o Equal Risk Contribution (ERC), que busca equalizar as contribuições marginais de risco de cada ativo. A Contribuição de Risco (\textit{Risk Contribution}) do ativo $i$ é definida como:
 
 \begin{equation}
 RC_i = w_i \times \frac{\partial \sigma_p}{\partial w_i} = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
@@ -301,7 +301,7 @@ Métricas primitivas incluíam retorno total, retorno médio, e maximum gain, ma
 
 \subsubsection{Desenvolvimento Original}
 
-William Sharpe introduziu seu índice em 1966 como parte do desenvolvimento da Capital Asset Pricing Model (CAPM). O conceito fundamental era criar uma medida que normalizasse retornos excedentes pelo risco assumido:
+Sharpe (1964) introduziu seu índice em 1964 como parte do desenvolvimento da Capital Asset Pricing Model (CAPM). O conceito fundamental era criar uma medida que normalizasse retornos excedentes pelo risco assumido:
 
 \begin{equation}
 Sharpe = \frac{R_p - R_f}{\sigma_p}
@@ -340,7 +340,7 @@ Esta interpretação conecta o Sharpe Ratio à teoria de testes de hipóteses, p
 
 \subsubsection{Desenvolvimento e Motivação}
 
-Frank Sortino e Robert Price desenvolveram o Sortino Ratio em 1994 para endereçar limitações do Sharpe Ratio relacionadas à definição de risco. Argumentaram que investidores se preocupam principalmente com downside risk - volatilidade de retornos abaixo de um threshold aceitável.
+Sortino e Price (1994) desenvolveram o Sortino Ratio para endereçar limitações do Sharpe Ratio relacionadas à definição de risco. Argumentaram que investidores se preocupam principalmente com downside risk - volatilidade de retornos abaixo de um threshold aceitável.
 
 O Sortino Ratio é definido como:
 \begin{equation}
@@ -406,11 +406,11 @@ MDD oferece perspectiva única sobre tail risk e experiência real do investidor
 
 \subsubsection{Métricas Relacionadas}
 
-\textbf{Average Drawdown:} Média de todos os drawdowns observados, oferecendo perspectiva sobre persistence de perdas.
+\textbf{Rebaixamento Médio (\textit{Average Drawdown}):} Média de todos os rebaixamentos observados, oferecendo perspectiva sobre persistência de perdas.
 
-\textbf{Drawdown Duration:} Tempo necessário para recuperar de drawdowns, medindo resilience da estratégia.
+\textbf{Duração do Rebaixamento (\textit{Drawdown Duration}):} Tempo necessário para recuperar de rebaixamentos, medindo resiliência da estratégia.
 
-\textbf{Calmar Ratio:} Retorno anualizado dividido por maximum drawdown, oferecendo perspectiva de risco-retorno focada em tail risk.
+\textbf{Razão de Calmar (\textit{Calmar Ratio}):} Retorno anualizado dividido por rebaixamento máximo, oferecendo perspectiva de risco-retorno focada em risco de cauda (\textit{tail risk}).
 
 \section{CARACTERÍSTICAS DE MERCADOS EMERGENTES}
 
@@ -506,13 +506,13 @@ Características de mercados emergentes têm implications diretas para eficácia
 
 A literatura sobre comparação de estratégias de alocação é extensive em mercados desenvolvidos mas limited em mercados emergentes:
 
-\subsubsection{DeMiguel et al. (2009)}
+\subsubsection{DeMiguel \textit{et al.} (2009)}
 
 Este estudo seminal comparou 14 estratégias de alocação usando dados de mercados desenvolvidos (principalmente EUA) e concluiu que Equal Weight frequentemente supera estratégias otimizadas fora da amostra. O trabalho estabeleceu metodologia de referência para comparações rigorosas e destacou a importância da avaliação fora da amostra.
 
 Os principais achados incluem performance superior de Equal Weight especialmente quando a janela de estimação é pequena relativamente ao número de ativos, e performance robusta através de diferentes condições de mercado.
 
-\subsubsection{Maillard, Roncalli e Teiletche (2010)}
+\subsubsection{Maillard \textit{et al.} (2010)}
 
 Formalizaram matematicamente Risk Parity através do conceito de Equal Risk Contribution, providing theoretical foundation para what previously havia sido predominantly practical approach. Demonstrated que ERC maximizes diversification ratio e oferece superior risk-adjusted returns.
 

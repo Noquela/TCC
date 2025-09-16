@@ -1,6 +1,6 @@
 # RESUMO EXECUTIVO - TCC RISK PARITY
 
-**Data do Processamento:** 2025-09-09 01:17:10
+**Data do Processamento:** 2025-09-15 20:52:50
 
 ## 1. SELEÇÃO DE ATIVOS
 - **Total analisados:** 25 ativos
@@ -11,30 +11,30 @@
 ## 2. PERFORMANCE DAS ESTRATÉGIAS (2018-2019)
 
 ### Equal Weight
-- **Retorno Anual:** 27.8%
-- **Volatilidade:** 19.5%
-- **Sharpe Ratio:** 1.11
-- **Sortino Ratio:** 1.52
-- **Maximum Drawdown:** -19.7%
+- **Retorno Anual:** 29.8%
+- **Volatilidade:** 19.7%
+- **Sharpe Ratio:** 1.20
+- **Sortino Ratio:** 1.58
+- **Maximum Drawdown:** -18.9%
 
 ### Mean-Variance Optimization
-- **Retorno Anual:** 46.1%
-- **Volatilidade:** 23.2%
-- **Sharpe Ratio:** 1.71
-- **Sortino Ratio:** 3.96
-- **Maximum Drawdown:** -18.2%
+- **Retorno Anual:** 42.5%
+- **Volatilidade:** 19.5%
+- **Sharpe Ratio:** 1.86
+- **Sortino Ratio:** 3.49
+- **Maximum Drawdown:** -14.6%
 
 ### Equal Risk Contribution
-- **Retorno Anual:** 22.0%
-- **Volatilidade:** 20.8%
-- **Sharpe Ratio:** 0.76
-- **Sortino Ratio:** 1.02
-- **Maximum Drawdown:** -23.7%
+- **Retorno Anual:** 28.7%
+- **Volatilidade:** 18.6%
+- **Sharpe Ratio:** 1.21
+- **Sortino Ratio:** 1.59
+- **Maximum Drawdown:** -18.2%
 
 ## 3. RANKING DAS ESTRATÉGIAS
 - **Melhor Sharpe Ratio:** Mean-Variance Optimization
 - **Melhor Retorno:** Mean-Variance Optimization
-- **Menor Volatilidade:** Equal Weight
+- **Menor Volatilidade:** Equal Risk Contribution
 
 ## 4. PRINCIPAIS ACHADOS
 - **Metodologia científica:** Seleção baseada em critérios objetivos eliminou bias de seleção

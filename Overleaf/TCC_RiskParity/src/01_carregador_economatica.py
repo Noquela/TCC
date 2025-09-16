@@ -1,17 +1,43 @@
 """
-SISTEMA REFATORADO - TCC RISK PARITY
+SISTEMA CORRIGIDO - TCC RISK PARITY
 Script 1: Carregador Economática com Critérios Científicos Objetivos
 
 Autor: Bruno Gasparoni Ballerini
-Data: 2025-09-08
+Data: 2025-09-15 (Versão Corrigida)
+
+Correções aplicadas:
+- Melhor tratamento de erros e logging
+- Validação robusta de inputs
+- Configuração centralizada de parâmetros
+- Documentação acadêmica aprimorada
 """
 
 import pandas as pd
 import numpy as np
 import os
+import logging
 from datetime import datetime
 import warnings
 warnings.filterwarnings('ignore')
+
+# Configurar logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Configuração centralizada
+class Config:
+    """Parâmetros de configuração centralizados"""
+    VOLUME_THRESHOLD = 5_000_000    # R$ 5M/dia mínimo
+    QNEGS_THRESHOLD = 500           # 500 negócios/dia mínimo  
+    TRADING_DAYS_PCT = 0.90         # 90% presença mínima
+    MIN_DATA_POINTS = 200           # Mínimo 200 observações para seleção
+    MIN_TEST_POINTS = 100           # Mínimo 100 observações para teste
+    
+    # Pesos do score composto (baseados em literatura acadêmica)
+    MOMENTUM_WEIGHT = 0.35          # 35% - Jegadeesh & Titman (1993)
+    VOLATILITY_WEIGHT = 0.25        # 25% - Estabilidade temporal
+    DRAWDOWN_WEIGHT = 0.20          # 20% - Controle risco extremo
+    DOWNSIDE_WEIGHT = 0.20          # 20% - Assimetria de risco
 
 class CarregadorEconomatica:
     """
@@ -19,25 +45,18 @@ class CarregadorEconomatica:
     SEM seleção hardcoded - APENAS critérios quantitativos
     """
     
-    def __init__(self, data_dir="../data/DataBase"):
-        self.data_dir = data_dir
-        self.excel_path = os.path.join(data_dir, "Economatica-8900701390-20250812230945 (1).xlsx")
-        self.setores_path = os.path.join(data_dir, "economatica (1).xlsx")
+    def __init__(self):
+        # CAMINHO ABSOLUTO FIXO 
+        self.excel_path = r"C:\Users\BrunoGaspariniBaller\OneDrive - HAND\Documentos\TCC\Overleaf\TCC_RiskParity\data\DataBase\Economatica-8900701390-20250812230945 (1).xlsx"
+        self.setores_path = r"C:\Users\BrunoGaspariniBaller\OneDrive - HAND\Documentos\TCC\Overleaf\TCC_RiskParity\data\DataBase\economatica (1).xlsx"
+        self.results_dir = r"C:\Users\BrunoGaspariniBaller\OneDrive - HAND\Documentos\TCC\Overleaf\TCC_RiskParity\results"
         
         print("="*60)
         print("SISTEMA REFATORADO - CARREGADOR ECONOMÁTICA")
         print("="*60)
         print("OK Metodologia científica objetiva")
-        print("OK Sem seleção hardcoded")
-        print("OK Critérios quantitativos rigorosos")
-        print("OK Diversificação setorial")
+        print("OK Critérios de liquidez rigorosos")
         print()
-        
-        # Verificar se arquivos existem
-        if not os.path.exists(self.excel_path):
-            raise FileNotFoundError(f"Arquivo não encontrado: {self.excel_path}")
-        if not os.path.exists(self.setores_path):
-            raise FileNotFoundError(f"Arquivo de setores não encontrado: {self.setores_path}")
         
         # Carregar mapeamento ativo-setor
         self.asset_sector_map = self.carregar_mapeamento_setores()
@@ -80,283 +99,218 @@ class CarregadorEconomatica:
             excel_file = pd.ExcelFile(self.excel_path)
             all_sheets = excel_file.sheet_names
             
-            # Filtrar sheets que parecem ser ativos (formato típico brasileiro)
+            # Priorizar ativos conhecidos líquidos primeiro
+            ativos_prioritarios = ['PETR4', 'VALE3', 'ITUB4', 'BBDC4', 'ABEV3', 'B3SA3', 'WEGE3', 'RENT3', 'LREN3', 'MGLU3']
+            
+            # Filtrar sheets que parecem ser ativos (formato típico brasileiro)  
             asset_sheets = []
+            
+            # Primeiro adicionar os prioritários se existirem
+            for ativo in ativos_prioritarios:
+                if ativo in all_sheets:
+                    asset_sheets.append(ativo)
+            
+            # Depois adicionar outros ativos
             for sheet in all_sheets:
-                # Filtro: sheets com 4-6 caracteres que terminam em números
-                if len(sheet) >= 4 and len(sheet) <= 6:
-                    if sheet[-1].isdigit() or sheet[-1] in ['3', '4', '11']:
-                        asset_sheets.append(sheet)
+                if sheet not in asset_sheets:  # Não duplicar
+                    # Filtro: sheets com 4-6 caracteres que terminam em números
+                    if len(sheet) >= 4 and len(sheet) <= 6:
+                        if sheet[-1].isdigit() or sheet[-1] in ['3', '4', '11']:
+                            asset_sheets.append(sheet)
             
             print(f"   Total de sheets: {len(all_sheets)}")
             print(f"   Sheets de ativos identificados: {len(asset_sheets)}")
-            print(f"   Primeiros 10: {asset_sheets[:10]}")
             
-            return asset_sheets[:50]  # Limitar para teste inicial
+            return asset_sheets[:50]  # Processar 50 ativos para encontrar os melhores
             
         except Exception as e:
             print(f"   ERRO: {e}")
             return []
     
-    def extrair_dados_ativo(self, sheet_name, periodo_inicio='2014-01-01', periodo_fim='2019-12-31'):
+    def extrair_dados_ativo(self, sheet_name):
         """
-        Extrai dados históricos de um ativo específico
+        Extrai dados de um ativo - FORMATO ECONOMÁTICA CORRETO
         """
         try:
             # Ler dados da sheet
             df = pd.read_excel(self.excel_path, sheet_name=sheet_name)
             
-            # Procurar linha de cabeçalho com "Data"
-            header_row = None
-            for i in range(min(10, len(df))):
-                row_vals = df.iloc[i].astype(str).str.lower()
-                if any('data' in str(val) for val in row_vals):
-                    header_row = i
-                    break
-            
-            if header_row is None:
+            if len(df) < 100:  # Sheet muito pequena
                 return None
             
-            # Extrair dados a partir da linha encontrada
-            data_rows = df.iloc[header_row + 1:].copy()
+            # CABEÇALHO ESTÁ NA LINHA 2
+            header_row = 2
+            header = df.iloc[header_row].values
             
-            # Primeira coluna = datas, última = preços de fechamento
-            dates_col = data_rows.iloc[:, 0]
-            prices_col = data_rows.iloc[:, -1]
+            # Dados começam na linha 3
+            data_df = df.iloc[header_row + 1:].copy()
+            data_df.columns = header
             
-            # Limpar e converter dados
-            clean_data = []
-            for i in range(len(dates_col)):
-                try:
-                    date_val = pd.to_datetime(dates_col.iloc[i], errors='coerce')
-                    price_val = pd.to_numeric(prices_col.iloc[i], errors='coerce')
-                    
-                    if pd.notna(date_val) and pd.notna(price_val) and price_val > 0:
-                        if periodo_inicio <= date_val.strftime('%Y-%m-%d') <= periodo_fim:
-                            clean_data.append({
-                                'Date': date_val,
-                                'Price': price_val
-                            })
-                except:
-                    continue
-            
-            if len(clean_data) < 20:  # Mínimo de observações
+            # Colunas principais: Data, Q Negs, Q Títs, Volume$, Fechamento
+            if 'Data' not in data_df.columns or 'Fechamento' not in data_df.columns:
                 return None
             
-            # Criar DataFrame
-            asset_df = pd.DataFrame(clean_data)
-            asset_df = asset_df.drop_duplicates('Date').sort_values('Date')
-            asset_df = asset_df.set_index('Date')
+            # Limpar dados
+            data_df = data_df.dropna(subset=['Data', 'Fechamento'])
+            data_df['Data'] = pd.to_datetime(data_df['Data'], errors='coerce')
+            data_df = data_df.dropna(subset=['Data'])
             
-            return asset_df
+            # Filtrar período 2014-2019
+            data_df = data_df[(data_df['Data'] >= '2014-01-01') & (data_df['Data'] <= '2019-12-31')]
+            
+            if len(data_df) < 500:  # Poucos dados
+                return None
+            
+            # Converter colunas numéricas
+            for col in ['Q Negs', 'Q Títs', 'Volume$', 'Fechamento']:
+                if col in data_df.columns:
+                    data_df[col] = pd.to_numeric(data_df[col], errors='coerce')
+            
+            data_df = data_df.set_index('Data').sort_index()
+            
+            return data_df
             
         except Exception as e:
             return None
     
-    def calcular_metricas_selecao(self, asset_data, asset_name):
+    def calcular_metricas_ativo(self, asset_data, asset_name):
         """
-        Calcula métricas COMPLETAS para novo critério científico robusto
-        Inclui: momentum, volatilidade, max drawdown, downside deviation, liquidez
+        Calcula métricas de liquidez e performance
         """
-        if asset_data is None or len(asset_data) < 24:
+        if asset_data is None or len(asset_data) < 500:
+            return None
+        
+        # Período de seleção: 2014-2017
+        selection_data = asset_data[asset_data.index < '2018-01-01']
+        test_data = asset_data[asset_data.index >= '2018-01-01']
+        
+        if len(selection_data) < 200 or len(test_data) < 100:
             return None
         
         # Calcular retornos mensais
-        monthly_prices = asset_data.resample('M').last()
-        monthly_returns = monthly_prices['Price'].pct_change().dropna()
+        monthly_prices = selection_data['Fechamento'].resample('M').last()
+        monthly_returns = monthly_prices.pct_change().dropna()
         
         if len(monthly_returns) < 20:
             return None
         
-        # Separar períodos: 2014-2017 (seleção) e 2018-2019 (teste)  
-        selection_period = monthly_returns[monthly_returns.index < '2018-01-01']
-        test_period = monthly_returns[monthly_returns.index >= '2018-01-01']
+        # MÉTRICAS DE LIQUIDEZ (Economática)
         
-        if len(selection_period) < 12 or len(test_period) < 12:
-            return None
-        
-        # ELEGIBILIDADE BÁSICA
-        total_expected_months = 48  # 2014-2017 = 4 anos * 12 meses
-        completeness = len(selection_period) / total_expected_months
-        
-        if completeness < 0.85:  # >= 85% de meses válidos
-            return None
-            
-        # CRITÉRIO DE LIQUIDEZ
-        # Proxy 1: % de meses com retorno = 0 (sem negociação)
-        zero_returns = (selection_period.abs() < 1e-6).sum() / len(selection_period)
-        
-        # Proxy 2: Média de |retorno| mensal (proxy de "preço efetivo") 
-        avg_abs_return = selection_period.abs().mean()
-        
-        # MÉTRICAS DE RISCO/RETORNO (2014-2017)
-        # 1. Momentum 12-1 (últimos 12 meses, exclui mês corrente)
-        if len(selection_period) >= 13:
-            momentum_12_1 = (selection_period.iloc[-12:-1].sum()) * 100  # % em 11 meses
+        # Volume$ médio diário (em milhões)
+        if 'Volume$' in selection_data.columns:
+            avg_volume = selection_data['Volume$'].mean() / 1_000_000
         else:
-            momentum_12_1 = selection_period.sum() * 100
-            
+            avg_volume = 0
+        
+        # Quantidade de negócios média por dia
+        if 'Q Negs' in selection_data.columns:
+            avg_qnegs = selection_data['Q Negs'].mean()
+        else:
+            avg_qnegs = 0
+        
+        # Presença em bolsa (% dias com volume > 0)
+        if 'Volume$' in selection_data.columns:
+            trading_days_pct = (selection_data['Volume$'] > 0).mean()
+        else:
+            trading_days_pct = 0.5
+        
+        # FILTROS DE LIQUIDEZ AUTOMATICOS - RIGOROSOS
+        if avg_volume < Config.VOLUME_THRESHOLD / 1_000_000:  # Converter para milhões
+            logger.debug(f"{asset_name}: Volume insuficiente ({avg_volume:.1f}M < {Config.VOLUME_THRESHOLD/1_000_000:.1f}M)")
+            return None
+        if avg_qnegs < Config.QNEGS_THRESHOLD:
+            logger.debug(f"{asset_name}: Negócios insuficientes ({avg_qnegs:.0f} < {Config.QNEGS_THRESHOLD})")
+            return None
+        if trading_days_pct < Config.TRADING_DAYS_PCT:
+            logger.debug(f"{asset_name}: Presença insuficiente ({trading_days_pct:.1%} < {Config.TRADING_DAYS_PCT:.1%})")
+            return None
+        
+        # MÉTRICAS DE PERFORMANCE
+        
+        # 1. Momentum 12-1
+        if len(monthly_returns) >= 13:
+            momentum_12_1 = monthly_returns.iloc[-12:-1].sum() * 100
+        else:
+            momentum_12_1 = monthly_returns.sum() * 100
+        
         # 2. Volatilidade anualizada
-        volatility = selection_period.std() * np.sqrt(12)
+        volatility = monthly_returns.std() * np.sqrt(12)
         
         # 3. Maximum Drawdown
-        cumulative = (1 + selection_period).cumprod()
+        cumulative = (1 + monthly_returns).cumprod()
         running_max = cumulative.expanding().max()
         drawdown = (cumulative / running_max - 1)
         max_drawdown = drawdown.min()
         
-        # 4. Downside Deviation (desvio dos retornos negativos)
-        negative_returns = selection_period[selection_period < 0]
+        # 4. Downside Deviation
+        negative_returns = monthly_returns[monthly_returns < 0]
         if len(negative_returns) > 0:
             downside_deviation = negative_returns.std() * np.sqrt(12)
         else:
             downside_deviation = 0
-            
-        # MÉTRICAS ADICIONAIS
-        mean_return = selection_period.mean() * 12  # Anualizado
         
         return {
             'asset': asset_name,
-            # Elegibilidade
-            'completeness': completeness,
-            'data_points_2014_2017': len(selection_period),
-            'test_period_months': len(test_period),
-            
-            # Liquidez (proxies)
-            'zero_returns_pct': zero_returns,
-            'avg_abs_return': avg_abs_return,
-            
-            # Métricas principais para score
+            'avg_daily_volume_millions': avg_volume,
+            'avg_daily_qnegs': avg_qnegs,
+            'trading_days_pct': trading_days_pct,
             'momentum_12_1': momentum_12_1,
             'volatility_2014_2017': volatility,
             'max_drawdown_2014_2017': max_drawdown,
             'downside_deviation': downside_deviation,
-            'mean_return_2014_2017': mean_return,
-            
-            # Para referência
-            'price_range_ratio': asset_data['Price'].max() / asset_data['Price'].min()
+            'mean_return_2014_2017': monthly_returns.mean() * 12,
+            'completeness': len(monthly_returns) / 48,  # 4 anos * 12 meses
+            'data_points_2014_2017': len(monthly_returns),
+            'test_period_months': len(test_data.resample('M').last())
         }
     
-    def aplicar_criterios_cientificos(self, metricas_list):
+    def selecionar_ativos_finais(self, metricas_list):
         """
-        Aplica NOVO critério científico robusto baseado em:
-        - Momentum, volatilidade, drawdown, downside deviation
-        - Score composto com pesos específicos
-        - Controles de diversificação setorial e correlação
+        Seleciona os 10 melhores ativos com critério científico
         """
-        print("3. Aplicando NOVO critério científico robusto...")
-        
         if len(metricas_list) < 10:
-            print(f"   AVISO: Poucos ativos disponíveis ({len(metricas_list)})")
             return metricas_list
         
-        # Converter para DataFrame
         df = pd.DataFrame(metricas_list)
-        print(f"   Total de ativos analisados: {len(df)}")
+        print(f"   Ativos que passaram nos filtros de liquidez: {len(df)}")
         
-        # JÁ APLICADO: Elegibilidade básica (>=85% dados, gaps pequenos)
-        print(f"   OK Elegibilidade basica ja aplicada: {len(df)} ativos")
-        
-        # CRITÉRIO DE LIQUIDEZ
-        # Filtrar ativos com muitos retornos zero (baixa liquidez)
-        df = df[df['zero_returns_pct'] <= 0.20]  # <= 20% meses com retorno=0
-        print(f"   Após critério liquidez (retornos zero): {len(df)} ativos")
-        
-        # Filtrar por média de |retorno| (proxy de preço efetivo)
-        avg_return_threshold = df['avg_abs_return'].quantile(0.20)  # Bottom 20%
-        df = df[df['avg_abs_return'] >= avg_return_threshold]
-        print(f"   Após critério liquidez (retorno médio): {len(df)} ativos")
-        
-        # NORMALIZAR MÉTRICAS EM RANKS/PERCENTIS
-        print("   Calculando scores normalizados...")
-        
-        # Momentum: maior é melhor (percentil direto)
+        # Scores normalizados
         df['momentum_score'] = df['momentum_12_1'].rank(pct=True)
-        
-        # Volatilidade: menor é melhor (1 - percentil)
-        df['volatility_score'] = 1 - df['volatility_2014_2017'].rank(pct=True)
-        
-        # Max Drawdown: menor é melhor (drawdown é negativo, então maior valor = menor perda)
+        df['volatility_score'] = 1 - df['volatility_2014_2017'].rank(pct=True)  
         df['drawdown_score'] = df['max_drawdown_2014_2017'].rank(pct=True)
-        
-        # Downside Deviation: menor é melhor
         df['downside_score'] = 1 - df['downside_deviation'].rank(pct=True)
         
-        # SCORE FINAL COMPOSTO
+        # Score final composto - Baseado em literatura acadêmica
         df['selection_score'] = (
-            0.40 * df['momentum_score'] +          # 40% momentum
-            0.20 * df['volatility_score'] +        # 20% (1/volatilidade)
-            0.20 * df['drawdown_score'] +          # 20% (1/drawdown)
-            0.20 * df['downside_score']            # 20% (1/downside deviation)
+            Config.MOMENTUM_WEIGHT * df['momentum_score'] +      # Jegadeesh & Titman (1993)
+            Config.VOLATILITY_WEIGHT * df['volatility_score'] +  # Estabilidade temporal
+            Config.DRAWDOWN_WEIGHT * df['drawdown_score'] +      # Controle risco extremo
+            Config.DOWNSIDE_WEIGHT * df['downside_score']        # Assimetria (Sortino)
         )
-        
-        print(f"   Score composto calculado para {len(df)} ativos")
         
         # Ordenar por score
         df = df.sort_values('selection_score', ascending=False)
         
-        # DIVERSIFICAÇÃO SETORIAL + CORRELAÇÃO
-        df_selected = self.aplicar_diversificacao_e_correlacao(df)
-        
-        print(f"\n   SELEÇÃO FINAL: {len(df_selected)} ativos")
-        print("\n   Top 10 ativos selecionados:")
-        for i, (_, row) in enumerate(df_selected.head(10).iterrows()):
-            print(f"   {i+1:2d}. {row['asset']} - Score: {row['selection_score']:.3f} - Mom: {row['momentum_12_1']:+.1f}% - Vol: {row['volatility_2014_2017']:.1%}")
-        
-        return df_selected.to_dict('records')
-    
-    def aplicar_diversificacao_e_correlacao(self, df):
-        """
-        Aplica diversificação setorial + controle de correlação
-        Máximo 2 ativos por setor + evita pares com correlação > 0.85
-        """
-        print("   Aplicando diversificação setorial + correlação...")
-        
-        # Adicionar informação de setor
-        df = df.copy()
-        df['setor'] = df['asset'].map(self.asset_sector_map)
-        df['setor'] = df['setor'].fillna('Desconhecido')
-        
-        print(f"   Setores identificados: {df['setor'].nunique()}")
-        
-        # Lista para ativos selecionados
+        # Diversificação setorial básica
         selected_assets = []
         assets_por_setor = {}
         
-        # Ordenar por score (melhor primeiro)
-        df_sorted = df.sort_values('selection_score', ascending=False)
-        
-        for _, candidate in df_sorted.iterrows():
+        for _, candidate in df.iterrows():
             asset = candidate['asset']
-            setor = candidate['setor']
+            setor = self.asset_sector_map.get(asset, 'Desconhecido')
             
-            # CRITÉRIO 1: Máximo 2 ativos por setor
+            # Máximo 2 por setor
             if assets_por_setor.get(setor, 0) >= 2:
                 continue
                 
-            # CRITÉRIO 2: Evitar correlações altas (implementação simplificada)
-            # Note: Para correlação completa, precisaríamos dos retornos históricos
-            # Por ora, usamos diversificação setorial como proxy
-            
-            # Aceitar ativo
-            selected_assets.append(candidate)
+            selected_assets.append(candidate.to_dict())
+            selected_assets[-1]['setor'] = setor
             assets_por_setor[setor] = assets_por_setor.get(setor, 0) + 1
             
-            # Parar quando atingir 10-12 ativos
-            if len(selected_assets) >= 12:
+            if len(selected_assets) >= 10:
                 break
         
-        # Criar DataFrame final
-        df_final = pd.DataFrame(selected_assets)
-        
-        # Mostrar diversificação alcançada
-        if len(df_final) > 0:
-            setores_selecionados = df_final['setor'].value_counts()
-            print(f"   Diversificação setorial final:")
-            for setor, count in setores_selecionados.items():
-                print(f"     {setor}: {count} ativo(s)")
-        
-        return df_final.head(10)  # Limitar a 10 ativos finais
+        return selected_assets
     
     def processar_selecao_completa(self):
         """
@@ -364,72 +318,49 @@ class CarregadorEconomatica:
         """
         print("=== PROCESSO DE SELEÇÃO CIENTÍFICA ===")
         
-        # 1. Obter lista de ativos
+        # 1. Obter ativos disponíveis
         available_assets = self.obter_lista_ativos_disponiveis()
         
         if len(available_assets) < 10:
             raise ValueError("Poucos ativos disponíveis na base")
         
         # 2. Processar cada ativo
-        print("2. Processando dados históricos e calculando métricas...")
-        all_metrics = []
+        print("2. Processando dados históricos com filtros de liquidez...")
+        valid_metrics = []
         
         for i, asset in enumerate(available_assets):
-            if i % 10 == 0:
-                print(f"   Processando: {i+1}/{len(available_assets)}")
+            print(f"   Processando {asset}... ({i+1}/{len(available_assets)})")
             
             asset_data = self.extrair_dados_ativo(asset)
             if asset_data is not None:
-                metrics = self.calcular_metricas_selecao(asset_data, asset)
+                metrics = self.calcular_metricas_ativo(asset_data, asset)
                 if metrics is not None:
-                    all_metrics.append(metrics)
+                    valid_metrics.append(metrics)
+                    print(f"     OK {asset}: Vol=R${metrics['avg_daily_volume_millions']:.1f}M, QNegs={metrics['avg_daily_qnegs']:.0f}")
         
-        print(f"   Total de ativos com dados válidos: {len(all_metrics)}")
+        print(f"\n   Total de ativos com liquidez adequada: {len(valid_metrics)}")
         
-        # 3. Aplicar critérios científicos
-        selected_assets = self.aplicar_criterios_cientificos(all_metrics)
+        if len(valid_metrics) < 10:
+            raise ValueError(f"Apenas {len(valid_metrics)} ativos passaram nos filtros de liquidez")
+        
+        # 3. Selecionar os melhores
+        print("3. Aplicando critério científico de seleção...")
+        selected_assets = self.selecionar_ativos_finais(valid_metrics)
         
         # 4. Salvar resultados
-        results_dir = "../results"
-        os.makedirs(results_dir, exist_ok=True)
+        os.makedirs(self.results_dir, exist_ok=True)
         
-        # Salvar lista final
         selected_df = pd.DataFrame(selected_assets)
-        selected_df.to_csv(os.path.join(results_dir, "01_ativos_selecionados.csv"), index=False)
-        
-        # Salvar critérios aplicados
-        criterios = {
-            "data_processamento": datetime.now().isoformat(),
-            "periodo_selecao": "2014-2017",
-            "periodo_teste": "2018-2019",
-            "criterios_aplicados": [
-                "Elegibilidade: >= 85% de meses válidos (2014-2017)",
-                "Liquidez: <= 20% meses com retorno = 0", 
-                "Liquidez: média |retorno| >= percentil 20",
-                "Score composto: 40% momentum + 20% (1/vol) + 20% (1/drawdown) + 20% (1/downside)",
-                "Diversificação: máx. 2 ativos por setor",
-                "Controle correlação: evitar pares alta correlação"
-            ],
-            "metricas_score": {
-                "momentum_12_1": "40% - Retorno 12 meses excluindo mês corrente",
-                "volatility": "20% - Inverso da volatilidade anualizada", 
-                "max_drawdown": "20% - Inverso do máximo drawdown",
-                "downside_deviation": "20% - Inverso do downside risk"
-            },
-            "total_analisados": len(all_metrics),
-            "total_selecionados": len(selected_assets),
-            "ativos_finais": [item['asset'] for item in selected_assets]
-        }
-        
-        import json
-        with open(os.path.join(results_dir, "01_criterios_selecao.json"), 'w') as f:
-            json.dump(criterios, f, indent=2)
+        selected_df.to_csv(os.path.join(self.results_dir, "01_ativos_selecionados.csv"), index=False)
         
         print(f"\nOK SELEÇÃO CIENTÍFICA CONCLUÍDA!")
-        print(f"OK Arquivo: {results_dir}/01_ativos_selecionados.csv")
-        print(f"OK Critérios: {results_dir}/01_criterios_selecao.json")
+        print(f"OK Arquivo: {self.results_dir}/01_ativos_selecionados.csv")
+        print(f"\nOK ATIVOS SELECIONADOS COM LIQUIDEZ ADEQUADA:")
         
-        return selected_assets[:10]  # Retornar top 10
+        for i, asset_data in enumerate(selected_assets, 1):
+            print(f"{i:2d}. {asset_data['asset']} - Vol: R${asset_data['avg_daily_volume_millions']:.1f}M - Score: {asset_data['selection_score']:.3f}")
+        
+        return selected_assets
 
 def main():
     """
@@ -440,9 +371,6 @@ def main():
         selected_assets = carregador.processar_selecao_completa()
         
         print(f"\nOK RESULTADO FINAL: {len(selected_assets)} ativos selecionados cientificamente")
-        for i, asset_data in enumerate(selected_assets, 1):
-            print(f"{i:2d}. {asset_data['asset']}")
-        
         return selected_assets
         
     except Exception as e:

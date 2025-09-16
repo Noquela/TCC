@@ -2,15 +2,18 @@
 % 1 INTRODUÇÃO
 % ==================================================================
 
+% A partir da introdução, mostra a numeração (continua a contagem)
+\pagestyle{fancy}
+
 \chapter{INTRODUÇÃO}
 
-\section{PROBLEMA DE PESQUISA}
+\section{PROBLEMA DE PESQUISA E CONTEXTO}
 
 A alocação estratégica de ativos representa uma das decisões mais fundamentais na gestão de carteiras de investimento, influenciando significativamente tanto o retorno esperado quanto o risco de uma carteira. A importância desta decisão foi formalmente estabelecida por Markowitz (1952) em seu trabalho seminal sobre seleção de portfólio, que introduziu o conceito de diversificação eficiente e lançou as bases da Moderna Teoria de Portfólio. Posteriormente, Brinson, Hood e Beebower (1986) demonstraram empiricamente que a alocação estratégica de ativos explica mais de 90\% da variabilidade dos retornos de carteiras institucionais, superando significativamente o impacto da seleção individual de ativos ou das decisões de timing de mercado.
 
-Esta evidência estabelece a alocação de ativos como o principal driver de performance em investimentos, tornando crucial a identificação de metodologias eficazes para sua implementação. No entanto, a literatura acadêmica revela que a superioridade de diferentes estratégias de alocação varia significativamente em função das características específicas dos mercados analisados, dos períodos estudados e das condições macroeconômicas prevalecentes.
+Esta evidência estabelece a alocação de ativos como o principal \textit{driver} de performance em investimentos, tornando crucial a identificação de metodologias eficazes para sua implementação. No entanto, a literatura acadêmica revela que a superioridade de diferentes estratégias de alocação varia significativamente em função das características específicas dos mercados analisados, dos períodos estudados e das condições macroeconômicas prevalecentes.
 
-\subsection{Características Específicas dos Mercados Emergentes}
+\subsection{Mercados Emergentes e o Contexto Brasileiro}
 
 Os mercados emergentes, categoria na qual o Brasil se insere, apresentam características estruturais distintas dos mercados desenvolvidos que afetam diretamente a eficácia das estratégias de alocação de ativos. Harvey (1995), em estudo seminal sobre mercados emergentes, identificou propriedades específicas destes mercados que desafiam as premissas tradicionais da teoria de portfólio: (i) maior volatilidade dos retornos, frequentemente duas a três vezes superior à observada em mercados desenvolvidos; (ii) presença de higher moments significativos, incluindo assimetria e curtose elevada, violando premissas de normalidade; (iii) correlações instáveis entre ativos e com mercados internacionais, especialmente durante períodos de estresse; e (iv) maior sensibilidade a choques políticos e econômicos locais.
 
@@ -20,7 +23,7 @@ No contexto brasileiro específico, estudos recentes evidenciam características
 
 Adicionalmente, o mercado brasileiro apresenta sensibilidade elevada a variáveis macroeconômicas específicas, incluindo taxa de câmbio, taxa SELIC, risco-país (EMBI+) e preços de commodities. Costa, Lima e Assunção (2018) documentam que choques em qualquer uma destas variáveis podem alterar significativamente correlações entre ativos domésticos, afetando a eficácia de estratégias de alocação baseadas em dados históricos.
 
-\subsection{O Período 2018-2019: Um Laboratório Natural}
+\subsection{O Período 2018-2019: Contexto de Alta Volatilidade}
 
 O período compreendido entre 2018 e 2019 no mercado brasileiro oferece um contexto particularmente relevante para análise de estratégias de alocação devido à conjunção de diversos fatores que amplificaram a volatilidade e incerteza do mercado. Este período foi caracterizado por: (i) processo eleitoral presidencial em 2018, com alta polarização política; (ii) greve dos caminhoneiros em maio de 2018, que paralisou a economia; (iii) incertezas sobre política econômica e reformas estruturais; (iv) volatilidade elevada nos preços de commodities; e (v) mudanças na política monetária e fiscal.
 
@@ -30,7 +33,7 @@ Carnahan e Saiegh (2020) demonstram que eleições em mercados emergentes tendem
 
 A greve dos caminhoneiros de maio de 2018 representa um choque idiossincrático particularmente interessante para análise de estratégias de alocação. Este evento, que durou 10 dias, causou impactos diferenciados entre setores da economia, com empresas de logística, varejo e alimentos sendo mais afetadas que empresas financeiras ou de telecomunicações. Tal diferenciação setorial oferece uma oportunidade única para avaliar como diferentes estratégias de alocação respondem a choques assimétricos.
 
-\subsection{Gap na Literatura Acadêmica}
+\subsection{Lacuna na Literatura}
 
 A revisão da literatura acadêmica revela uma lacuna significativa na avaliação comparativa de estratégias de alocação em mercados emergentes durante períodos de extrema volatilidade. A maioria dos estudos sobre eficácia de estratégias de alocação concentra-se em mercados desenvolvidos, particularmente Estados Unidos e Europa, com períodos de análise que frequentemente excluem episódios de volatilidade extrema.
 
@@ -40,7 +43,7 @@ Estudos específicos sobre o mercado brasileiro são ainda mais raros. Rochman e
 
 Esta lacuna é particularmente relevante considerando que as características específicas dos mercados emergentes podem alterar significativamente a eficácia relativa das diferentes estratégias. Por exemplo, a presença de higher moments pode favorecer estratégias que não dependem de premissas de normalidade, enquanto correlações instáveis podem beneficiar abordagens menos dependentes de estimativas de correlação.
 
-\subsection{Evolução das Estratégias de Alocação: Da Teoria à Prática}
+\subsection{Evolução das Estratégias de Alocação}
 
 O desenvolvimento de estratégias de alocação de ativos evoluiu significativamente desde o trabalho pioneiro de Markowitz (1952). Esta evolução pode ser compreendida através de três principais ondas de inovação, cada uma respondendo a limitações identificadas em abordagens anteriores.
 
@@ -63,6 +66,18 @@ Outro desafio metodológico refere-se à seleção de métricas de avaliação. 
 Diante do contexto apresentado, este estudo busca responder à seguinte questão central: \textbf{Qual das três principais estratégias de alocação de ativos (Mean-Variance Optimization, Equal Weight, e Risk Parity) apresenta superior performance ajustada ao risco no mercado acionário brasileiro durante o período de alta volatilidade de 2018-2019, utilizando metodologia out-of-sample rigorosa e métricas de avaliação adequadas para mercados emergentes?}
 
 Esta questão desdobra-se em questões subsidiárias específicas: (i) Como características específicas do mercado brasileiro durante 2018-2019 afetaram a performance relativa das diferentes estratégias? (ii) Quais fatores macroeconômicos e microestruturais explicam as diferenças de performance observadas? (iii) Os resultados são estatisticamente significativos e robustos a diferentes especificações metodológicas? (iv) Que implicações práticas podem ser derivadas para gestores de recursos operando em mercados similares?
+
+\subsection{Hipóteses de Pesquisa}
+
+Com base na literatura acadêmica e nas características específicas dos mercados emergentes, formulam-se as seguintes hipóteses testáveis:
+
+\textbf{H1 (Hipótese Equal Weight):} A estratégia Equal Weight apresentará performance superior às estratégias otimizadas em termos de Sharpe Ratio, conforme predito por DeMiguel \textit{et al.} (2009), devido à maior robustez à instabilidade paramétrica característica de mercados emergentes durante períodos de alta volatilidade.
+
+\textbf{H2 (Hipótese Risk Parity):} A estratégia Risk Parity apresentará menor volatilidade e Maximum Drawdown que as demais estratégias, em linha com a teoria de diversificação de risco de Maillard \textit{et al.} (2010), mas com possível trade-off em retorno absoluto.
+
+\textbf{H3 (Hipótese Markowitz):} Mean-Variance Optimization apresentará concentração excessiva em poucos ativos e maior sensibilidade a mudanças de regime, resultando em performance inferior durante períodos de volatilidade elevada típicos de mercados emergentes.
+
+\textbf{H4 (Hipótese de Seleção):} A qualidade da seleção inicial de ativos é mais determinante para a performance das carteiras que a sofisticação da estratégia de alocação, evidenciando a importância da curadoria científica do universo investível sobre técnicas de otimização.
 
 A contribuição esperada deste estudo é multifacetada. Do ponto de vista acadêmico, o trabalho adiciona evidência empírica específica para mercados emergentes, área com literatura ainda limitada. A análise do período 2018-2019 no Brasil oferece insights únicos sobre o comportamento de estratégias de alocação em ambiente de volatilidade política e econômica extrema.
 

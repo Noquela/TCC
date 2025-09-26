@@ -1,16 +1,15 @@
 """
-CALCULADORA DE TURNOVER PROFISSIONAL - TCC Risk Parity v2.0
-Módulo para cálculo preciso de turnover real (não estimado/hardcoded).
+CALCULADORA DE TURNOVER SIMPLIFICADA - TCC Risk Parity v2.0
+Módulo para cálculo de turnover das estratégias de alocação.
 
-Autor: Bruno Gasparoni Ballerini  
-Data: 2025-09-16
-Versão: 2.0 - Implementação científica
+Autor: Bruno Gasparoni Ballerini
+Data: 2025-09-23
+Versão: 2.1 - Versão simplificada
 
 Funcionalidades:
 - Cálculo de turnover real por período de rebalanceamento
-- Análise de turnover médio por estratégia 
-- Decomposição de turnover por origem (drift vs rebalancing)
-- Métricas de implementabilidade baseadas em turnover
+- Análise de turnover médio por estratégia
+- Relatório comparativo entre estratégias
 """
 
 import pandas as pd
@@ -27,14 +26,13 @@ except ImportError:
     sys.path.append(os.path.dirname(__file__))
     from _00_configuracao_global import get_logger, get_path, get_config, get_rng
 
-class CalculadoraTurnoverProfissional:
+class CalculadoraTurnoverSimplificada:
     """
-    Calculadora profissional de turnover para estratégias de alocação.
-    
-    Implementa cálculos científicos baseados em:
+    Calculadora de turnover para estratégias de alocação.
+
+    Implementa cálculo científico baseado em:
     - Turnover = (1/2) * Σ |w_i,t - w_i,t-1| por período
-    - Decomposição entre drift passivo e rebalanceamento ativo  
-    - Análise de custos implícitos de transação
+    - Métricas comparativas entre estratégias
     """
     
     def __init__(self):
@@ -42,7 +40,7 @@ class CalculadoraTurnoverProfissional:
         self.config = get_config()
         
         self.logger.info("="*70)
-        self.logger.info("CALCULADORA DE TURNOVER PROFISSIONAL INICIALIZADA")
+        self.logger.info("CALCULADORA DE TURNOVER INICIALIZADA")
         self.logger.info("Método: Turnover = (1/2) * Σ |w_i,t - w_i,t-1|")
         self.logger.info("="*70)
     
@@ -277,40 +275,6 @@ class CalculadoraTurnoverProfissional:
         
         return df_relatorio
     
-    def calcular_custos_implícitos(self, 
-                                  resultados_turnover: Dict[str, Dict]) -> Dict[str, Dict]:
-        """
-        Estima custos implícitos de transação baseados no turnover.
-        
-        Args:
-            resultados_turnover (Dict): Resultados de turnover
-            
-        Returns:
-            Dict: Custos implícitos por estratégia e cenário
-        """
-        custos_transacao = self.config.CUSTOS_TRANSACAO
-        custos_implícitos = {}
-        
-        for nome_estrategia, metricas in resultados_turnover.items():
-            turnover_anual = metricas.get('turnover_medio_anualizado', 0)
-            
-            if pd.isna(turnover_anual):
-                continue
-            
-            custos_estrategia = {
-                'estrategia': nome_estrategia,
-                'turnover_anualizado': turnover_anual
-            }
-            
-            # Calcular custos para diferentes cenários
-            for cenario, custo_bps in custos_transacao.items():
-                custo_anual = turnover_anual * custo_bps
-                custos_estrategia[f'custo_{cenario}_pct'] = custo_anual * 100
-                custos_estrategia[f'custo_{cenario}_bps'] = custo_anual * 10000
-            
-            custos_implícitos[nome_estrategia] = custos_estrategia
-        
-        return custos_implícitos
     
     def salvar_resultados_turnover(self, 
                                  resultados_turnover: Dict[str, Dict],
@@ -344,13 +308,6 @@ class CalculadoraTurnoverProfissional:
             json.dump(resultados_serializaveis, f, indent=2, ensure_ascii=False, default=str)
         self.logger.info(f"   Detalhes salvos: {path_detalhado}")
         
-        # Calcular e salvar custos implícitos
-        custos = self.calcular_custos_implícitos(resultados_turnover)
-        path_custos = get_path('results', '04_custos_turnover.json')
-        
-        with open(path_custos, 'w', encoding='utf-8') as f:
-            json.dump(custos, f, indent=2, ensure_ascii=False, default=str)
-        self.logger.info(f"   Custos salvos: {path_custos}")
     
     def executar_analise_completa(self) -> Dict:
         """
@@ -404,9 +361,9 @@ class CalculadoraTurnoverProfissional:
 
 if __name__ == "__main__":
     # Executar análise de turnover
-    calculadora = CalculadoraTurnoverProfissional()
+    calculadora = CalculadoraTurnoverSimplificada()
     resultado = calculadora.executar_analise_completa()
-    
+
     if resultado and 'relatorio_comparativo' in resultado:
         print("\n📊 RESUMO DE TURNOVER POR ESTRATÉGIA:")
         print(resultado['relatorio_comparativo'].to_string(index=False))

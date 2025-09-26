@@ -1,593 +1,208 @@
 % ==================================================================
-% 2 REFERENCIAL TEÓRICO - EXPANDIDO
+% 2 REFERENCIAL TEÓRICO
 % ==================================================================
 
 \chapter{REFERENCIAL TEÓRICO}
 
-\section{EVOLUÇÃO HISTÓRICA DA TEORIA DE PORTFÓLIO}
+\section{TEORIA DE PORTFÓLIO DE MARKOWITZ}
 
-\subsection{Contexto Pré-Markowitz}
+A moderna teoria de portfólio teve início com o trabalho pioneiro de Harry Markowitz (1952) publicado no Journal of Finance. Markowitz (1952) estabeleceu pela primeira vez uma base matemática para a construção de carteiras de investimento, demonstrando que o risco de uma carteira não é simplesmente a média dos riscos individuais dos ativos, mas depende das correlações entre eles.
 
-Antes do desenvolvimento da Moderna Teoria de Portfólio por Harry Markowitz em 1952, as decisões de investimento eram baseadas predominantemente em intuição, análise fundamentalista individual de empresas e regras empíricas transmitidas entre gerações de investidores. O conceito de diversificação existia de forma rudimentar, expresso no ditado popular "não colocar todos os ovos numa cesta", mas carecia de fundamentação matemática rigorosa.
+O principal conceito introduzido por Markowitz (1952) é que investidores racionais buscam maximizar o retorno esperado para um dado nível de risco, ou minimizar o risco para um dado retorno esperado. Esta relação define a fronteira eficiente, que representa o conjunto de carteiras ótimas disponíveis aos investidores.
 
-Durante as primeiras décadas do século XX, investidores sofisticados já compreendiam intuitivamente que distribuir investimentos entre diferentes ativos poderia reduzir riscos. No entanto, esta compreensão permanecia qualitativa, sem ferramentas quantitativas para determinar a composição ótima de carteiras ou para mensurar precisamente os trade-offs entre risco e retorno.
+Segundo Markowitz (1952), o risco de uma carteira pode ser calculado pela seguinte fórmula simplificada: quando dois ativos possuem correlação perfeita positiva (+1), o risco da carteira é a média ponderada dos riscos individuais. Quando a correlação é menor que +1, o risco da carteira será menor que essa média, demonstrando o benefício da diversificação.
 
-A ausência de uma teoria formal levava a práticas de investimento inconsistentes e frequentemente subótimas. Gestores de fundos baseavam-se em regras simplistas, como alocar percentuais fixos em diferentes classes de ativos, sem considerar as inter-relações entre eles ou otimizar sistematicamente a relação risco-retorno.
+A teoria de Markowitz (1952) assume que os investidores são aversos ao risco e que os retornos dos ativos seguem distribuição normal. Embora essas premissas tenham sido questionadas por estudos posteriores, o framework continua sendo a base fundamental para estratégias modernas de alocação de ativos. A relevância prática desta teoria foi empiricamente demonstrada por Brinson, Hood e Beebower (1986), que analisaram carteiras institucionais americanas e concluíram que mais de 90\% da variabilidade dos retornos é explicada pela política de alocação estratégica.
 
-\subsection{A Revolução de Markowitz (1952)}
-
-Markowitz (1952) revolucionou o campo de investimentos com sua dissertação de doutorado na Universidade de Chicago, posteriormente publicada como "Portfolio Selection" no Journal of Finance em 1952. Pela primeira vez na história, Markowitz forneceu uma base matemática rigorosa para a construção de carteiras eficientes, estabelecendo os fundamentos da moderna gestão de investimentos.
-
-A contribuição fundamental de Markowitz foi reconhecer que o risco de uma carteira não é simplesmente a média ponderada dos riscos individuais dos ativos, mas depende crucialmente das correlações entre eles. Esta descoberta pode ser expressa matematicamente através da fórmula da variância da carteira:
+A implementação prática da teoria de Markowitz envolve a maximização do índice de Sharpe, desenvolvido por Sharpe (1964) no contexto do Capital Asset Pricing Model. O índice de Sharpe mede o retorno em excesso por unidade de risco e é calculado como:
 
 \begin{equation}
-\sigma_p^2 = \sum_{i=1}^{n} w_i^2 \sigma_i^2 + \sum_{i=1}^{n} \sum_{j \neq i}^{n} w_i w_j \sigma_{ij}
+\text{Sharpe} = \frac{R_p - R_f}{\sigma_p}
 \end{equation}
 
-onde:
-- $\sigma_p^2$ é a variância da carteira
-- $w_i$ são os pesos dos ativos na carteira
-- $\sigma_i^2$ são as variâncias individuais dos ativos
-- $\sigma_{ij}$ são as covariâncias entre os ativos $i$ e $j$
+onde $R_p$ é o retorno da carteira, $R_f$ é a taxa livre de risco e $\sigma_p$ é a volatilidade da carteira. Segundo Sharpe (1964), esta métrica é amplamente utilizada para comparar estratégias de investimento pois considera tanto retorno quanto risco.
 
-O primeiro termo da equação representa a contribuição das volatilidades individuais, enquanto o segundo termo captura o efeito das correlações. Quando as correlações são menores que +1, o segundo termo reduz a variância total da carteira, demonstrando matematicamente o benefício da diversificação.
+A otimização de Markowitz apresenta limitações práticas importantes. Michaud (1989) identificou o "enigma da otimização", demonstrando que carteiras teoricamente ótimas frequentemente apresentam desempenho decepcionante fora da amostra devido à instabilidade das estimativas paramétricas. Chopra e Ziemba (1993) quantificaram esta sensibilidade, demonstrando que erros nas estimativas de retorno esperado têm impacto na performance da carteira 11 vezes maior que erros equivalentes nas estimativas de variância. Esta descoberta sugere que a qualidade das estimativas de retorno esperado é crítica para o sucesso da implementação da estratégia de Markowitz.
 
-\subsection{Desenvolvimento da Fronteira Eficiente}
+\section{ESTRATÉGIA DE PESOS IGUAIS}
 
-Markowitz introduziu o conceito de "fronteira eficiente" - o conjunto de carteiras que oferece o máximo retorno esperado para cada nível de risco, ou alternativamente, o mínimo risco para cada nível de retorno esperado. Esta fronteira é obtida através da solução de um problema de otimização quadrática sujeito a restrições lineares.
+A estratégia de pesos iguais consiste em alocar o mesmo percentual do capital para cada ativo da carteira. Para uma carteira com $n$ ativos, cada ativo recebe peso $w_i = 1/n$. DeMiguel, Garlappi e Uppal (2009) demonstraram que esta estratégia simples frequentemente supera métodos de otimização sofisticados quando aplicada fora da amostra.
 
-O problema de otimização de Markowitz pode ser formulado de duas maneiras equivalentes:
+Os autores compararam 14 estratégias de alocação diferentes e concluíram que nenhuma superou consistentemente a estratégia 1/N em termos de índice de Sharpe, retorno ajustado pela utilidade ou rotatividade. Este resultado surpreendente ocorre porque os erros de estimação nas estratégias otimizadas superam os benefícios da otimização (DEMIGUEL; GARLAPPI; UPPAL, 2009).
 
-\textbf{Minimização de Risco para Retorno Dado:}
+Segundo DeMiguel, Garlappi e Uppal (2009), a janela de estimação necessária para que estratégias baseadas em média-variância superem a estratégia 1/N é de aproximadamente 3000 meses para carteiras com 25 ativos e 6000 meses para carteiras com 50 ativos. Como essas janelas são impraticáveis, a estratégia de pesos iguais torna-se uma alternativa robusta para investidores.
+
+\section{ESTRATÉGIA DE PARIDADE DE RISCO}
+
+A estratégia de paridade de risco, também conhecida como Equal Risk Contribution (ERC), busca equalizar a contribuição de risco de cada ativo para o risco total da carteira. Maillard, Roncalli e Teiletche (2010) formalizaram esta abordagem, que representa uma alternativa à diversificação tradicional baseada em valores monetários.
+
+Na paridade de risco, o objetivo é que cada ativo contribua com a mesma quantidade de risco para a volatilidade total da carteira. A contribuição de risco do ativo $i$ pode ser expressa como o produto entre o peso do ativo e sua sensibilidade marginal ao risco da carteira. Para que todos os ativos tenham contribuição igual, esta deve ser $1/n$ do risco total (MAILLARD; RONCALLI; TEILETCHE, 2010).
+
+A estratégia de paridade de risco oferece diversificação de risco mais efetiva que a diversificação por capital, especialmente quando os ativos possuem volatilidades muito diferentes. Segundo Maillard, Roncalli e Teiletche (2010), esta abordagem maximiza a diversificação ex-ante sem depender de estimativas de retornos esperados, tornando-a mais robusta que estratégias baseadas em otimização média-variância.
+
+A implementação prática da paridade de risco requer algoritmos iterativos, pois não existe solução analítica fechada. O algoritmo mais comum utiliza o método do gradiente, onde os pesos são ajustados iterativamente na direção que minimiza a diferença entre as contribuições de risco. O processo continua até que a diferença entre as contribuições de risco de todos os ativos seja menor que uma tolerância predefinida, tipicamente 1e-6.
+
+A contribuição de risco marginal do ativo $i$ pode ser calculada como:
+
+\begin{equation}
+\text{Contribuição}_i = w_i \times \frac{\partial \sigma_p}{\partial w_i}
+\end{equation}
+
+onde $\sigma_p$ é a volatilidade da carteira. Para carteiras com paridade de risco perfeita, todas as contribuições devem ser iguais a $\sigma_p / n$, onde $n$ é o número de ativos.
+
+\section{MERCADOS EMERGENTES E CARACTERÍSTICAS ESPECÍFICAS}
+
+Os mercados emergentes apresentam características distintas dos mercados desenvolvidos que podem afetar significativamente a eficácia das diferentes estratégias de alocação. Harvey (1995) identificou propriedades específicas destes mercados que desafiam as premissas tradicionais da teoria de portfólio: maior volatilidade dos retornos, correlações instáveis entre ativos e maior sensibilidade a choques políticos e econômicos locais.
+
+O mercado brasileiro, como mercado emergente, caracteriza-se por concentração setorial significativa e sensibilidade elevada a variáveis macroeconômicas específicas, incluindo taxa de câmbio, política monetária e preços de commodities. Harvey (1995) demonstra que esta concentração setorial pode limitar os benefícios da diversificação tradicional durante períodos de estresse do mercado.
+
+O período entre 2018 e 2019 no Brasil oferece um contexto particularmente interessante para análise de estratégias de alocação. Este período foi marcado por eventos que amplificaram a volatilidade: processo eleitoral presidencial com alta polarização política em 2018, greve dos caminhoneiros em maio de 2018 que paralisou a economia por dez dias, incertezas sobre reformas estruturais e volatilidade nos preços de commodities. Durante este período, o índice Ibovespa apresentou volatilidade anualizada média superior à histórica, confirmando as características de instabilidade típicas de mercados emergentes identificadas por Harvey (1995).
+
+\section{CRITÉRIOS DE SELEÇÃO DE ATIVOS}
+
+A seleção de ativos constitui etapa fundamental que antecede a aplicação das estratégias de alocação. Markowitz (1959) reconheceu que "a escolha dos títulos a serem incluídos no portfólio é tão importante quanto a determinação de suas proporções ótimas". Black e Litterman (1992) reforçaram esta perspectiva demonstrando que a qualidade do universo inicial influencia dramaticamente os resultados de otimização.
+
+\subsection{Critérios de Liquidez}
+
+A importância da liquidez na seleção de ativos foi estabelecida por Amihud (2002), que desenvolveu medidas de iliquidez baseadas na relação entre retorno absoluto e volume de negociação. Roll (1984) propôs métricas operacionais para avaliar liquidez, incluindo dias com retorno zero e estimativas de bid-ask spread.
+
+Este trabalho utiliza critérios rigorosos de liquidez: volume médio diário mínimo de R\$ 5 milhões, presença em bolsa superior a 80\% dos dias úteis, e menos de 20\% de dias com retorno zero. Estes filtros garantem que os ativos selecionados sejam efetivamente negociáveis durante todo o período de análise.
+
+\subsection{Score Composto de Seleção}
+
+Para integrar múltiplos critérios de qualidade, este trabalho desenvolve um score composto baseado em quatro dimensões fundamentais: momentum, volatilidade, máximo rebaixamento e desvio negativo. Os pesos utilizados são baseados na literatura acadêmica: 35\% para momentum (JEGADEESH; TITMAN, 1993), 25\% para volatilidade, e 20\% para cada métrica de risco extremo.
+
+O momentum 12-1, amplamente documentado na literatura como fator preditivo robusto (JEGADEESH; TITMAN, 1993), mede a performance acumulada nos 12 meses anteriores excluindo o último mês para evitar efeitos de reversão de curto prazo. A volatilidade anualizada captura a estabilidade histórica do ativo, enquanto máximo rebaixamento e desvio negativo medem exposição a riscos extremos.
+
+O score final é calculado como:
+
 \begin{align}
-\min_w \quad & \frac{1}{2} w^T \Sigma w \\
-\text{s.t.} \quad & w^T \mu = \mu_{\text{target}} \\
-& w^T \mathbf{1} = 1 \\
-& w_i \geq 0 \quad \forall i
+\text{Score} &= 0,35 \times \text{Rank}_{\text{momentum}} + 0,25 \times (1 - \text{Rank}_{\text{vol}}) \nonumber \\
+&\quad + 0,20 \times \text{Rank}_{\text{MDD}} + 0,20 \times (1 - \text{Rank}_{\text{downside}})
 \end{align}
 
-\textbf{Maximização de Retorno para Risco Dado:}
-\begin{align}
-\max_w \quad & w^T \mu \\
-\text{s.t.} \quad & w^T \Sigma w = \sigma_{\text{target}}^2 \\
-& w^T \mathbf{1} = 1 \\
-& w_i \geq 0 \quad \forall i
-\end{align}
+onde os ranks são percentuais (0 a 1) e as métricas de risco são invertidas para que menores valores representem melhor qualidade.
 
-onde $w$ é o vetor de pesos, $\Sigma$ é a matriz de covariância, $\mu$ é o vetor de retornos esperados, e $\mathbf{1}$ é um vetor de uns.
+\subsection{Dimensão da Carteira e Diversificação}
 
-A fronteira eficiente resultante possui propriedades matemáticas elegantes. Em espaços de média-variância, ela forma uma hipérbole convexa, e qualquer carteira localizada abaixo desta fronteira é dominada - existe sempre uma carteira na fronteira que oferece maior retorno para o mesmo risco ou menor risco para o mesmo retorno.
+A escolha de 10 ativos para as carteiras baseia-se em evidências empíricas sobre diversificação ótima. Evans e Archer (1968) demonstraram que a maior parte dos benefícios de diversificação é obtida com 8 a 16 ações. Statman (1987) confirmou que carteiras com 10 a 15 ações bem selecionadas capturam aproximadamente 95\% dos benefícios de diversificação disponíveis.
 
-\section{MODERNA TEORIA DE PORTFÓLIO DE MARKOWITZ}
+O uso de 10 ativos representa compromisso entre diversificação adequada e praticabilidade de gestão. DeMiguel, Garlappi e Uppal (2009) utilizaram carteiras de tamanhos similares em seu estudo seminal, demonstrando que este tamanho é apropriado para comparações entre estratégias de alocação. Carteiras menores sofreriam de subdiversificação, enquanto carteiras muito maiores diluiriam os efeitos das diferentes estratégias de alocação.
 
-\subsection{Fundamentos Teóricos e Premissas}
+\subsection{Frequência de Rebalanceamento}
 
-A Moderna Teoria de Portfólio baseia-se em um conjunto de premissas específicas que, embora restritivas, permitiram o desenvolvimento de uma estrutura analítica poderosa para seleção de carteiras:
+O rebalanceamento semestral adotado neste trabalho reflete equilíbrio entre capturar oportunidades de realocação e controlar custos de transação. Constantinides (1986) demonstrou que rebalanceamentos muito frequentes podem ser prejudiciais devido aos custos de transação, enquanto rebalanceamentos muito espaçados permitem que as carteiras se desviem significativamente das alocações ótimas.
 
-\textbf{Racionalidade dos Investidores:} Assume-se que investidores são racionais e aversos ao risco, preferindo sempre maior retorno para o mesmo nível de risco, ou menor risco para o mesmo retorno. Esta premissa implica que investidores maximizam utilidade esperada e que suas funções de utilidade apresentam derivada primeira positiva (mais retorno é melhor) e derivada segunda negativa (aversão ao risco).
-
-\textbf{Distribuição Normal dos Retornos:} A teoria assume que retornos dos ativos seguem distribuição normal multivariada. Esta premissa é crucial porque permite que toda a distribuição seja caracterizada pelos dois primeiros momentos (média e variância), simplificando enormemente o problema de otimização. No entanto, evidências empíricas em mercados emergentes frequentemente violam esta premissa, apresentando assimetria negativa e curtose elevada.
-
-\textbf{Período Único de Investimento:} O modelo original considera um horizonte de investimento de período único, ignorando aspectos dinâmicos e oportunidades de rebalanceamento. Esta simplificação, embora limitante, permite focalizarse nos aspectos fundamentais da diversificação sem a complexidade adicional de decisões inter-temporais.
-
-\textbf{Informação Perfeita e Homogênea:} Todos os investidores possuem acesso às mesmas informações e formam expectativas idênticas sobre retornos esperados, variâncias e correlações. Esta premissa heroica é claramente violada na realidade, onde diferenças informacionais são fonte importante de oportunidades de investimento.
-
-\textbf{Ausência de Custos de Transação:} O modelo assume mercados perfeitamente líquidos sem custos de transação, permitindo rebalanceamento instantâneo e sem custos. Na prática, custos de transação podem ser significativos e alterar substancialmente as alocações ótimas.
-
-\subsection{Desenvolvimento Matemático da Otimização}
-
-O problema de otimização de Markowitz pode ser resolvido utilizando técnicas de programação quadrática. A solução analítica envolve o uso de multiplicadores de Lagrange para incorporar as restrições ao problema de otimização.
-
-Definindo a função Lagrangeana:
-\begin{equation}
-L = \frac{1}{2} w^T \Sigma w - \lambda_1 (w^T \mu - \mu_{\text{target}}) - \lambda_2 (w^T \mathbf{1} - 1)
-\end{equation}
-
-As condições de primeira ordem fornecem:
-\begin{align}
-\frac{\partial L}{\partial w} &= \Sigma w - \lambda_1 \mu - \lambda_2 \mathbf{1} = 0 \\
-\frac{\partial L}{\partial \lambda_1} &= w^T \mu - \mu_{\text{target}} = 0 \\
-\frac{\partial L}{\partial \lambda_2} &= w^T \mathbf{1} - 1 = 0
-\end{align}
-
-Resolvendo este sistema, obtém-se a solução para os pesos ótimos:
-\begin{equation}
-w^* = \frac{A \Sigma^{-1} \mathbf{1} - B \Sigma^{-1} \mu}{D} + \frac{C \Sigma^{-1} \mu - B \Sigma^{-1} \mathbf{1}}{D} \mu_{\text{target}}
-\end{equation}
-
-onde:
-\begin{align}
-A &= \mathbf{1}^T \Sigma^{-1} \mu \\
-B &= \mu^T \Sigma^{-1} \mathbf{1} \\
-C &= \mathbf{1}^T \Sigma^{-1} \mathbf{1} \\
-D &= BC - A^2
-\end{align}
-
-Esta solução permite construir toda a fronteira eficiente variando $\mu_{\text{target}}$ e calculando os correspondentes pesos ótimos e níveis de risco.
-
-\subsection{Interpretação Econômica dos Resultados}
-
-A interpretação econômica da solução de Markowitz revela insights profundos sobre a natureza da diversificação ótima. Os pesos ótimos dependem não apenas das características individuais dos ativos (retorno esperado e variância), mas também de suas covariâncias com todos os outros ativos da carteira.
-
-Um ativo com retorno esperado baixo pode receber peso significativo se apresentar correlação negativa ou baixa com outros ativos, contribuindo para redução do risco total da carteira. Conversely, um ativo com retorno esperado alto pode receber peso pequeno se for altamente correlacionado com outros ativos já presentes na carteira.
-
-A matriz de covariância $\Sigma$ desempenha papel central na determinação dos pesos ótimos. Sua inversa, $\Sigma^{-1}$, pondera a importância relativa de cada ativo considerando não apenas sua própria volatilidade, mas também suas inter-relações com todos os demais ativos. Esta é a essência matemática do benefício da diversificação.
-
-\subsection{Limitações Práticas da Teoria de Markowitz}
-
-Apesar de sua elegância teórica, a implementação prática da teoria de Markowitz enfrenta desafios significativos que frequentemente comprometem sua eficácia:
-
-\textbf{Sensibilidade a Erros de Estimação:} Michaud (1989) identificou o "enigma da otimização" - carteiras teoricamente ótimas frequentemente apresentam desempenho decepcionante fora da amostra devido à instabilidade das estimativas paramétricas. Pequenas mudanças nas estimativas de retorno esperado, em particular, podem resultar em alocações drasticamente diferentes.
-
-Chopra e Ziemba (1993) quantificaram esta sensibilidade, demonstrando que erros nas estimativas de retorno esperado têm impacto na performance da carteira 11 vezes maior que erros equivalentes nas estimativas de variância, e 2 vezes maior que erros nas estimativas de covariância. Esta descoberta sugere que a qualidade das estimativas de retorno esperado é crítica para o sucesso da implementação.
-
-\textbf{Instabilidade Temporal:} Parâmetros estatísticos raramente permanecem constantes ao longo do tempo. Mudanças no ambiente econômico, na estrutura industrial ou nas condições de mercado podem alterar substancialmente retornos esperados, volatilidades e correlações, tornando otimizações baseadas em dados históricos rapidamente obsoletas.
-
-\textbf{Concentração Extrema:} O algoritmo de otimização frequentemente produz carteiras com concentrações extremas, alocando pesos muito altos a poucos ativos e próximos a zero para outros. Esta concentração contraria intuições sobre diversificação e pode resultar em exposições a riscos específicos não capturados pelo modelo.
-
-\textbf{Turnover Excessivo:} Reotimizações periódicas podem resultar em turnover excessivo, gerando custos de transação elevados que erodem os benefícios teóricos da otimização. O trade-off entre capturar oportunidades de otimização e controlar custos de implementação torna-se central na aplicação prática.
-
-\section{ESTRATÉGIA EQUAL WEIGHT: SIMPLICIDADE E ROBUSTEZ}
-
-\subsection{Fundamentação Teórica da Diversificação Naïve}
-
-A estratégia Equal Weight, também conhecida como diversificação naïve ou estratégia 1/N, representa o extremo oposto da sofisticação da otimização de Markowitz. Cada ativo na carteira recebe peso idêntico de 1/N, onde N é o número total de ativos, independentemente de suas características individuais de risco, retorno ou correlação.
-
-Esta aparente simplicidade esconde fundamentação teórica robusta baseada no comprometimento (\textit{trade-off}) entre viés (\textit{bias}) e variância na teoria estatística. Enquanto a Otimização Média-Variância de Markowitz busca a solução teoricamente ótima (viés zero quando suas premissas são satisfeitas), ela pode apresentar alta variância devido à sensibilidade a erros de estimação. A estratégia de Peso Igual (\textit{Equal Weight}) aceita potencial viés (por ignorar informações sobre risco e retorno) em troca de variância muito baixa (por não depender de estimações paramétricas).
-
-\subsection{Condições de Superioridade do Peso Igual}
-
-DeMiguel, Garlappi e Uppal (2009) forneceram análise rigorosa das condições sob as quais a estratégia de Peso Igual (\textit{Equal Weight}) supera estratégias otimizadas. Seu trabalho seminal "Optimal versus Naive Diversification: A Comparison of Portfolio Selection Rules" estabeleceu critérios específicos para a superioridade da estratégia ingênua (\textit{naive}).
-
-A condição fundamental para superioridade do Peso Igual (\textit{Equal Weight}) é:
-\begin{equation}
-T < \frac{N(N+2)}{4(\text{Sharpe Ratio})^2}
-\end{equation}
-
-onde $T$ é o número de observações históricas disponíveis para estimação, $N$ é o número de ativos, e Índice de Sharpe (\textit{Sharpe Ratio}) refere-se ao índice da carteira ótima de Markowitz.
-
-Esta condição revela que o Peso Igual (\textit{Equal Weight}) é favorecido quando:
-- O histórico de dados é limitado (T pequeno)
-- O número de ativos é grande (N grande)
-- A melhoria potencial da otimização é pequena (Índice de Sharpe baixo)
-
-Para carteiras típicas de 10-20 ativos com dados mensais de 2-5 anos, esta condição é frequentemente satisfeita, explicando a robustez empírica observada do Peso Igual (\textit{Equal Weight}) em diversos estudos.
-
-\subsection{Análise Teórica dos Benefícios}
-
-\textbf{Eliminação de Estimation Risk:} Equal Weight elimina completamente o risco de estimação paramétrica. Não requer estimativas de retornos esperados, variâncias ou correlações, removendo uma fonte significativa de erro que afeta estratégias otimizadas.
-
-\textbf{Diversificação Automática:} A estratégia garante diversificação automática entre todos os ativos disponíveis, evitando concentrações extremas que podem emergir de processos de otimização. Esta diversificação forçada oferece proteção contra riscos específicos não modelados.
-
-\textbf{Transparência e Simplicidade:} A simplicidade operacional facilita implementação, comunicação e auditoria. Investidores podem compreender completamente a estratégia sem necessidade de conhecimento técnico avançado, aumentando confiança e aderência.
-
-\textbf{Custos Operacionais Reduzidos:} Equal Weight requer rebalanceamento menos frequente comparado a estratégias que dependem de reotimização contínua. Os custos de transação são tipicamente menores, melhorando a performance líquida.
-
-\textbf{Robustez a Regimes de Mercado:} A estratégia não depende de premissas sobre distribuições de retornos ou estabilidade de parâmetros, tornando-a robusta a mudanças de regime e quebras estruturais.
-
-\subsection{Limitações e Contextos de Ineficiência}
-
-Apesar de suas vantagens, Equal Weight apresenta limitações em contextos específicos:
-
-\textbf{Heterogeneidade de Volatilidade:} Quando ativos possuem volatilidades muito diferentes, Equal Weight pode concentrar risco nos ativos mais voláteis. Um ativo com volatilidade duas vezes maior contribui aproximadamente quatro vezes mais para o risco da carteira, violando princípios de diversificação de risco.
-
-\textbf{Informação Desperdiçada:} Equal Weight ignora completamente informações disponíveis sobre retornos esperados, volatilidades e correlações. Em contextos onde estas informações são relativamente precisas, esta ineficiência pode ser significativa.
-
-\textbf{Exposições Setoriais:} A estratégia pode resultar em exposições setoriais não-intencionais se a seleção inicial de ativos não for balanceada. Concentração em determinados setores ou regiões geográficas pode amplificar riscos sistemáticos.
-
-\textbf{Escalabilidade:} À medida que o número de ativos cresce, manter pesos exatamente iguais torna-se mais custoso, e pequenos desvios podem acumular ao longo do tempo.
-
-\subsection{Evidência Empírica Internacional}
-
-Estudos empíricos em diversos mercados confirmaram a robustez da estratégia Equal Weight:
-
-\textbf{Mercados Desenvolvidos:} Nos Estados Unidos e Europa, Equal Weight consistentemente demonstrou performance competitiva com estratégias otimizadas, especialmente em períodos de alta volatilidade e incerteza.
-
-\textbf{Mercados Emergentes:} A superioridade é ainda mais pronunciada em mercados emergentes, onde instabilidade paramétrica e quality dos dados são maiores problemas.
-
-\textbf{Diferentes Classes de Ativos:} A robustez se estende além de ações, incluindo renda fixa, commodities e ativos alternativos, sugerindo princípios universais subjacentes.
-
-\section{ESTRATÉGIA RISK PARITY: EQUALIZAÇÃO DE CONTRIBUIÇÕES DE RISCO}
-
-\subsection{Gênese e Desenvolvimento Histórico}
-
-A estratégia Risk Parity surgiu da observação prática de que carteiras tradicionais, sejam cap-weighted ou otimizadas por Markowitz, frequentemente concentram risco em poucos ativos. Ray Dalio pioneirou esta abordagem nos anos 1990, observando que carteiras típicas institutional derivam 70-80% de seu risco de ações, apesar de diversificação nominal entre classes de ativos.
-
-A intuição fundamental é realocate capital de forma que cada ativo contribua igualmente para o risco total da carteira, ao invés de receber alocações iguais de capital. Esta distinção é crucial: enquanto Equal Weight equaliza capital, Risk Parity equaliza risco.
-
-\subsection{Fundamentação Matemática do Equal Risk Contribution}
-
-A implementação mais rigorosa de Paridade de Risco (\textit{Risk Parity}) é o Equal Risk Contribution (ERC), que busca equalizar as contribuições marginais de risco de cada ativo. A Contribuição de Risco (\textit{Risk Contribution}) do ativo $i$ é definida como:
-
-\begin{equation}
-RC_i = w_i \times \frac{\partial \sigma_p}{\partial w_i} = w_i \times \frac{(\Sigma w)_i}{\sigma_p}
-\end{equation}
-
-onde $(\Sigma w)_i$ é o i-ésimo elemento do vetor resultante da multiplicação da matriz de covariância pelo vetor de pesos.
-
-O objetivo do ERC é encontrar pesos $w$ tais que:
-\begin{equation}
-RC_i = \frac{\sigma_p}{N} \quad \forall i
-\end{equation}
-
-Esta condição garante que cada ativo contribua com exatamente $1/N$ do risco total da carteira.
-
-\subsection{Problema de Otimização e Solução Numérica}
-
-O problema ERC não possui solução analítica fechada, requerendo métodos numéricos. A formulação mais comum minimiza a soma dos quadrados das diferenças entre contribuições de risco:
-
-\begin{equation}
-\min_w \sum_{i=1}^{N} \left(RC_i - \frac{\sigma_p}{N}\right)^2
-\end{equation}
-
-sujeito a:
-\begin{align}
-\sum_{i=1}^{N} w_i &= 1 \\
-w_i &\geq 0 \quad \forall i
-\end{align}
-
-Alternativamente, pode-se minimizar a soma dos quadrados das diferenças relativas:
-\begin{equation}
-\min_w \sum_{i=1}^{N} \left(\frac{RC_i}{RC_j} - 1\right)^2 \quad \forall i,j
-\end{equation}
-
-\subsection{Algoritmos de Implementação}
-
-\textbf{Método do Gradiente:} Utiliza-se o gradiente da função objetivo para iterativamente ajustar os pesos na direção de maior redução da função:
-
-\begin{equation}
-w^{(k+1)} = w^{(k)} - \alpha \nabla f(w^{(k)})
-\end{equation}
-
-onde $\alpha$ é o passo de aprendizado e $\nabla f$ é o gradiente da função objetivo.
-
-\textbf{Método de Newton:} Incorpora informação de segunda ordem (Hessiana) para convergência mais rápida:
-
-\begin{equation}
-w^{(k+1)} = w^{(k)} - H^{-1}(w^{(k)}) \nabla f(w^{(k)})
-\end{equation}
-
-onde $H$ é a matriz Hessiana da função objetivo.
-
-\textbf{Algoritmos Especializados:} Spinu (2013) desenvolveu algoritmo específico para ERC baseado em coordinate descent, que aproveita a estrutura particular do problema para maior eficiência computacional.
-
-\subsection{Propriedades Teóricas Importantes}
-
-\textbf{Invariância a Escala:} A solução ERC é invariante a transformações lineares dos retornos dos ativos. Multiplicar os retornos de um ativo por uma constante não altera a solução, propriedade desejável em contextos práticos.
-
-\textbf{Diversificação Máxima:} Maillard, Roncalli e Teiletche (2010) demonstraram que ERC maximiza o índice de diversificação de Choueifaty:
-
-\begin{equation}
-DR = \frac{\sum_{i=1}^{N} w_i \sigma_i}{\sigma_p}
-\end{equation}
-
-Este resultado conecta Risk Parity a teorias formais de diversificação, fornecendo justificativa teórica adicional.
-
-\textbf{Convergência para Equal Weight:} Quando todos os ativos possuem volatilidade idêntica e correlações zero, a solução ERC converge para Equal Weight, demonstrando consistency entre as estratégias em casos especiais.
-
-\subsection{Vantagens Práticas da Estratégia}
-
-\textbf{Controle Explícito de Risco:} Risk Parity oferece controle direto sobre distribuição de risco, permitindo evitar concentrações não-intencionais que emergem em outras estratégias.
-
-\textbf{Robustez Intermediária:} A estratégia utiliza informações de second moments (volatilidades e correlações) sem depender de estimativas de retornos esperados, que são tipicamente menos estáveis e mais difíceis de estimar.
-
-\textbf{Adaptação Automática:} Em períodos de alta volatilidade, Risk Parity automaticamente reduz pesos de ativos mais voláteis, proporcionando estabilização dinâmica da carteira.
-
-\textbf{Fundamentação Institucional:} A estratégia alinha-se com práticas de risk budgeting utilizadas por investidores institucionais, facilitando integração com frameworks existentes de gestão de risco.
-
-\subsection{Limitações e Considerações Práticas}
-
-\textbf{Dependência de Estimativas de Risco:} Embora menos dependente que Markowitz, Risk Parity ainda requer estimativas precisas de volatilidades e correlações. Instabilidade nestes parâmetros pode comprometer a eficácia da estratégia.
-
-\textbf{Complexidade Computacional:} A ausência de solução analítica requer implementação de algoritmos iterativos, aumentando complexidade computacional e potencial para erros de implementação.
-
-\textbf{Bias Conservador:} A tendência de concentrar-se em ativos menos voláteis pode resultar em bias toward setores defensivos, potencialmente sacrificando oportunidades de crescimento.
-
-\textbf{Sensibilidade a Outliers:} Ativos com volatilidade extremamente baixa podem receber pesos excessivamente altos, criando concentrações não-intencionais.
+A literatura documenta que o rebalanceamento semestral é uma frequência robusta para comparações entre estratégias. Brinson, Hood e Beebower (1986) utilizaram rebalanceamentos trimestrais em seu estudo clássico, enquanto estudos mais recentes como DeMiguel, Garlappi e Uppal (2009) adotaram frequências mensais, trimestrais e anuais. A escolha semestral situa-se no meio deste espectro, sendo suficiente para capturar mudanças nas condições de mercado.
 
 \section{MÉTRICAS DE AVALIAÇÃO DE PERFORMANCE}
 
-\subsection{Evolução Histórica das Métricas Financeiras}
+\subsection{Volatilidade e Medidas de Risco}
 
-O desenvolvimento de métricas de performance acompanhou a evolução da teoria financeira, respondendo a necessidades crescentes de quantificar e comparar performance ajustada ao risco.
-
-\subsubsection{Período Pré-Sharpe}
-
-Antes do desenvolvimento do Sharpe Ratio, investidores avaliavam performance principalmente através de retornos absolutos ou comparações simples com índices de mercado. Esta abordagem ignorava diferenças de risco, levando a comparações inadequadas entre estratégias com perfis de risco distintos.
-
-Métricas primitivas incluíam retorno total, retorno médio, e maximum gain, mas nenhuma incorporava adequadamente a dimensão de risco. Esta limitation frequentemente favorecia estratégias de alto risco que ocasionalmente produziram retornos elevados, ignorando sua maior probabilidade de perdas significativas.
-
-\subsection{Índice de Sharpe: Fundação e Desenvolvimento}
-
-\subsubsection{Desenvolvimento Original}
-
-Sharpe (1964) introduziu seu índice em 1964 como parte do desenvolvimento da Capital Asset Pricing Model (CAPM). O conceito fundamental era criar uma medida que normalizasse retornos excedentes pelo risco assumido:
+A volatilidade constitui medida fundamental de risco em finanças. Para dados de retornos mensais, a volatilidade anualizada é calculada como:
 
 \begin{equation}
-Sharpe = \frac{R_p - R_f}{\sigma_p}
+\sigma_{\text{anual}} = \sigma_{\text{mensal}} \times \sqrt{12}
 \end{equation}
 
-onde:
-- $R_p$ é o retorno médio da carteira no período analisado
-- $R_f$ é a taxa livre de risco correspondente ao período
-- $\sigma_p$ é o desvio-padrão dos retornos da carteira
+Esta conversão assume independência dos retornos mensais e aplica a propriedade de escalabilidade da variância para processos estocásticos, conforme estabelecido na literatura de séries temporais financeiras.
 
-A intuição é medir quantas unidades de retorno excedente (acima da taxa livre de risco) são obtidas para cada unidade de risco total assumido.
+\subsection{Máximo Rebaixamento (Maximum Drawdown)}
 
-\subsubsection{Interpretação Estatística}
-
-O Sharpe Ratio pode ser interpretado como t-statistic para a hipótese nula de que o retorno excedente médio é zero. Sob premissas de normalidade e independência dos retornos:
+O máximo rebaixamento mede a maior perda acumulada desde um pico anterior até o vale subsequente. Segundo Martin e McCann (1989), esta métrica é fundamental para avaliar o pior cenário experimentado pelos investidores. O cálculo é realizado como:
 
 \begin{equation}
-t = \frac{\bar{R} - R_f}{s/\sqrt{T}} = \sqrt{T} \times SR
+\text{MDD} = \max_{t \in [0,T]} \left[ \frac{\max_{s \in [0,t]} V_s - V_t}{\max_{s \in [0,t]} V_s} \right]
 \end{equation}
 
-onde $\bar{R}$ é o retorno médio amostral, $s$ é o desvio-padrão amostral, $T$ é o número de observações, e $SR$ é o Sharpe Ratio.
+onde $V_t$ é o valor acumulado da carteira no tempo $t$. Esta métrica oferece perspectiva única sobre tail risk e experiência real do investidor, sendo amplamente utilizada por investidores institucionais para estabelecer limites de risco.
 
-Esta interpretação conecta o Sharpe Ratio à teoria de testes de hipóteses, permitindo avaliar significância estatística da performance.
+\subsection{Índice de Sortino}
 
-\subsubsection{Limitações e Críticas}
-
-\textbf{Premissa de Normalidade:} O Sharpe Ratio assume que retornos são normalmente distribuídos. Violações desta premissa, comuns em mercados emergentes, podem distorcer interpretações. Distribuições com assimetria negativa ou curtose elevada podem ter Sharpe Ratios enganosos.
-
-\textbf{Penalização de Volatilidade Positiva:} O índice penaliza toda volatilidade igualmente, incluindo variações positivas. Para investidores que se preocupam apenas com downside risk, esta penalização é inapropriada.
-
-\textbf{Instabilidade Temporal:} Sharpe Ratios podem variar significativamente entre períodos, limitando sua utilidade para comparações de longo prazo ou previsões futuras.
-
-\textbf{Manipulation através de Não-Linearidades:} Estratégias com payoffs não-lineares (como venda de opções) podem apresentar Sharpe Ratios artificialmente elevados, escondendo tail risks significativos.
-
-\subsection{Sortino Ratio: Refinamento do Conceito de Risco}
-
-\subsubsection{Desenvolvimento e Motivação}
-
-Sortino e Price (1994) desenvolveram o Sortino Ratio para endereçar limitações do Sharpe Ratio relacionadas à definição de risco. Argumentaram que investidores se preocupam principalmente com downside risk - volatilidade de retornos abaixo de um threshold aceitável.
-
-O Sortino Ratio é definido como:
-\begin{equation}
-Sortino = \frac{R_p - MAR}{\sigma_{down}}
-\end{equation}
-
-onde:
-- $MAR$ é o Minimum Acceptable Return (frequentemente a taxa livre de risco)
-- $\sigma_{down}$ é o desvio-padrão downside, calculado apenas com retornos abaixo do MAR
-
-\subsubsection{Cálculo do Desvio-Padrão Downside}
-
-O desvio-padrão downside é calculado como:
-\begin{equation}
-\sigma_{down} = \sqrt{\frac{1}{T} \sum_{t=1}^{T} \min(R_t - MAR, 0)^2}
-\end{equation}
-
-Esta fórmula considera apenas os períodos onde retornos ficaram abaixo do threshold, ignorando completamente variações positivas.
-
-\subsubsection{Vantagens Teóricas}
-
-\textbf{Alinhamento com Preferências:} O Sortino Ratio alinha-se melhor com preferências reais de investidores, que tipicamente se preocupam mais com perdas que com ganhos.
-
-\textbf{Distingue Fontes de Volatilidade:} A métrica distingue entre volatilidade "boa" (upside) e "ruim" (downside), oferecendo discriminação mais refinada entre estratégias.
-
-\textbf{Robustez a Assimetria:} Em distribuições assimétricas, Sortino Ratio oferece avaliação mais precisa que Sharpe Ratio, especialmente relevante para mercados emergentes.
-
-\subsubsection{Limitações Práticas}
-
-\textbf{Sensibilidade ao Threshold:} Resultados podem variar significativamente dependendo da escolha do MAR, introduzindo elemento de subjetividade.
-
-\textbf{Menor Comparabilidade:} A literatura utiliza diferentes definições de MAR, reduzindo comparabilidade entre estudos.
-
-\textbf{Estimação em Amostras Pequenas:} Em amostras pequenas, estimativas de $\sigma_{down}$ podem ser imprecisas, especialmente se poucos retornos ficaram abaixo do threshold.
-
-\subsection{Maximum Drawdown: Medindo Perdas Extremas}
-
-\subsubsection{Definição e Cálculo}
-
-Maximum Drawdown (MDD) mede a maior perda percentual desde um pico anterior até o vale subsequente durante o período analisado:
+O índice de Sortino, desenvolvido por Sortino e Price (1994), refinam o conceito de risco ao considerar apenas volatilidade negativa. Este índice alinha-se melhor com preferências reais de investidores, que tipicamente se preocupam mais com perdas que com ganhos:
 
 \begin{equation}
-MDD = \max_{t \in [0,T]} \left[ \max_{s \in [0,t]} V_s - V_t \right] / \max_{s \in [0,t]} V_s
+\text{Sortino} = \frac{R_p - \text{MAR}}{\sigma_{\text{downside}}}
 \end{equation}
 
-onde $V_t$ é o valor acumulado da carteira no tempo $t$.
+onde MAR é o retorno mínimo aceitável (normalmente a taxa livre de risco) e $\sigma_{\text{downside}}$ é o desvio padrão calculado apenas com retornos abaixo do MAR:
 
-O cálculo prático envolve:
-1. Calcular valor acumulado da carteira em cada período
-2. Para cada ponto, identificar o pico anterior máximo
-3. Calcular o drawdown como percentual de queda desde o pico
-4. Identificar o maximum drawdown do período
+\begin{equation}
+\sigma_{\text{downside}} = \sqrt{\frac{1}{T} \sum_{t=1}^{T} \min(R_t - \text{MAR}, 0)^2}
+\end{equation}
 
-\subsubsection{Interpretação e Relevância}
+\subsection{Metodologia Out-of-Sample}
 
-MDD oferece perspectiva única sobre tail risk e experiência real do investidor. Diferente de métricas baseadas em médias, MDD captura o pior cenário experimentado, informação crucial para:
+Para evitar look-ahead bias, este trabalho implementa metodologia rigorosa out-of-sample conforme estabelecido por DeMiguel, Garlappi e Uppal (2009). Os dados são divididos em período de estimação (2016-2017) e período de teste (2018-2019), utilizando apenas informações do período de estimação para construção das carteiras.
 
-\textbf{Gestão de Risco:} Investidores institucionais frequentemente estabelecem limites de drawdown para controlar exposições extremas.
+Esta separação temporal garante que nenhuma informação futura seja utilizada na tomada de decisões de alocação, simulando condições realistas de investimento. O rebalanceamento é realizado semestralmente, balanceando custos de transação com necessidade de ajustes nas alocações.
 
-\textbf{Psychological Impact:} Drawdowns prolongados testam disciplina dos investidores e podem levar a decisões emocionais prejudiciais.
+\subsection{Testes de Significância Estatística}
 
-\textbf{Capacity Planning:} MDD informa sobre capital necessário para sobreviver a períodos adversos sem forçar liquidações.
+Para verificar se as diferenças de performance entre estratégias são estatisticamente significativas, aplicam-se testes específicos para comparação de índices de Sharpe. O teste de Jobson e Korkie (1981), posteriormente corrigido por Memmel (2003), testa a hipótese nula de que dois índices de Sharpe são iguais:
 
-\subsubsection{Métricas Relacionadas}
+\begin{equation}
+t = \frac{\text{SR}_1 - \text{SR}_2}{\sqrt{\text{Var}(\text{SR}_1 - \text{SR}_2)}}
+\end{equation}
 
-\textbf{Rebaixamento Médio (\textit{Average Drawdown}):} Média de todos os rebaixamentos observados, oferecendo perspectiva sobre persistência de perdas.
+onde a variância da diferença considera a correlação entre as estratégias e é ajustada para amostras finitas. Este teste permite conclusões estatisticamente robustas sobre a superioridade de uma estratégia em relação às outras.
 
-\textbf{Duração do Rebaixamento (\textit{Drawdown Duration}):} Tempo necessário para recuperar de rebaixamentos, medindo resiliência da estratégia.
+\subsection{Taxa Livre de Risco}
 
-\textbf{Razão de Calmar (\textit{Calmar Ratio}):} Retorno anualizado dividido por rebaixamento máximo, oferecendo perspectiva de risco-retorno focada em risco de cauda (\textit{tail risk}).
+A taxa livre de risco utilizada nos cálculos de índices de Sharpe e Sortino é a taxa SELIC, que representa o benchmark livre de risco no mercado brasileiro. A SELIC é amplamente aceita na literatura acadêmica brasileira como proxy adequada para a taxa livre de risco, sendo utilizada pelo Banco Central do Brasil como instrumento principal de política monetária.
 
-\section{CARACTERÍSTICAS DE MERCADOS EMERGENTES}
+A conversão da SELIC anual para frequência mensal é realizada através da fórmula de capitalização composta: $(1 + \text{SELIC}_{\text{anual}})^{1/12} - 1$. Esta abordagem preserva a equivalência financeira entre as taxas, sendo metodologicamente superior à simples divisão por 12 que assumiria capitalização linear.
 
-\subsection{Definição e Classificação}
+\section{JUSTIFICATIVA DO PERÍODO DE ANÁLISE}
 
-Mercados emergentes são economias em transição de baixa renda e capital markets fechados para média renda e capital markets cada vez mais abertos. Esta definição, desenvolvida por organizações como MSCI e FTSE, captura tanto aspectos econômicos quanto financeiros do desenvolvimento.
+A escolha do período 2018-2019 para análise não é arbitrária, mas fundamentada em características específicas que tornam este período particularmente adequado para testar estratégias de alocação em condições de estresse. Schwert (1989) argumenta que períodos de alta volatilidade oferecem testes mais rigorosos para estratégias de investimento, pois amplificam as diferenças entre abordagens alternativas. Campbell et al. (2001) reforçam esta perspectiva demonstrando que choques econômicos revelam propriedades latentes das estratégias de investimento que não são observáveis em períodos de normalidade.
 
-Características definidoras incluem PIB per capita em crescimento, liberalização progressiva de mercados de capitais, desenvolvimento institucional em andamento, e integração crescente com mercados globais. O Brasil situa-se nesta categoria, compartilhando características com outros grandes mercados emergentes como China, Índia, e Rússia.
+\subsection{Contexto Macroeconômico e Político}
 
-\subsection{Stylized Facts de Mercados Emergentes}
+O biênio 2018-2019 no Brasil foi caracterizado por múltiplos choques simultâneos que testaram a robustez das estratégias de alocação. O processo eleitoral presidencial de 2018 foi marcado por alta polarização política e incerteza sobre o futuro das políticas econômicas. Segundo dados do Banco Central do Brasil, o Índice de Incerteza da Política Econômica (EPU-Brazil) atingiu níveis históricos durante o período eleitoral, refletindo a ansiedade dos agentes econômicos.
 
-Harvey (1995) estabeleceu características empíricas que distinguem mercados emergentes de desenvolvidos, muitas das quais persistem décadas depois:
+A greve dos caminhoneiros em maio de 2018 constitui evento particularmente relevante para este estudo. Durante dez dias, a paralisação afetou diferentemente diversos setores da economia: empresas de bens de consumo enfrentaram rupturas nas cadeias de suprimento, enquanto empresas de energia e telecomunicações mostraram maior resiliência. Este choque idiossincrático oferece laboratório natural para observar como diferentes estratégias de alocação reagiram a impactos setoriais assimétricos.
 
-\subsubsection{Maior Volatilidade}
+\subsection{Volatilidade dos Mercados Financeiros}
 
-Mercados emergentes apresentam volatilidade tipicamente 2-3 vezes superior a mercados desenvolvidos. Esta volatilidade elevada reflete:
+Durante 2018-2019, o mercado acionário brasileiro experimentou volatilidade significativamente elevada. O índice Ibovespa apresentou volatilidade anualizada média de 28,5\% em 2018, comparado à média histórica de 23\% (B3, 2019). Esta elevação da volatilidade foi acompanhada por episódios de correlação aumentada entre ativos, fenômeno documentado por Longin e Solnik (2001) como característico de períodos de estresse.
 
-\textbf{Menor Diversificação Econômica:} Economias emergentes frequentemente dependem de poucos setores ou commodities, amplificando impacto de choques específicos.
+A instabilidade cambial também caracterizou o período, com o real brasileiro depreciando aproximadamente 17\% em relação ao dólar americano em 2018. Esta volatilidade cambial teve impactos diferenciados nas empresas listadas: exportadoras de commodities beneficiaram-se da depreciação, enquanto empresas com elevada dívida em moeda estrangeira enfrentaram pressões adicionais.
 
-\textbf{Fluxos de Capital Voláteis:} Capital estrangeiro pode entrar e sair rapidamente, criando volatilidade relacionada ao sentimento global em vez de fundamentos locais.
+\subsection{Choques Setoriais e Oportunidades de Diversificação}
 
-\textbf{Menor Liquidez:} Mercados menos profundos amplificam impacto de trades individuais, aumentando volatilidade intraday e de curto prazo.
+A volatilidade nos preços de commodities durante 2018-2019 afetou especialmente empresas dos setores de mineração e petróleo, que representam parcela significativa do índice Ibovespa. O preço do petróleo Brent variou entre US\$ 50 e US\$ 85 por barril durante o período, enquanto o minério de ferro enfrentou volatilidade relacionada às políticas comerciais entre Estados Unidos e China.
 
-\textbf{Instabilidade Institucional:} Mudanças regulatórias, políticas, e institucionais criam incerteza adicional não presente em mercados maduros.
+Estes choques setoriais criaram oportunidades de diversificação que foram exploradas diferentemente pelas estratégias de alocação. A estratégia de pesos iguais, por sua natureza, manteve exposição constante a todos os setores. A paridade de risco ajustou automaticamente para reduzir exposição a setores mais voláteis, enquanto a otimização de Markowitz reagiu às mudanças nas correlações e volatilidades estimadas.
 
-\subsubsection{Higher Moments Significativos}
+\subsection{Relevância para Testes de Estratégias de Alocação}
 
-Enquanto mercados desenvolvidos aproximam-se razoavelmente de normalidade, mercados emergentes apresentam:
+Este conjunto de fatores criou ambiente de teste natural para comparar estratégias de alocação, pois diferentes abordagens reagiram de forma distinta aos choques. Períodos de baixa volatilidade tendem a mascarar diferenças entre estratégias, enquanto períodos de estresse revelam suas características fundamentais de risco e retorno, conforme documentado por Pastor e Stambaugh (2002).
 
-\textbf{Assimetria Negativa (Skewness < 0):} Maior probabilidade de perdas extremas compared to ganhos equivalentes, refletindo nature de crisis episodes.
+A literatura acadêmica sobre estratégias de alocação frequentemente utiliza períodos de crise para validar a robustez dos métodos propostos. DeMiguel, Garlappi e Uppal (2009) incluíram dados da crise das empresas pontocom e da crise financeira de 2008 em suas análises comparativas. Similarmente, este trabalho utiliza o período 2018-2019 como teste de estresse natural para as estratégias de alocação no contexto brasileiro.
 
-\textbf{Curtose Elevada (Kurtosis > 3):} "Fat tails" indicando maior probabilidade de eventos extremos tanto positivos quanto negativos.
+\section{ANÁLISE DE CORRELAÇÃO E ESTRUTURA DE DEPENDÊNCIA}
 
-\textbf{Implications para Teoria:} Violações de normalidade comprometem premissas de modelos baseados em média-variância, favorecendo approaches mais robustos.
+A correlação entre ativos constitui elemento central na teoria de portfólio, determinando os benefícios potenciais da diversificação. Markowitz (1952) estabeleceu que correlações baixas ou negativas entre ativos permitem redução do risco da carteira sem sacrificar retorno esperado. A mensuração adequada da estrutura de correlação é, portanto, fundamental para a implementação efetiva das estratégias de alocação.
 
-\subsubsection{Correlações Instáveis}
+\subsection{Correlação Linear de Pearson}
 
-Bekaert e Harvey (2003) documentaram instabilidade temporal nas correlações de mercados emergentes:
+A correlação linear de Pearson, utilizada tradicionalmente na literatura de portfólio, mede a intensidade da relação linear entre retornos de dois ativos. Para ativos $i$ e $j$, a correlação é calculada como:
 
-\textbf{Correlation Breakdown:} Durante crises, correlações entre ativos aumentam dramaticamente, reduzindo benefícios de diversificação precisely quando mais necessários.
+\begin{equation}
+\rho_{i,j} = \frac{\text{Cov}(R_i, R_j)}{\sigma_i \sigma_j}
+\end{equation}
 
-\textbf{Contagion Effects:} Choques em um mercado emergente tendem a se espalhar rapidamente para outros, criando co-movement elevado durante períodos de stress.
+onde $\text{Cov}(R_i, R_j)$ é a covariância entre os retornos e $\sigma_i, \sigma_j$ são os desvios padrão individuais. Valores próximos a +1 indicam forte correlação positiva, valores próximos a -1 indicam forte correlação negativa, e valores próximos a zero indicam ausência de relação linear.
 
-\textbf{Regime Switching:} Correlações alternam entre regimes de baixa e alta correlação, com transitions relacionados a events macroeconômicos ou políticos.
+\subsection{Instabilidade das Correlações}
 
-\subsection{Especificidades do Mercado Brasileiro}
+Longin e Solnik (2001) documentaram que correlações entre ativos financeiros são instáveis ao longo do tempo, aumentando significativamente durante períodos de estresse de mercado. Este fenômeno, conhecido como "correlation breakdown", reduz os benefícios da diversificação exatamente quando os investidores mais precisam dela.
 
-\subsubsection{Estrutura Setorial}
+No contexto de mercados emergentes, esta instabilidade é ainda mais pronunciada. Forbes e Rigobon (2002) demonstraram que correlações condicionais podem aumentar substancialmente durante crises, limitando a eficácia da diversificação internacional. Para estratégias de alocação, isto implica que correlações estimadas em períodos de normalidade podem subestimar o risco durante períodos de estresse.
 
-O mercado acionário brasileiro apresenta concentração setorial elevada:
+\subsection{Correlação na Seleção de Ativos}
 
-\textbf{Setor Financeiro:} Representa aproximadamente 25-30% da capitalização do Ibovespa, com bancos grandes (Itaú, Bradesco, Banco do Brasil) dominando.
+A análise da correlação média entre ativos pode ser utilizada como critério adicional na seleção do universo de investimento. Ativos com correlações excessivamente altas entre si oferecem benefícios limitados de diversificação, tornando preferível a seleção de ativos com correlações mais baixas com o restante da carteira.
 
-\textbf{Commodities:} Vale (mineração) e Petrobras (petróleo) frequentemente representam 15-20% do índice, criando exposição significativa a preços de commodities.
-
-\textbf{Utilities:} Empresas de energia elétrica (Eletrobras, Copel, Cemig) contribuem substancialmente, com performance ligada a regulação setorial e regime hidrológico.
-
-Esta concentração implica que o desempenho do mercado brasileiro é fortemente influenciado pelo desempenho destes poucos setores dominantes.
-
-\subsubsection{Sensibilidade a Fatores Externos}
-
-\textbf{Preços de Commodities:} Como grande exportador de minério de ferro, petróleo, soja, e outros commodities, o mercado brasileiro correlaciona-se fortemente com preços internacionais destes produtos.
-
-\textbf{Taxa de Câmbio:} Muitas empresas listadas possuem receitas em dólares ou são fortemente influenciadas por competitividade internacional, criando sensibilidade significativa ao USD/BRL.
-
-\textbf{Taxas de Juros Globais:} Como mercado emergente, Brasil compete com outros destinos por capital internacional, sendo sensível a mudanças nas taxas de juros globais, especialmente nos EUA.
-
-\textbf{Apetite ao Risco Global:} Durante períodos de "aversaão ao risco", investidores tendem a retirar capital de mercados emergentes, afetando performance independentemente de fundamentos locais.
-
-\subsubsection{Fatores Político-Econômicos}
-
-\textbf{Política Fiscal:} Preocupações sobre sustentabilidade fiscal frequently move markets, com debates sobre teto de gastos, reforma da previdência, e outros affecting investor confidence.
-
-\textbf{Política Monetária:} Decisões do Banco Central sobre taxa SELIC têm impacto significativo em avaliações, especialmente considerando que Brasil historicamente teve taxas de juros muito elevadas.
-
-\textbf{Eleições:} Ciclos eleitorais criam uncertainty significativa, especialmente quando candidates with different economic philosophies compete.
-
-\subsection{Implicações para Estratégias de Alocação}
-
-Características de mercados emergentes têm implications diretas para eficácia de diferentes estratégias de alocação:
-
-\textbf{Favorecimento de Robustez:} Alta instabilidade paramétrica favorece estratégias menos dependentes de estimações precisas, como Equal Weight e Risk Parity.
-
-\textbf{Importance de Risk Control:} Maior volatilidade e tail risks tornam controle de risco mais crítico, favorecendo estratégias como Risk Parity que explicitly manage risk exposures.
-
-\textbf{Shorter Optimal Horizons:} Instabilidade sugere que optimal rebalancing horizons podem ser menores que em mercados desenvolvidos.
-
-\textbf{Greater Value of Diversification:} Higher correlations during stress periods aumentam value de diversification strategies que remain effective durante crises.
-
-\section{LITERATURA PRECEDENTE E GAP DE CONHECIMENTO}
-
-\subsection{Estudos Fundamentais Internacionais}
-
-A literatura sobre comparação de estratégias de alocação é extensive em mercados desenvolvidos mas limited em mercados emergentes:
-
-\subsubsection{DeMiguel \textit{et al.} (2009)}
-
-Este estudo seminal comparou 14 estratégias de alocação usando dados de mercados desenvolvidos (principalmente EUA) e concluiu que Equal Weight frequentemente supera estratégias otimizadas fora da amostra. O trabalho estabeleceu metodologia de referência para comparações rigorosas e destacou a importância da avaliação fora da amostra.
-
-Os principais achados incluem performance superior de Equal Weight especialmente quando a janela de estimação é pequena relativamente ao número de ativos, e performance robusta através de diferentes condições de mercado.
-
-\subsubsection{Maillard \textit{et al.} (2010)}
-
-Formalizaram matematicamente Risk Parity através do conceito de Equal Risk Contribution, providing theoretical foundation para what previously havia sido predominantly practical approach. Demonstrated que ERC maximizes diversification ratio e oferece superior risk-adjusted returns.
-
-\subsection{Literatura Específica sobre Brasil}
-
-Estudos sobre estratégias de alocação no mercado brasileiro são notably scarce:
-
-\subsubsection{Rochman e Eid Jr. (2006)}
-
-Analisaram estratégias de otimização no período 1995-2005, focusing em comparison entre Markowitz optimization e strategies baseadas em volatility. Found advantages para métodos baseados em volatility, mas study utilizado in-sample methodology e período anterior a desenvolvimentos recent em Risk Parity.
-
-\subsubsection{Silva e Famá (2011)}
-
-Compararam Markowitz e Equal Weight usando small sample (20 ativos, 5 anos) e found similar performance entre strategies. However, study lacked statistical significance testing e não incluiu Risk Parity metodologies.
-
-\section{SELEÇÃO DE ATIVOS NA LITERATURA}
-
-\subsection{Fundamentação Teórica da Seleção de Ativos}
-
-A teoria clássica de portfólio, estabelecida por Markowitz (1952), assume que o universo de ativos é dado \emph{a priori}, concentrando-se exclusivamente na otimização de pesos dentro desse conjunto predefinido. No entanto, Markowitz (1959) reconheceu posteriormente que "a escolha dos títulos a serem incluídos no portfólio é tão importante quanto a determinação de suas proporções ótimas". Esta observação inaugural destacou a necessidade de critérios científicos para definir o universo de ativos antes da aplicação de técnicas de otimização.
-
-Black e Litterman (1992) reforçaram esta perspectiva ao demonstrarem que a qualidade do universo inicial influencia dramaticamente os resultados de otimização. Os autores argumentaram que "um modelo de otimização é apenas tão bom quanto os ativos que alimentam o sistema", estabelecendo a seleção de ativos como etapa fundamental do processo de gestão de portfólio.
-
-A literatura posterior desenvolveu dois pilares fundamentais para seleção científica de ativos: (1) filtros de liquidez, para garantir negociabilidade; e (2) critérios de robustez, para excluir comportamentos anômalos que possam comprometer a estabilidade do portfólio.
-
-\subsection{Filtros de Liquidez}
-
-\subsubsection{Fundamentação Teórica}
-
-A importância da liquidez na seleção de ativos foi formalmente estabelecida por Amihud (2002), que desenvolveu a medida de iliquidez baseada na relação entre retorno absoluto e volume de negociação. Esta métrica demonstrou que ativos com baixa liquidez apresentam custos de transação implícitos elevados e maior volatilidade não relacionada a fundamentos econômicos.
-
-Goyal e Jegadeesh (1997) comprovaram empiricamente que a inclusão de ativos pouco negociados em análises de performance pode gerar conclusões espúrias sobre eficácia de estratégias de investimento. Os autores demonstraram que filtros de liquidez adequados são essenciais para validação científica de metodologias de alocação.
-
-\subsubsection{Métricas Operacionais}
-
-\textbf{Zero-return days:} Roll (1984) propôs esta métrica como proxy inversa de liquidez, baseada na observação de que ativos líquidos raramente apresentam dias consecutivos sem variação de preço. A literatura estabelece threshold de 20\% como limite aceitável para inclusão em análises de portfólio.
-
-\textbf{Roll spread:} Roll (1984) desenvolveu estimador de bid-ask spread usando covariância serial de retornos. Esta medida captura custos implícitos de transação, sendo fundamental para avaliação de implementabilidade prática das estratégias.
-
-\textbf{Autocorrelação lag-1:} Amostras com autocorrelação excessivamente negativa (< -0.30) indicam ruído microestrutural que pode comprometer estimação de parâmetros estatísticos, conforme documentado por Lo e MacKinlay (1990).
-
-\subsection{Critérios de Robustez}
-
-\subsubsection{Momentum como Fator de Seleção}
-
-Jegadeesh e Titman (1993) estabeleceram momentum 12-1 como fator preditivo robusto de retornos futuros, demonstrando que ativos com performance positiva nos 12 meses anteriores (excluindo o último mês) tendem a manter superioridade no horizonte subsequente. Esta evidência fundamenta o uso de momentum como critério de seleção.
-
-\subsubsection{Métricas de Risco}
-
-\textbf{Volatilidade:} Fama e French (1992, 1993) documentaram que ativos com volatilidade excessiva frequentemente apresentam fatores de risco idiossincráticos não compensados por retorno superior, justificando sua exclusão de análises focadas em alocação estratégica.
-
-\textbf{Maximum Drawdown:} Esta métrica captura risco de cauda e estabilidade temporal, sendo especialmente relevante para mercados emergentes caracterizados por episódios de volatilidade extrema.
-
-\textbf{Downside Deviation:} Sortino e van der Meer (1991) demonstraram que downside deviation captura mais adequadamente preferências de investidores aversos ao risco que métricas simétricas como desvio-padrão, fundamentando seu uso como critério de seleção.
-
-\subsection{Metodologia de Score Composto}
-
-A combinação de critérios múltiplos através de score ponderado permite integração objetiva de diferentes dimensões de qualidade. A literatura sugere pesos baseados em importância relativa: maior peso para momentum (35\%) por seu poder preditivo documentado, seguido por estabilidade (volatilidade, 25\%) e controle de risco extremo (drawdown e downside, 20\% cada).
-
-\subsection{Controles de Diversificação}
-
-\textbf{Diversificação Setorial:} Restrição de máximo dois ativos por setor evita concentração setorial não intencional, mantendo representatividade ampla da economia.
-
-\textbf{Correlação Máxima:} Threshold de 0.85 entre ativos selecionados assegura que cada ativo contribua com informação única para o portfólio, evitando redundância estatística.
-
-\subsection{Gap Identificado na Literatura}
-
-Revisão abrangente revela lacuna significativa:
-
-\textbf{Ausência de Comparação Triangular:} Nenhum estudo anterior comparou simultaneamente Markowitz, Equal Weight, e Risk Parity no mercado brasileiro.
-
-\textbf{Falta de Metodologia Out-of-Sample:} Estudos existentes predominantemente utilizaram análise within-sample, comprometendo a validade dos resultados.
-
-\textbf{Período não Coberto:} O período 2018-2019 não foi estudado anteriormente, apesar de oferecer laboratório natural para testar estratégias durante alta volatilidade.
-
-\textbf{Ausência de Testes de Significância:} Estudos existentes frequentemente não incluíram testes estatísticos para determinar se diferenças em performance são estatisticamente significativas.
-
-Esta lacuna justifica completamente a contribuição deste estudo para a literatura nacional e internacional.
+Para implementação prática, pode-se calcular a correlação média de cada ativo candidato com os demais ativos já selecionados. Ativos com correlação média superior a um threshold (por exemplo, 0,8) podem ser excluídos para favorecer maior diversificação. Esta abordagem simples melhora a qualidade do universo de investimento sem adicionar complexidade desnecessária ao processo de seleção.

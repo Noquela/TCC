@@ -1,7 +1,8 @@
 {
-  "data_processamento": "2025-09-15T20:52:36.226413",
+  "data_processamento": "2025-09-26T10:12:46.377923",
   "periodo_analise": "2018-01-01 a 2019-12-31",
-  "taxa_livre_risco": 0.0624,
+  "taxa_livre_risco_mensal": 0.0052,
+  "taxa_livre_risco_anual": 0.0624,
   "total_ativos": 10,
   "ativos_analisados": [
     "LREN3",
@@ -20,19 +21,19 @@
       "retorno_anual": 0.29839718645601687,
       "volatilidade": 0.1972010915841122,
       "sharpe": 1.1967336720109227,
-      "sortino": 1.5841572854061226
+      "sortino": 1.5841572854061228
     },
     "markowitz": {
-      "retorno_anual": 0.42450087276186244,
-      "volatilidade": 0.1948975112983561,
-      "sharpe": 1.8579040355602356,
-      "sortino": 3.4871125264355327
+      "retorno_anual": 0.42449810177748093,
+      "volatilidade": 0.1948960201630217,
+      "sharpe": 1.8579040324917981,
+      "sortino": 3.43603864777318
     },
     "risk_parity": {
       "retorno_anual": 0.2874729390985664,
       "volatilidade": 0.1862333089246974,
-      "sharpe": 1.2085536169556739,
-      "sortino": 1.586470603359387
+      "sharpe": 1.2085536169556736,
+      "sortino": 1.6155922433147498
     }
   }
 }

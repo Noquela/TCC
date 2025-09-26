@@ -110,7 +110,7 @@ class ConfiguracaoGlobal:
         self.SEED = 42
         np.random.seed(self.SEED)
         
-        # Gerador moderno para bootstrap
+        # Gerador moderno para análises estatísticas
         self.rng = np.random.default_rng(self.SEED)
         
         # Configurações específicas do projeto
@@ -159,17 +159,10 @@ class ConfiguracaoGlobal:
             'anual': 0.065        # ~6,5% a.a.
         }
         
-        # === ANÁLISES DE ROBUSTEZ ===
-        self.BOOTSTRAP_CONFIG = {
-            'n_iteracoes': 1000,
+        # === ANÁLISES DE VALIDAÇÃO ===
+        self.VALIDACAO_CONFIG = {
             'confidence_level': 0.95,
             'random_state': self.SEED
-        }
-        
-        self.CUSTOS_TRANSACAO = {
-            'cenario_baixo': 0.0010,   # 10 bps
-            'cenario_medio': 0.0025,   # 25 bps  
-            'cenario_alto': 0.0050     # 50 bps
         }
 
     def obter_caminhos(self):
@@ -224,8 +217,7 @@ class ConfiguracaoGlobal:
             'weight_constraints': self.WEIGHT_CONSTRAINTS,
             'periodos': self.PERIODOS,
             'taxa_livre_risco': self.TAXA_LIVRE_RISCO,
-            'bootstrap_config': self.BOOTSTRAP_CONFIG,
-            'custos_transacao': self.CUSTOS_TRANSACAO
+            'validacao_config': self.VALIDACAO_CONFIG
         }
         
         config_file = self.results_dir / "00_configuracoes_projeto.json"

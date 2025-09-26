@@ -5,11 +5,11 @@ Script 4: Gerador de Relatórios Finais
 Autor: Bruno Gasparoni Ballerini
 Data: 2025-09-15 (Versão Corrigida)
 
-Correções aplicadas:
-- Implementação de correção Bonferroni para testes múltiplos
-- Intervalos de confiança bootstrap
+Funcionalidades simplificadas:
+- Geração de tabelas LaTeX para o TCC
 - Gráficos padronizados com cores consistentes
-- Validação mais rigorosa de resultados
+- Testes de significância estatística (Jobson-Korkie)
+- Relatórios finais consolidados
 """
 
 import pandas as pd

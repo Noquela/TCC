@@ -9,16 +9,16 @@ Equal Weight,ITUB4,10.0
 Equal Weight,ALUP11,10.0
 Equal Weight,B3SA3,10.0
 Equal Weight,BBDC4,10.0
-Mean-Variance Optimization,LREN3,1.2748743692472394e-14
-Mean-Variance Optimization,WEGE3,40.00000000000001
-Mean-Variance Optimization,ABEV3,2.3340143404336918e-14
-Mean-Variance Optimization,AZZA3,6.9949653922381816e-15
-Mean-Variance Optimization,ALPA4,15.10866121565918
-Mean-Variance Optimization,RENT3,33.732458711193985
-Mean-Variance Optimization,ITUB4,0.0
-Mean-Variance Optimization,ALUP11,3.945209631116993e-15
-Mean-Variance Optimization,B3SA3,11.158880073146788
-Mean-Variance Optimization,BBDC4,0.0
+Mean-Variance Optimization,LREN3,0.0
+Mean-Variance Optimization,WEGE3,39.99999999999994
+Mean-Variance Optimization,ABEV3,0.0
+Mean-Variance Optimization,AZZA3,1.6544962610170687e-14
+Mean-Variance Optimization,ALPA4,15.109011173761678
+Mean-Variance Optimization,RENT3,33.72814209630632
+Mean-Variance Optimization,ITUB4,1.3224715152264742e-15
+Mean-Variance Optimization,ALUP11,1.302211751925036e-14
+Mean-Variance Optimization,B3SA3,11.162846729931978
+Mean-Variance Optimization,BBDC4,4.85611050466128e-14
 Equal Risk Contribution,LREN3,9.861200510901414
 Equal Risk Contribution,WEGE3,15.332457925351758
 Equal Risk Contribution,ABEV3,12.035310668510542

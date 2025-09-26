@@ -46,7 +46,16 @@
       "Bash(\"C:\\Users\\BrunoGaspariniBaller\\AppData\\Local\\Pandoc\\pandoc.exe\" main.tex -o \"..\\..\\..\\..\\TCC_RiskParity_SUMARIO_CORRIGIDO.docx\" --from latex --to docx --reference-doc=reference.docx --extract-media=\"..\\..\\..\\..\\media\" --standalone --toc --toc-depth=3 --number-sections)",
       "Bash(\"C:\\Users\\BrunoGaspariniBaller\\AppData\\Local\\Pandoc\\pandoc.exe\" main.tex -o \"..\\..\\..\\..\\TCC_RiskParity_SUMARIO_SIMPLES.docx\" --from latex --to docx --reference-doc=reference.docx --extract-media=\"..\\..\\..\\..\\media\" --standalone --toc --toc-depth=2 --number-sections)",
       "Bash(\"C:\\Users\\BrunoGaspariniBaller\\AppData\\Local\\Pandoc\\pandoc.exe\" main_sem_sumario.tex -o \"..\\..\\..\\..\\TCC_RiskParity_LIMPO.docx\" --from latex --to docx --reference-doc=reference.docx --extract-media=\"..\\..\\..\\..\\media\" --standalone --toc --toc-depth=2 --number-sections)",
-      "Bash(bibtex:*)"
+      "Bash(bibtex:*)",
+      "Read(//c/Users/BrunoGaspariniBaller/OneDrive - HAND/Documentos/**)",
+      "Bash(taskkill:*)",
+      "Bash(start TCC_EXCEL_SCRIPTS_0_1.xlsx)",
+      "WebSearch",
+      "Bash(start \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\TCC_EXCEL_SCRIPTS_0_1.xlsx\")",
+      "Bash(start \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\TCC_EXCEL_SCRIPTS_0_1_NOVO.xlsx\")",
+      "Bash(start \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\TCC_EXCEL_BASE_LIMPA.xlsx\")",
+      "Bash(start \"C:\\Users\\BrunoGaspariniBaller\\OneDrive - HAND\\Documentos\\TCC\\TCC_EXCEL_FINAL.xlsx\")",
+      "WebFetch(domain:)"
     ],
     "deny": [],
     "ask": []
